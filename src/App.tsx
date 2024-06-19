@@ -1,39 +1,26 @@
-import { useEffect } from 'react';
 import './App.css';
-import StorefrontApi from './service/api/storefrontApi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import useProduct from './hooks/query/useProduct';
 
-// import { createStorefrontApiClient } from '@shopify/storefront-api-client';
-
-// const client = createStorefrontApiClient({
-//   storeDomain: 'd2ac44-d5.myshopify.com',
-//   apiVersion: '2024-04',
-//   publicAccessToken: '9345c9692f79f9b62ed605a9758e875a',
-// });
+const queryClient = new QueryClient();
 
 function App() {
-  // const [response, setResponse] = useState<string>('');
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Dummy />
+    </QueryClientProvider>
+  );
+}
 
-  // const shopQuery = `
-  // query shop {
-  //   shop {
-  //     name
-  //     id
-  //   }
-  // }`;
-
- 
-  useEffect(() => {
-    const fetchData = async () => {
-     const res = await StorefrontApi.getAllProducts()
-     console.log(JSON.stringify(res))
-    };
-
-    fetchData();
-  });
+// TODO: Remove this Dummy component later
+function Dummy() {
+  const { useGetAllProductsQuery } = useProduct();
+  const { data } = useGetAllProductsQuery();
 
   return (
     <>
       <p>Hello World</p>
+      <p>{JSON.stringify(data)}</p>
     </>
   );
 }

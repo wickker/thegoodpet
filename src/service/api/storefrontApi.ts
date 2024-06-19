@@ -1,6 +1,7 @@
 import { createStorefrontApiClient } from '@shopify/storefront-api-client';
 import Products from '@/graphql/products';
 import Config from '@/configs';
+import { GetAllProductsRequest } from '@/@types/api/product';
 
 const client = createStorefrontApiClient({
   storeDomain: Config.VITE_SHOPIFY_STORE_DOMAIN,
@@ -9,17 +10,14 @@ const client = createStorefrontApiClient({
 });
 
 // GET
-// TODO: Convert to proper pagination in the future 
-const getAllProducts = (first: number = 100) =>
-  client.request(Products.GetAll, {
-    variables: {
-      first,
-    },
-  }).then((res) => res.data.products.nodes)
+// TODO: Convert to proper pagination in the future
+const getAllProducts = (request: GetAllProductsRequest) =>
+  client
+    .request(Products.GetAll, {
+      variables: request,
+    })
+    .then((res) => res.data.products.nodes);
 
-
-const StorefrontApi = {
-    getAllProducts
-}  
-
-export default StorefrontApi
+export default {
+  getAllProducts,
+};
