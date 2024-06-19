@@ -1,33 +1,42 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+// import { useEffect, useState } from 'react';
 import './App.css';
+// import { createStorefrontApiClient } from '@shopify/storefront-api-client';
+
+// const client = createStorefrontApiClient({
+//   storeDomain: 'd2ac44-d5.myshopify.com',
+//   apiVersion: '2024-04',
+//   publicAccessToken: '9345c9692f79f9b62ed605a9758e875a',
+// });
 
 function App() {
-  const [count, setCount] = useState(0);
+  // const [response, setResponse] = useState<string>('');
+
+  // const shopQuery = `
+  // query shop {
+  //   shop {
+  //     name
+  //     id
+  //   }
+  // }`;
+
+ 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await client.request(productsQuery, {
+  //       variables: {
+  //         first: 10,
+  //       },
+  //     });
+  //     setResponse(JSON.stringify(res));
+  //   };
+
+  //   fetchData();
+  // });
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p>Hello World</p>
+      <p>{response}</p>
     </>
   );
 }
