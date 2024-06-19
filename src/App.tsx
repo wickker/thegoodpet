@@ -1,5 +1,7 @@
-// import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './App.css';
+import StorefrontApi from './service/api/storefrontApi';
+
 // import { createStorefrontApiClient } from '@shopify/storefront-api-client';
 
 // const client = createStorefrontApiClient({
@@ -20,23 +22,18 @@ function App() {
   // }`;
 
  
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await client.request(productsQuery, {
-  //       variables: {
-  //         first: 10,
-  //       },
-  //     });
-  //     setResponse(JSON.stringify(res));
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+     const res = await StorefrontApi.getAllProducts()
+     console.log(JSON.stringify(res))
+    };
 
-  //   fetchData();
-  // });
+    fetchData();
+  });
 
   return (
     <>
       <p>Hello World</p>
-      <p>{response}</p>
     </>
   );
 }

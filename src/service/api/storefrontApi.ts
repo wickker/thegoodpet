@@ -1,13 +1,25 @@
 import { createStorefrontApiClient } from '@shopify/storefront-api-client';
-// import Products from '../../graphql/products';
-import products from '@/graphql/products';
+import Products from '@/graphql/products';
+import Config from '@/configs';
 
 const client = createStorefrontApiClient({
-  // TODO: Convert to env vars  
-  storeDomain: 'd2ac44-d5.myshopify.com',
-  apiVersion: '2024-04',
-  publicAccessToken: '9345c9692f79f9b62ed605a9758e875a',
+  storeDomain: Config.VITE_SHOPIFY_STORE_DOMAIN,
+  apiVersion: Config.VITE_SHOPIFY_API_VERSION,
+  publicAccessToken: Config.VITE_SHOPIFY_PUBLIC_ACCESS_TOKEN,
 });
 
 // GET
-const getProducts = client.request(Products.GetAll)
+// TODO: Convert to proper pagination in the future 
+const getAllProducts = (first: number = 100) =>
+  client.request(Products.GetAll, {
+    variables: {
+      first,
+    },
+  }).then((res) => res.data.products.nodes)
+
+
+const StorefrontApi = {
+    getAllProducts
+}  
+
+export default StorefrontApi
