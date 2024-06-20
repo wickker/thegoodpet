@@ -1,6 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
+
 import storefrontApi from '@/service/api/storefrontApi';
 import { QUERY_KEYS } from '@/utils/constants/queryKeys';
-import { useQuery } from '@tanstack/react-query';
 
 const useProduct = () => {
   const useGetAllProductsQuery = (limit: number = 100) => {
