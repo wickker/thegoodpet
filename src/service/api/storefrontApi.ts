@@ -5,9 +5,9 @@ import { GetAllProductsRequest } from '@/@types/api/product';
 import type { Product } from '@shopify/hydrogen-react/storefront-api-types';
 
 const client = createStorefrontApiClient({
-  storeDomain: Config.VITE_SHOPIFY_STORE_DOMAIN,
-  apiVersion: Config.VITE_SHOPIFY_API_VERSION,
-  publicAccessToken: Config.VITE_SHOPIFY_PUBLIC_ACCESS_TOKEN,
+  storeDomain: Config.SHOPIFY_STORE_DOMAIN,
+  apiVersion: Config.SHOPIFY_API_VERSION,
+  publicAccessToken: Config.SHOPIFY_PUBLIC_ACCESS_TOKEN,
 });
 
 // GET

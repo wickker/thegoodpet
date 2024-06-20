@@ -4,21 +4,23 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
-    "dev": "vite",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 && prettier --write .",
-    "preview": "vite preview"
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint && prettier --write .",
+    "start": "next start"
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
     "@shopify/hydrogen-react": "^2024.4.4",
     "@shopify/storefront-api-client": "^1.0.0",
     "@tanstack/react-query": "^5.45.1",
+    "next": "^14.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^14.2.4",
     "@types/node": "^20.14.5",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
