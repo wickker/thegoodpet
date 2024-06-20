@@ -1,4 +1,5 @@
 import ReactQueryProvider from '@/hooks/ReactQueryProvider';
+import './styles.css';
 
 export default function RootLayout({
   children,
@@ -15,7 +16,7 @@ export default function RootLayout({
       </head>
       <body>
         <ReactQueryProvider>
-          <main>{children}</main>
+          <main className="bg-red-300">{children}</main>
         </ReactQueryProvider>
       </body>
     </html>

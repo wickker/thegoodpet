@@ -8,7 +8,7 @@ export default function Page() {
 
   return (
     <>
-      <h1>Hello, Next.js!</h1>
+      <h1 className="bg-blue-300">Hello, Next.js!</h1>
       <p>{JSON.stringify(data)}</p>
     </>
   );
