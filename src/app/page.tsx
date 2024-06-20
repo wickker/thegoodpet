@@ -5,7 +5,7 @@ import useProduct from '@/hooks/query/useProduct';
 export default function Page() {
   const { useGetAllProductsQuery } = useProduct();
   const { data } = useGetAllProductsQuery();
-  const a = "hey yo";
+  const a = 'hey yyo';
 
   return (
     <>
