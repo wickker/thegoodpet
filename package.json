@@ -7,8 +7,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint && prettier --write .",
-    "start": "next start",
-    "prepare": "husky"
+    "prepare": "husky",
+    "start": "next start"
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
