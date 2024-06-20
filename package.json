@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "next-lint": "next lint && prettier --write ."
+    "dev": "next dev",
+    "lint": "next lint && prettier --write .",
+    "start": "next start"
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
@@ -20,6 +20,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^14.2.4",
     "@types/node": "^20.14.5",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
