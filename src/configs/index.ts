@@ -3,6 +3,6 @@ const Config = {
   SHOPIFY_API_VERSION: process.env.NEXT_PUBLIC_SHOPIFY_API_VERSION || '',
   SHOPIFY_PUBLIC_ACCESS_TOKEN:
     process.env.NEXT_PUBLIC_SHOPIFY_PUBLIC_ACCESS_TOKEN || '',
-};
+}
 
-export default Config;
+export default Config
