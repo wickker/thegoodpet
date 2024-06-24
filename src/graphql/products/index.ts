@@ -1,7 +1,7 @@
-import GetAll from './getAll';
+import GetAll from './getAll'
 
 const Products = {
   GetAll,
-};
+}
 
-export default Products;
+export default Products

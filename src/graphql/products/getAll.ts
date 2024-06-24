@@ -24,4 +24,4 @@ query ($first: Int) {
     }
   }
 }  
-`;
+`

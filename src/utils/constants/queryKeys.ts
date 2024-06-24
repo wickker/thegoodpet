@@ -1,6 +1,6 @@
-import { GetAllProductsRequest } from '@/@types/api/product';
+import { GetAllProductsRequest } from '@/@types/api/product'
 
-export const STOREFRONT = 'storefront';
+export const STOREFRONT = 'storefront'
 
 export const QUERY_KEYS = {
   GET_ALL_PRODUCTS: ({ first }: GetAllProductsRequest) => [
@@ -8,4 +8,4 @@ export const QUERY_KEYS = {
     'products',
     { first },
   ],
-};
+}
