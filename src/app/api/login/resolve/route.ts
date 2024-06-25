@@ -7,5 +7,5 @@ export async function GET(request: Request) {
   console.log('request resolve login : ', request)
   const cookieStore = cookies()
   console.log('cookie : ', cookieStore.get('code-verifier'))
-  return NextResponse.json({ message: 'RESOLVE LOGIN' }, { status: 200 })
+  return NextResponse.json({ message: 'Resolve login' }, { status: 200 })
 }
