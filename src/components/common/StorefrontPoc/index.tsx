@@ -2,7 +2,7 @@
 
 import useProduct from '@/hooks/query/useProduct'
 
-export default function DummyStorefrontData() {
+export default function StorefrontPoc() {
   const { useGetAllProductsQuery } = useProduct()
   const { data, isLoading } = useGetAllProductsQuery()
 

@@ -1,4 +1,4 @@
-import { DummyStorefrontData } from '@/components/common'
+import { StorefrontPoc } from '@/components/common'
 import { getAllPets } from '@/database/dtos/pets'
 
 export default async function Page() {
@@ -10,7 +10,7 @@ export default async function Page() {
         Hello, Next.js!
       </h1>
       <p>{JSON.stringify(pets)}</p>
-      <DummyStorefrontData />
+      <StorefrontPoc />
     </>
   )
 }

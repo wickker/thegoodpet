@@ -1,1 +1,1 @@
-export { default as DummyStorefrontData } from './DummyStorefrontData'
+export { default as StorefrontPoc } from './StorefrontPoc'
