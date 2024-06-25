@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic' // defaults to auto
 
 export async function GET() {
   const state = await generateState()
-  const nonce = generateNonce(32)
+  const nonce = generateNonce(16)
   // for public client
   const verifier = generateCodeVerifier()
   const challenge = await generateCodeChallenge(verifier)
