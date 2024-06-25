@@ -1,15 +1,15 @@
 import { DummyStorefrontData } from '@/components/common'
-import { getData } from '@/database/dtos/pets'
+import { getAllPets } from '@/database/dtos/pets'
 
 export default async function Page() {
-  const sqlData = await getData()
+  const pets = await getAllPets()
 
   return (
     <>
       <h1 className="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3">
         Hello, Next.js!
       </h1>
-      <p>{JSON.stringify(sqlData)}</p>
+      <p>{JSON.stringify(pets)}</p>
       <DummyStorefrontData />
     </>
   )

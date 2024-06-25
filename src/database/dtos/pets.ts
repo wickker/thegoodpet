@@ -1,5 +1,3 @@
-'use server'
-
 import { sql } from '@/database'
 
-export const getData = async () => await sql`SELECT version()`
+export const getAllPets = async () => await sql`SELECT * from pets`
