@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-
 import storefrontApi from '@/service/api/storefrontApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKeys'
 

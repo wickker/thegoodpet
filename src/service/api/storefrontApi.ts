@@ -1,6 +1,5 @@
 import type { Product } from '@shopify/hydrogen-react/storefront-api-types'
 import { createStorefrontApiClient } from '@shopify/storefront-api-client'
-
 import { GetAllProductsRequest } from '@/@types/api/product'
 import Config from '@/configs'
 import Products from '@/graphql/products'
