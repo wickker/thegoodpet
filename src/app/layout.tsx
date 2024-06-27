@@ -16,7 +16,7 @@ export default function RootLayout({
       </head>
       <body>
         <ReactQueryProvider>
-          <main className="bg-red-300">{children}</main>
+          <main>{children}</main>
         </ReactQueryProvider>
       </body>
     </html>
