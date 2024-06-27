@@ -6,7 +6,10 @@ import type {
   CustomerCreateInput,
   QueryRootProductsArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
-import { createStorefrontApiClient } from '@shopify/storefront-api-client'
+import {
+  ClientResponse,
+  createStorefrontApiClient,
+} from '@shopify/storefront-api-client'
 import Config from '@/configs'
 import Customers from '@/graphql/customers'
 import Products from '@/graphql/products'
@@ -17,6 +20,15 @@ const client = createStorefrontApiClient({
   publicAccessToken: Config.SHOPIFY_PUBLIC_ACCESS_TOKEN,
 })
 
+// GQL errors are status 200
+const handleErr = (res: ClientResponse) => {
+  if (res.errors) {
+    // TODO: Refine this
+    console.error(res.errors)
+  }
+  return res
+}
+
 // GET
 // TODO: Convert to proper pagination in the future
 const getAllProducts = (
@@ -26,6 +38,7 @@ const getAllProducts = (
     .request(Products.GetAll, {
       variables: request,
     })
+    .then(handleErr)
     .then((res) => res.data.products.nodes)
 
 // POST
@@ -38,6 +51,7 @@ const createCustomer = (
         input: request,
       },
     })
+    .then(handleErr)
     .then((res) => res.data.customerCreate)
 
 const createCustomerAccessToken = (
@@ -49,6 +63,7 @@ const createCustomerAccessToken = (
         input: request,
       },
     })
+    .then(handleErr)
     .then((res) => res.data)
 
 export default {
