@@ -1,4 +1,4 @@
-import { GetAllProductsRequest } from '@/@types/api/product'
+import { GetAllProductsRequest } from '@/@types/storefrontApi/product'
 
 export const STOREFRONT = 'storefront'
 

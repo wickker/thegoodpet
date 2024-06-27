@@ -6,10 +6,8 @@ export default async function Page() {
 
   return (
     <>
-      <h1 className="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3">
-        Hello, Next.js!
-      </h1>
-      <p>{JSON.stringify(pets)}</p>
+      <h1 className="text-sky-700">Hello, Next.js!</h1>
+      <p className="text-pink-500">{JSON.stringify(pets)}</p>
       <StorefrontPoc />
     </>
   )

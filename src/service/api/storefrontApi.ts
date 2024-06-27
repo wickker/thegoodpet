@@ -1,7 +1,12 @@
-import type { Product } from '@shopify/hydrogen-react/storefront-api-types'
+import type {
+  Product,
+  CustomerCreatePayload,
+} from '@shopify/hydrogen-react/storefront-api-types'
 import { createStorefrontApiClient } from '@shopify/storefront-api-client'
-import { GetAllProductsRequest } from '@/@types/api/product'
+import { CreateCustomerRequest } from '@/@types/storefrontApi/customer'
+import { GetAllProductsRequest } from '@/@types/storefrontApi/product'
 import Config from '@/configs'
+import Customers from '@/graphql/customers'
 import Products from '@/graphql/products'
 
 const client = createStorefrontApiClient({
@@ -21,6 +26,17 @@ const getAllProducts = (
     })
     .then((res) => res.data.products.nodes)
 
+// POST
+const createCustomer = (
+  request: CreateCustomerRequest,
+): Promise<CustomerCreatePayload> =>
+  client
+    .request(Customers.Create, {
+      variables: request,
+    })
+    .then((res) => res.data.customerCreate)
+
 export default {
+  createCustomer,
   getAllProducts,
 }
