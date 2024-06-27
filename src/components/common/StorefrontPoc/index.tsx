@@ -1,4 +1,4 @@
-'use client' // required for react query
+'use client'
 
 import { CustomerCreatePayload } from '@shopify/hydrogen-react/storefront-api-types'
 import useCustomer from '@/hooks/storefrontQuery/useCustomer'
@@ -11,7 +11,7 @@ export default function StorefrontPoc() {
   const createCustomer = useCreateCustomerMutation(successCB)
 
   function successCB(data: CustomerCreatePayload) {
-    console.log(data)
+    console.log('Customer create response : ', data)
   }
 
   return (
@@ -23,13 +23,11 @@ export default function StorefrontPoc() {
         className="m-2 me-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
         onClick={() => {
           createCustomer.mutate({
-            input: {
-              firstName: 'Choy',
-              lastName: 'Dian',
-              email: 'choydianchun@gmail.com',
-              phone: '+6598157820',
-              password: 'abc123',
-            },
+            firstName: 'Choy',
+            lastName: 'Dian',
+            email: 'choydianchun@gmail.com',
+            phone: '+6598157820',
+            password: 'abc123',
           })
         }}
       >

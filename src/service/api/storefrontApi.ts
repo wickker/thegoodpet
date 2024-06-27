@@ -1,10 +1,12 @@
 import type {
   Product,
   CustomerCreatePayload,
+  CustomerAccessTokenCreateInput,
+  CustomerAccessTokenCreatePayload,
+  CustomerCreateInput,
+  QueryRootProductsArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import { createStorefrontApiClient } from '@shopify/storefront-api-client'
-import { CreateCustomerRequest } from '@/@types/storefrontApi/customer'
-import { GetAllProductsRequest } from '@/@types/storefrontApi/product'
 import Config from '@/configs'
 import Customers from '@/graphql/customers'
 import Products from '@/graphql/products'
@@ -18,7 +20,7 @@ const client = createStorefrontApiClient({
 // GET
 // TODO: Convert to proper pagination in the future
 const getAllProducts = (
-  request: GetAllProductsRequest,
+  request: QueryRootProductsArgs,
 ): Promise<Array<Partial<Product>>> =>
   client
     .request(Products.GetAll, {
@@ -28,15 +30,29 @@ const getAllProducts = (
 
 // POST
 const createCustomer = (
-  request: CreateCustomerRequest,
+  request: CustomerCreateInput,
 ): Promise<CustomerCreatePayload> =>
   client
     .request(Customers.Create, {
-      variables: request,
+      variables: {
+        input: request,
+      },
     })
     .then((res) => res.data.customerCreate)
 
+const createCustomerAccessToken = (
+  request: CustomerAccessTokenCreateInput,
+): Promise<CustomerAccessTokenCreatePayload> =>
+  client
+    .request(Customers.CreateAccessToken, {
+      variables: {
+        input: request,
+      },
+    })
+    .then((res) => res.data)
+
 export default {
   createCustomer,
+  createCustomerAccessToken,
   getAllProducts,
 }
