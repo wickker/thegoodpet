@@ -1,4 +1,7 @@
-import { CustomerCreatePayload } from '@shopify/hydrogen-react/storefront-api-types'
+import {
+  CustomerAccessTokenCreatePayload,
+  CustomerCreatePayload,
+} from '@shopify/hydrogen-react/storefront-api-types'
 import { useMutation } from '@tanstack/react-query'
 import storefrontApi from '@/service/api/storefrontApi'
 
@@ -12,8 +15,17 @@ const useCustomer = () => {
       onSuccess,
     })
 
+  const useCreateCustomerAccessTokenMutation = (
+    onSuccess: (data: CustomerAccessTokenCreatePayload) => void,
+  ) =>
+    useMutation({
+      mutationFn: storefrontApi.createCustomerAccessToken,
+      onSuccess,
+    })
+
   return {
     useCreateCustomerMutation,
+    useCreateCustomerAccessTokenMutation,
   }
 }
 
