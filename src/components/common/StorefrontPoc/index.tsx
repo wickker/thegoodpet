@@ -30,6 +30,7 @@ export default function StorefrontPoc() {
             email: 'choydianchun@gmail.com',
             phone: '+6598157820',
             password: 'abc123',
+            acceptsMarketing: true,
           })
         }}
       >
