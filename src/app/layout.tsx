@@ -16,7 +16,7 @@ export default function RootLayout({
       </head>
       <body>
         <ReactQueryProvider>
-          <main>{children}</main>
+          <main className="font-inter">{children}</main>
         </ReactQueryProvider>
       </body>
     </html>
