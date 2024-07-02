@@ -8,6 +8,7 @@ export default function HeroBanner() {
             Tailored raw meals for your pet
           </h1>
           <p className="text-lg">Human Grade. Nutrient Dense. Well Balance.</p>
+          {/* TODO: make button component */}
           <button className="w-[300px] rounded-full bg-primary py-2.5 text-lg text-white">
             Sign up now
           </button>

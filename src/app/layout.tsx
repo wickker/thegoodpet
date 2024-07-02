@@ -1,3 +1,4 @@
+import { Header } from '@/components/common'
 import ReactQueryProvider from '@/hooks/ReactQueryProvider'
 import './styles.css'
 
@@ -16,7 +17,10 @@ export default function RootLayout({
       </head>
       <body>
         <ReactQueryProvider>
-          <main className="font-inter">{children}</main>
+          <main className="font-inter">
+            <Header />
+            {children}
+          </main>
         </ReactQueryProvider>
       </body>
     </html>
