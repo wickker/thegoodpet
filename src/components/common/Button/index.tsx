@@ -1,4 +1,6 @@
-import { PropsWithChildren } from 'react'
+'use client'
+
+import { PropsWithChildren, useState } from 'react'
 import { Loader } from '@/components/common'
 import { mc } from '@/utils/functions/common'
 
@@ -6,14 +8,36 @@ type ButtonProps = {
   width?: string
   onClick?: () => void
   disabled?: boolean
+  isLoading?: boolean
+  minLoadDuration?: number
 }
 
 export default function Button({
   children,
   width,
-  disabled,
+  disabled = false,
   onClick,
+  isLoading = false,
+  minLoadDuration = 0,
 }: ButtonProps & PropsWithChildren) {
+  const [isLoadingLock, setIsLoadingLock] = useState(false)
+
+  const handleClick = () => {
+    if (isLoading || isLoadingLock || disabled) return
+
+    if (minLoadDuration) {
+      setIsLoadingLock(true)
+    }
+
+    onClick && onClick()
+
+    if (minLoadDuration) {
+      setTimeout(function () {
+        setIsLoadingLock(false)
+      }, minLoadDuration)
+    }
+  }
+
   return (
     <button
       className={mc(
@@ -21,10 +45,11 @@ export default function Button({
         width,
         !disabled && `hover:scale-105 hover:bg-secondary`,
         disabled && `cursor-not-allowed opacity-50`,
+        { 'cursor-wait': isLoading || isLoadingLock },
       )}
-      onClick={onClick}
+      onClick={handleClick}
     >
-      <Loader size="sm" />
+      {(isLoading || isLoadingLock) && <Loader size="sm" />}
       {children}
     </button>
   )
