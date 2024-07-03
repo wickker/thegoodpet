@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { BsPersonCircle, BsCartFill } from 'react-icons/bs'
-import { HiMenu } from 'react-icons/hi'
+import { BsPersonCircle, BsCartFill, BsList } from 'react-icons/bs'
 import { Route } from '@/utils/constants/routes'
 
 const links = [
@@ -22,16 +21,16 @@ const links = [
 export default function Header() {
   return (
     <div className="relative h-[122px] bg-background pt-[40px]">
-      <div className="absolute inset-0 flex h-[40px] items-center justify-center bg-secondary px-[30px] text-white">
+      <div className="absolute inset-0 flex h-[40px] items-center justify-center bg-secondary px-[15px] text-white">
         <p className="truncate">
           Get 50% off your first delivery | Enjoy 100% tailored meals and adjust
           anytime
         </p>
       </div>
 
-      <div className="mx-auto grid h-[80px] w-full max-w-[1200px] grid-cols-3 px-[30px] text-secondary">
-        <button className="w-min self-center md:hidden">
-          <HiMenu className="text-[25px]" />
+      <div className="mx-auto grid h-[80px] w-full max-w-[1200px] grid-cols-3 px-[15px] text-secondary">
+        <button className="w-min self-center text-[25px] md:hidden">
+          <BsList />
         </button>
 
         <ul className="hidden items-center gap-10 text-lg font-medium md:flex">
