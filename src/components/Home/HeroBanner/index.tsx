@@ -2,7 +2,7 @@ import { Button } from '@/components/common'
 
 export default function HeroBanner() {
   return (
-    <div className="w-full bg-background">
+    <div className="bg-background">
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 px-[15px] md:grid-cols-2 md:gap-x-8">
         <div className="h-[500px] bg-[url('https://placehold.co/600x400/png')] bg-contain bg-center bg-no-repeat md:order-2" />
 
