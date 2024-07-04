@@ -1,7 +1,11 @@
+'use client'
+
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BsPersonCircle, BsCartFill, BsList } from 'react-icons/bs'
 import { Route } from '@/utils/constants/routes'
+import { mc } from '@/utils/functions/common'
 
 const links = [
   {
@@ -19,6 +23,8 @@ const links = [
 ]
 
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   return (
     <div className="sticky top-0">
       <div className="relative h-[122px] bg-background pt-[40px]">
@@ -30,7 +36,10 @@ export default function Header() {
         </div>
 
         <div className="mx-auto grid h-[80px] w-full max-w-[1200px] grid-cols-3 px-[15px] text-secondary">
-          <button className="w-min self-center text-[25px] md:hidden">
+          <button
+            className="w-min self-center text-[25px] md:hidden"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+          >
             <BsList />
           </button>
 
@@ -61,6 +70,13 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      <div
+        className={mc(
+          'relative -z-10 h-0 -translate-y-[50px] bg-blue-400 transition-all',
+          isMenuOpen && 'h-[50px] translate-y-0',
+        )}
+      ></div>
     </div>
   )
 }
