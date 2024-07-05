@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BsPersonCircle, BsCartFill, BsList } from 'react-icons/bs'
+import { BsPersonCircle, BsCartFill, BsList, BsXLg } from 'react-icons/bs'
+import { HeaderMobileMenu } from '@/components/common'
 import { Route } from '@/utils/constants/routes'
-import { mc } from '@/utils/functions/common'
 
 const links = [
   {
@@ -40,7 +40,7 @@ export default function Header() {
             className="w-min self-center text-[25px] md:hidden"
             onClick={() => setIsMenuOpen((prev) => !prev)}
           >
-            <BsList />
+            {isMenuOpen ? <BsXLg /> : <BsList />}
           </button>
 
           <ul className="hidden items-center gap-10 text-lg font-medium md:flex">
@@ -71,12 +71,7 @@ export default function Header() {
         </div>
       </div>
 
-      <div
-        className={mc(
-          'relative -z-10 h-0 -translate-y-[50px] bg-blue-400 transition-all',
-          isMenuOpen && 'h-[50px] translate-y-0',
-        )}
-      ></div>
+      <HeaderMobileMenu isMenuOpen={isMenuOpen} links={links} />
     </div>
   )
 }
