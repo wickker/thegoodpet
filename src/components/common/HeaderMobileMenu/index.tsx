@@ -14,11 +14,11 @@ export default function HeaderMobileMenu({
   return (
     <div
       className={mc(
-        'relative -z-10 h-0 -translate-y-[125px] bg-background transition-all md:hidden',
+        'relative -z-10 h-0 -translate-y-[140px] bg-background transition-all md:hidden',
         isMenuOpen && 'h-fit translate-y-0',
       )}
     >
-      <ul className="text-lg font-medium text-secondary">
+      <ul className="pb-4 text-lg font-medium text-secondary">
         {links.map(({ label, path }, index) => (
           <li className="border-b border-black px-[15px] py-1.5" key={index}>
             <Link href={path} className="flex">
