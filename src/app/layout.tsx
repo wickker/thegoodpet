@@ -17,7 +17,7 @@ export default function RootLayout({
       </head>
       <body>
         <ReactQueryProvider>
-          <main className="font-inter">
+          <main className="h-dvh overflow-y-auto bg-background font-inter">
             <Header />
             {children}
           </main>
