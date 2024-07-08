@@ -5,6 +5,8 @@ import type {
   CustomerAccessTokenCreatePayload,
   CustomerCreateInput,
   QueryRootProductsArgs,
+  CustomerOrdersArgs,
+  Customer,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import {
   ClientResponse,
@@ -41,6 +43,20 @@ const getAllProducts = (
     .then(handleErr)
     .then((res) => res.data.products.nodes)
 
+const getCustomerOrders = (
+  accessToken: string,
+  request: CustomerOrdersArgs,
+): Promise<Customer> =>
+  client
+    .request(Customers.GetOrders, {
+      variables: {
+        customerAccessToken: accessToken,
+        ...request,
+      },
+    })
+    .then(handleErr)
+    .then((res) => res.data)
+
 // POST
 const createCustomer = (
   request: CustomerCreateInput,
@@ -70,4 +86,5 @@ export default {
   createCustomer,
   createCustomerAccessToken,
   getAllProducts,
+  getCustomerOrders,
 }
