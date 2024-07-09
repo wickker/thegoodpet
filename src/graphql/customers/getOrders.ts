@@ -26,7 +26,7 @@ query ($customerAccessToken: String!, $first: Int) {
               totalShippingPrice {
                 amount
               }
-              lineItems(first: 20) {
+              lineItems(first: 50) {
                 nodes {
                   title
                   quantity

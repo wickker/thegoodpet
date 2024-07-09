@@ -1,5 +1,6 @@
 'use client'
 
+import useCart from '@/hooks/storefrontQuery/useCart'
 import useCustomer from '@/hooks/storefrontQuery/useCustomer'
 import useProduct from '@/hooks/storefrontQuery/useProduct'
 
@@ -20,6 +21,8 @@ export default function StorefrontPoc() {
   const getCustomerOrders = useGetCustomerOrdersQuery(
     '3fe33afb06add3a1b168c2cb3cedf9f1',
   )
+  const { useCreateCartMutation } = useCart()
+  const createCart = useCreateCartMutation((d) => console.log('Cart : ', d))
 
   return (
     <>
@@ -56,6 +59,25 @@ export default function StorefrontPoc() {
       </button>
 
       <div>{JSON.stringify(getCustomerOrders.data)}</div>
+
+      <button
+        className="m-2 rounded-full bg-blue-700 px-5 py-2.5 text-white"
+        onClick={() => {
+          createCart.mutate({
+            lines: [
+              {
+                quantity: 1,
+                merchandiseId: 'gid://shopify/ProductVariant/43447200776249',
+              },
+            ],
+            buyerIdentity: {
+              customerAccessToken: '3fe33afb06add3a1b168c2cb3cedf9f1',
+            },
+          })
+        }}
+      >
+        {createCart.isPending ? 'Loading...' : 'Create Cart'}
+      </button>
     </>
   )
 }
