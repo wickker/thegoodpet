@@ -14,7 +14,7 @@ export default function HeaderMobileMenu({
   return (
     <div
       className={mc(
-        'relative -z-10 h-0 -translate-y-[140px] bg-background transition-all md:hidden',
+        'relative -z-10 h-0 -translate-y-[165px] bg-background transition-all md:hidden',
         isMenuOpen && 'h-fit translate-y-0',
       )}
     >
@@ -26,6 +26,11 @@ export default function HeaderMobileMenu({
             </Link>
           </li>
         ))}
+        <li className="border-b border-black px-[15px] py-1.5">
+          <Link href="/" className="flex">
+            Account
+          </Link>
+        </li>
       </ul>
     </div>
   )
