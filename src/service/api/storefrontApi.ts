@@ -45,6 +45,14 @@ const getAllProducts = (
     .then(handleErr)
     .then((res) => res.data.products.nodes)
 
+const getCart = (cartId: string): Promise<CartBase> =>
+  client
+    .request(Carts.Get, {
+      variables: { cartId },
+    })
+    .then(handleErr)
+    .then((res) => res.data)
+
 const getCustomerOrders = (
   accessToken: string,
   request: CustomerOrdersArgs,
@@ -99,5 +107,6 @@ export default {
   createCustomer,
   createCustomerAccessToken,
   getAllProducts,
+  getCart,
   getCustomerOrders,
 }

@@ -11,6 +11,7 @@ export const QUERY_KEYS = {
     'products',
     { first },
   ],
+  GET_CART: (cartId: string) => [STOREFRONT, 'carts', cartId],
   GET_CUSTOMER_ORDERS: ({ first }: CustomerOrdersArgs) => [
     STOREFRONT,
     'customer-orders',

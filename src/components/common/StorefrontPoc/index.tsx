@@ -21,8 +21,11 @@ export default function StorefrontPoc() {
   const getCustomerOrders = useGetCustomerOrdersQuery(
     '3fe33afb06add3a1b168c2cb3cedf9f1',
   )
-  const { useCreateCartMutation } = useCart()
+  const { useCreateCartMutation, useGetCartQuery } = useCart()
   const createCart = useCreateCartMutation((d) => console.log('Cart : ', d))
+  const getCart = useGetCartQuery(
+    'gid://shopify/Cart/Z2NwLWFzaWEtc291dGhlYXN0MTowMUoyQkMyVjI3WUowSEJRMVNLSFM5RlFOWA?key=75781f8f9eea363e4844e4b417c52f87',
+  )
 
   return (
     <>
@@ -78,6 +81,8 @@ export default function StorefrontPoc() {
       >
         {createCart.isPending ? 'Loading...' : 'Create Cart'}
       </button>
+
+      <div>{JSON.stringify(getCart.data)}</div>
     </>
   )
 }
