@@ -25,9 +25,7 @@ const links = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { setIsCartOpen } = useContext(CartContext)
-
-  const openCart = () => setIsCartOpen(true)
+  const { openCart } = useContext(CartContext)
 
   return (
     <div className="sticky top-0">

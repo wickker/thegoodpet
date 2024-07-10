@@ -1,28 +1,28 @@
 'use client'
 
-import {
-  Dispatch,
-  PropsWithChildren,
-  SetStateAction,
-  createContext,
-  useState,
-} from 'react'
+import { PropsWithChildren, createContext, useState } from 'react'
 
 type CartContextSchema = {
   isCartOpen: boolean
-  setIsCartOpen: Dispatch<SetStateAction<boolean>>
+  closeCart: () => void
+  openCart: () => void
 }
 
 export const CartContext = createContext<CartContextSchema>({
   isCartOpen: false,
-  setIsCartOpen: () => {},
+  closeCart: () => {},
+  openCart: () => {},
 })
 
 export default function CartProvider({ children }: PropsWithChildren) {
   const [isCartOpen, setIsCartOpen] = useState(false)
 
+  const openCart = () => setIsCartOpen(true)
+
+  const closeCart = () => setIsCartOpen(false)
+
   return (
-    <CartContext.Provider value={{ isCartOpen, setIsCartOpen }}>
+    <CartContext.Provider value={{ isCartOpen, openCart, closeCart }}>
       {children}
     </CartContext.Provider>
   )

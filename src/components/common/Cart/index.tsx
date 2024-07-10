@@ -5,9 +5,7 @@ import { CartContext } from '@/contexts/CartProvider'
 import { mc } from '@/utils/functions/common'
 
 export default function Cart() {
-  const { isCartOpen, setIsCartOpen } = useContext(CartContext)
-
-  const closeCart = () => setIsCartOpen(false)
+  const { closeCart, isCartOpen } = useContext(CartContext)
 
   return (
     <>
