@@ -6,6 +6,7 @@ import { SurveyContext } from '@/contexts/SurveyProvider'
 export default function Survey() {
   const { currentStep, surveyComponents } = useContext(SurveyContext)
   const progressPercent = (currentStep / (surveyComponents.length - 1)) * 100
+  const CurrentQuestion = surveyComponents[currentStep]
 
   return (
     <>
@@ -16,7 +17,10 @@ export default function Survey() {
           About your pet
         </h1>
 
-        {surveyComponents[currentStep]}
+        <CurrentQuestion>
+          {/*TODO: Change To dynamic pet overlay component */}
+          <img src="/cat-vector.svg" className="mx-auto w-full max-w-[400px]" />
+        </CurrentQuestion>
       </div>
     </>
   )

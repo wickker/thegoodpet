@@ -21,7 +21,7 @@ type SurveyContextSchema = {
   isLastQuestion: boolean
   nextStep: () => void
   prevStep: () => void
-  surveyComponents: Array<JSX.Element>
+  surveyComponents: Array<(props: PropsWithChildren) => JSX.Element>
   surveyData: Partial<SurveyData>
   setSurveyData: Dispatch<SetStateAction<Partial<SurveyData>>>
 }
@@ -44,11 +44,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
   const parsedStep = parseInt(searchParams.get('step') || '0')
   const [currentStep, setCurrentStep] = useState<number>(parsedStep)
   const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({})
-  const surveyComponents = [
-    <PetTypeQuestion />,
-    <GenderQuestion />,
-    <NameQuestion />,
-  ]
+  const surveyComponents = [PetTypeQuestion, GenderQuestion, NameQuestion]
 
   // Derived State
   const isFirstQuestion = currentStep === 0
