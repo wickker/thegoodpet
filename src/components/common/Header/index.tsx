@@ -25,9 +25,9 @@ const links = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  // const { isCartOpen } = useContext(CartContext)
+  const { setIsCartOpen } = useContext(CartContext)
 
-  // console.log(isCartOpen)
+  const openCart = () => setIsCartOpen(true)
 
   return (
     <div className="sticky top-0">
@@ -68,7 +68,7 @@ export default function Header() {
             <button className="hidden text-[25px] md:block">
               <BsPersonCircle />
             </button>
-            <button className="text-[25px]">
+            <button className="text-[25px]" onClick={openCart}>
               <BsCartFill />
             </button>
           </div>
