@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BsPersonCircle, BsCartFill, BsList, BsXLg } from 'react-icons/bs'
 import { HeaderMobileMenu } from '@/components/common'
+import { CartContext } from '@/contexts/CartProvider'
 import { Route } from '@/utils/constants/routes'
 
 const links = [
@@ -24,6 +25,7 @@ const links = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { openCart } = useContext(CartContext)
 
   return (
     <div className="sticky top-0">
@@ -64,7 +66,7 @@ export default function Header() {
             <button className="hidden text-[25px] md:block">
               <BsPersonCircle />
             </button>
-            <button className="text-[25px]">
+            <button className="text-[25px]" onClick={openCart}>
               <BsCartFill />
             </button>
           </div>
