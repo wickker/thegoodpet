@@ -1,3 +1,4 @@
+import { CartBase } from '@shopify/hydrogen-react/cart-types'
 import type {
   Product,
   CustomerCreatePayload,
@@ -5,12 +6,16 @@ import type {
   CustomerAccessTokenCreatePayload,
   CustomerCreateInput,
   QueryRootProductsArgs,
+  CustomerOrdersArgs,
+  Customer,
+  CartInput,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import {
   ClientResponse,
   createStorefrontApiClient,
 } from '@shopify/storefront-api-client'
 import Config from '@/configs'
+import Carts from '@/graphql/carts'
 import Customers from '@/graphql/customers'
 import Products from '@/graphql/products'
 
@@ -30,7 +35,6 @@ const handleErr = (res: ClientResponse) => {
 }
 
 // GET
-// TODO: Convert to proper pagination in the future
 const getAllProducts = (
   request: QueryRootProductsArgs,
 ): Promise<Array<Partial<Product>>> =>
@@ -41,7 +45,39 @@ const getAllProducts = (
     .then(handleErr)
     .then((res) => res.data.products.nodes)
 
+const getCart = (cartId: string): Promise<CartBase> =>
+  client
+    .request(Carts.Get, {
+      variables: { cartId },
+    })
+    .then(handleErr)
+    .then((res) => res.data)
+
+const getCustomerOrders = (
+  accessToken: string,
+  request: CustomerOrdersArgs,
+): Promise<Customer> =>
+  client
+    .request(Customers.GetOrders, {
+      variables: {
+        customerAccessToken: accessToken,
+        ...request,
+      },
+    })
+    .then(handleErr)
+    .then((res) => res.data)
+
 // POST
+const createCart = (request: CartInput): Promise<CartBase> =>
+  client
+    .request(Carts.Create, {
+      variables: {
+        cartInput: request,
+      },
+    })
+    .then(handleErr)
+    .then((res) => res.data)
+
 const createCustomer = (
   request: CustomerCreateInput,
 ): Promise<CustomerCreatePayload> =>
@@ -67,7 +103,10 @@ const createCustomerAccessToken = (
     .then((res) => res.data)
 
 export default {
+  createCart,
   createCustomer,
   createCustomerAccessToken,
   getAllProducts,
+  getCart,
+  getCustomerOrders,
 }

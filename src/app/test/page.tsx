@@ -6,7 +6,6 @@ export default async function Page() {
 
   return (
     <>
-      <h1 className="text-sky-700">Hello, Next.js!</h1>
       <p className="text-pink-500">{JSON.stringify(pets)}</p>
       <StorefrontPoc />
     </>
