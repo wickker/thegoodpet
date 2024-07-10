@@ -1,11 +1,11 @@
 'use client'
 
 import { useContext } from 'react'
-import { cartContext } from '@/contexts/CartProvider'
+import { CartContext } from '@/contexts/CartProvider'
 import { mc } from '@/utils/functions/common'
 
 export default function Cart() {
-  const { closeCart, isCartOpen } = useContext(cartContext)
+  const { closeCart, isCartOpen } = useContext(CartContext)
 
   return (
     <>

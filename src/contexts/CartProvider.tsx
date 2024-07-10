@@ -8,7 +8,7 @@ type CartContextSchema = {
   openCart: () => void
 }
 
-export const cartContext = createContext<CartContextSchema>({
+export const CartContext = createContext<CartContextSchema>({
   isCartOpen: false,
   closeCart: () => {},
   openCart: () => {},
@@ -22,8 +22,8 @@ export default function CartProvider({ children }: PropsWithChildren) {
   const closeCart = () => setIsCartOpen(false)
 
   return (
-    <cartContext.Provider value={{ isCartOpen, openCart, closeCart }}>
+    <CartContext.Provider value={{ isCartOpen, openCart, closeCart }}>
       {children}
-    </cartContext.Provider>
+    </CartContext.Provider>
   )
 }
