@@ -1,4 +1,5 @@
-import { Header } from '@/components/common'
+import { Header, Cart } from '@/components/common'
+import { CartProvider } from '@/contexts'
 import ReactQueryProvider from '@/hooks/ReactQueryProvider'
 import './styles.css'
 
@@ -18,8 +19,11 @@ export default function RootLayout({
       <body>
         <ReactQueryProvider>
           <main className="h-dvh overflow-y-auto bg-background font-inter">
-            <Header />
-            {children}
+            <CartProvider>
+              <Cart />
+              <Header />
+              {children}
+            </CartProvider>
           </main>
         </ReactQueryProvider>
       </body>
