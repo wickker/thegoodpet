@@ -5,8 +5,10 @@ export const SurveyPetType = z.nativeEnum(PetType)
 export const SurveyGender = z.nativeEnum(Gender)
 export const SurveyPetName = z.string()
 
-export const SurveySchema = z.object({
+export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
   gender: SurveyGender,
   name: SurveyPetName,
 })
+
+export type SurveyData = z.infer<typeof SurveyDataSchema>
