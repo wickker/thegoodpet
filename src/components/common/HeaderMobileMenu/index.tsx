@@ -14,8 +14,8 @@ export default function HeaderMobileMenu({
   return (
     <div
       className={mc(
-        'relative -z-10 h-0 -translate-y-[165px] bg-background transition-all md:hidden',
-        isMenuOpen && 'h-fit translate-y-0',
+        'absolute -z-10 h-0 w-full -translate-y-[165px] bg-background opacity-0 transition-all md:hidden',
+        isMenuOpen && 'h-fit translate-y-0 opacity-100',
       )}
     >
       <ul className="pb-4 text-lg font-medium text-secondary">
