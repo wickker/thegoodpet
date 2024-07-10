@@ -30,6 +30,7 @@ export default function PetTypeQuestion() {
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-2">
         {Object.values(PetType).map((type) => (
           <button
+            key={type}
             className={mc(
               'grid h-44 w-full max-w-36 items-center justify-center place-self-center rounded-lg bg-white transition-colors',
               'hover:bg-secondary hover:text-white',
