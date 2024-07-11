@@ -22,7 +22,7 @@ type SurveyContextSchema = {
   isLastQuestion: boolean
   nextStep: () => void
   prevStep: () => void
-  surveyComponents: Array<(props?: PropsWithChildren) => JSX.Element>
+  surveyComponents: Array<(props: PropsWithChildren) => JSX.Element>
   surveyData: Partial<SurveyData>
   setSurveyData: Dispatch<SetStateAction<Partial<SurveyData>>>
 }
