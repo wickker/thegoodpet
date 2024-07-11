@@ -3,7 +3,7 @@
 import { useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BsPersonCircle, BsCartFill, BsList, BsXLg } from 'react-icons/bs'
+import { BsPersonCircle, BsList, BsXLg } from 'react-icons/bs'
 import { HeaderMobileMenu, ButtonCart } from '@/components/common'
 import { CartContext } from '@/contexts/CartProvider'
 import { Route } from '@/utils/constants/routes'
@@ -25,7 +25,7 @@ const links = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { openCart } = useContext(CartContext)
+  const { openCart, getCart } = useContext(CartContext)
 
   return (
     <div className="sticky top-0">
@@ -66,7 +66,10 @@ export default function Header() {
             <button className="hidden text-[25px] md:block">
               <BsPersonCircle />
             </button>
-            <ButtonCart onClick={openCart} itemsCount={1} />
+            <ButtonCart
+              onClick={openCart}
+              itemsCount={getCart?.data?.totalQuantity}
+            />
           </div>
         </div>
       </div>

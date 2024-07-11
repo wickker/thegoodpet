@@ -1,4 +1,3 @@
-import { getCart } from './actions'
 import { Header, Cart } from '@/components/common'
 import { CartProvider } from '@/contexts'
 import ReactQueryProvider from '@/hooks/ReactQueryProvider'
@@ -9,11 +8,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  
-const res = await getCart()
-console.log(res)
-
-
   return (
     <html lang="en">
       <head>
@@ -29,7 +23,6 @@ console.log(res)
               <Cart />
               <Header />
               {children}
-              {JSON.stringify(res)}
             </CartProvider>
           </main>
         </ReactQueryProvider>

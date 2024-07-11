@@ -1,12 +1,12 @@
 'use client'
 
 import { useContext } from 'react'
-import { revalidateCart } from '@/app/actions'
+import { BsXLg } from 'react-icons/bs'
 import { CartContext } from '@/contexts/CartProvider'
 import { mc } from '@/utils/functions/common'
 
 export default function Cart() {
-  const { closeCart, isCartOpen } = useContext(CartContext)
+  const { closeCart, isCartOpen, getCart } = useContext(CartContext)
 
   return (
     <>
@@ -19,12 +19,18 @@ export default function Cart() {
       />
       <div
         className={mc(
-          'fixed right-0 z-20 h-full w-[480px] translate-x-[480px] bg-white transition-transform',
+          'fixed right-0 z-20 h-full w-[480px] translate-x-[480px] bg-background transition-transform',
           isCartOpen && 'translate-x-0 min-[0px]:w-full min-[480px]:w-[480px]',
         )}
       >
-        <button onClick={closeCart}>Close Cart</button>
-        <button onClick={() => revalidateCart()}>Revalidate Cart</button>
+        <div className="flex items-center justify-between bg-secondary p-[15px] text-lg text-white">
+          Your Cart
+          <button className="text-[25px]" onClick={closeCart}>
+            <BsXLg />
+          </button>
+        </div>
+
+        <div>{JSON.stringify(getCart?.data)}</div>
       </div>
     </>
   )
