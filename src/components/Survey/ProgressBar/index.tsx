@@ -7,7 +7,7 @@ type ProgressBarProps = {
 export default function ProgressBar({ percent = 0 }: ProgressBarProps) {
   return (
     <div className="grid gap-3">
-      {/* TODO: update correct asset */}
+      {/* TODO: Update correct asset */}
       <FaCat
         className="relative h-7 w-7 -translate-x-[14px] text-orange-400 transition-[left]"
         style={{

@@ -4,7 +4,7 @@ import { useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BsPersonCircle, BsCartFill, BsList, BsXLg } from 'react-icons/bs'
-import { HeaderMobileMenu } from '@/components/common'
+import { HeaderMobileMenu, ButtonCart } from '@/components/common'
 import { CartContext } from '@/contexts/CartProvider'
 import { Route } from '@/utils/constants/routes'
 
@@ -66,9 +66,7 @@ export default function Header() {
             <button className="hidden text-[25px] md:block">
               <BsPersonCircle />
             </button>
-            <button className="text-[25px]" onClick={openCart}>
-              <BsCartFill />
-            </button>
+            <ButtonCart onClick={openCart} itemsCount={1} />
           </div>
         </div>
       </div>

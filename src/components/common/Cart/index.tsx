@@ -1,6 +1,7 @@
 'use client'
 
 import { useContext } from 'react'
+import { revalidateCart } from '@/app/actions'
 import { CartContext } from '@/contexts/CartProvider'
 import { mc } from '@/utils/functions/common'
 
@@ -23,6 +24,7 @@ export default function Cart() {
         )}
       >
         <button onClick={closeCart}>Close Cart</button>
+        <button onClick={() => revalidateCart()}>Revalidate Cart</button>
       </div>
     </>
   )

@@ -11,7 +11,7 @@ export default function HeroBanner() {
             Tailored raw meals for your pet
           </h1>
           <p className="text-lg">Human Grade. Nutrient Dense. Well-Balanced.</p>
-          <Button>Sign up now</Button>
+          <Button>Customise now!</Button>
         </div>
       </div>
     </div>

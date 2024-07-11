@@ -51,7 +51,7 @@ const getCart = (cartId: string): Promise<CartBase> =>
       variables: { cartId },
     })
     .then(handleErr)
-    .then((res) => res.data)
+    .then((res) => res.data.cart)
 
 const getCustomerOrders = (
   accessToken: string,
