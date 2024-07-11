@@ -1,4 +1,5 @@
 'use client'
+
 import { useContext } from 'react'
 import { ProgressBar } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'

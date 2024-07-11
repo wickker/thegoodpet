@@ -1,4 +1,3 @@
-'use client'
 import { useContext } from 'react'
 import { SurveyPetType } from '@/@types/survey'
 import SurveyFooter from '@/components/Survey/SurveyFooter'

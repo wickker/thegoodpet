@@ -1,4 +1,5 @@
 'use client'
+
 import {
   createContext,
   Dispatch,
@@ -21,7 +22,7 @@ type SurveyContextSchema = {
   isLastQuestion: boolean
   nextStep: () => void
   prevStep: () => void
-  surveyComponents: Array<(props: PropsWithChildren) => JSX.Element>
+  surveyComponents: Array<(props?: PropsWithChildren) => JSX.Element>
   surveyData: Partial<SurveyData>
   setSurveyData: Dispatch<SetStateAction<Partial<SurveyData>>>
 }
@@ -46,7 +47,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
   const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({})
   const surveyComponents = [PetTypeQuestion, GenderQuestion, NameQuestion]
 
-  // Derived State
+  // Derived state
   const isFirstQuestion = currentStep === 0
   const isLastQuestion = currentStep === surveyComponents.length - 1
 
@@ -61,10 +62,10 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     router.push(pathname + `?step=${prevStep}`)
   }
 
-  // Side Effects
+  // Side effects
   useEffect(() => {
-    const nextStep = parseInt(searchParams.get('step') || '0')
-    setCurrentStep(nextStep)
+    const step = parseInt(searchParams.get('step') || '0')
+    setCurrentStep(step)
   }, [searchParams])
 
   // TODO: save survey data to local storage on data change
