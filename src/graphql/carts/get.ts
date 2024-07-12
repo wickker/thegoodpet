@@ -46,6 +46,7 @@ query ($cartId: ID!) {
           id
         }
       }
+      totalQuantity
     }
   }
 `

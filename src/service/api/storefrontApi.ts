@@ -9,6 +9,8 @@ import type {
   CustomerOrdersArgs,
   Customer,
   CartInput,
+  MutationCartLinesAddArgs,
+  Cart,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import {
   ClientResponse,
@@ -45,13 +47,13 @@ const getAllProducts = (
     .then(handleErr)
     .then((res) => res.data.products.nodes)
 
-const getCart = (cartId: string): Promise<CartBase> =>
+const getCart = (cartId?: string): Promise<Cart> =>
   client
     .request(Carts.Get, {
       variables: { cartId },
     })
     .then(handleErr)
-    .then((res) => res.data)
+    .then((res) => res.data.cart)
 
 const getCustomerOrders = (
   accessToken: string,
@@ -76,7 +78,7 @@ const createCart = (request: CartInput): Promise<CartBase> =>
       },
     })
     .then(handleErr)
-    .then((res) => res.data)
+    .then((res) => res.data.cart)
 
 const createCustomer = (
   request: CustomerCreateInput,
@@ -102,6 +104,17 @@ const createCustomerAccessToken = (
     .then(handleErr)
     .then((res) => res.data)
 
+// PUT
+const updateCartItemQuantity = (
+  request: MutationCartLinesAddArgs,
+): Promise<CartBase> =>
+  client
+    .request(Carts.UpdateQuantity, {
+      variables: request,
+    })
+    .then(handleErr)
+    .then((res) => res.data.cart)
+
 export default {
   createCart,
   createCustomer,
@@ -109,4 +122,5 @@ export default {
   getAllProducts,
   getCart,
   getCustomerOrders,
+  updateCartItemQuantity,
 }

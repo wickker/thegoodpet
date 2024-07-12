@@ -17,7 +17,7 @@ export default function PetTypeQuestion() {
       SurveyPetType.parse(surveyData.petType)
       nextStep()
     } catch (e) {
-      // TODO: handle proper error message
+      // TODO: Handle proper error message
       console.log(e)
     }
   }

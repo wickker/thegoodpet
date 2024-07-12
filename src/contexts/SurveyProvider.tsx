@@ -68,8 +68,8 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     setCurrentStep(step)
   }, [searchParams])
 
-  // TODO: save survey data to local storage on data change
-  // TODO: populate surveyData state from local storage onMount
+  // TODO: Save survey data to local storage on data change
+  // TODO: Populate survey data state from local storage onMount
 
   return (
     <SurveyContext.Provider

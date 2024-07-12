@@ -10,15 +10,23 @@ const useCart = () => {
       onSuccess,
     })
 
-  const useGetCartQuery = (cartId: string) =>
+  const useGetCartQuery = (cartId?: string) =>
     useQuery({
       queryKey: QUERY_KEYS.GET_CART(cartId),
       queryFn: () => storefrontApi.getCart(cartId),
+      enabled: !!cartId,
+    })
+
+  const useUpdateCartQuantityMutation = (onSuccess?: (data: Cart) => void) =>
+    useMutation({
+      mutationFn: storefrontApi.updateCartItemQuantity,
+      onSuccess,
     })
 
   return {
     useCreateCartMutation,
     useGetCartQuery,
+    useUpdateCartQuantityMutation,
   }
 }
 
