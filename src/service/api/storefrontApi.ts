@@ -78,7 +78,7 @@ const createCart = (request: CartInput): Promise<CartBase> =>
       },
     })
     .then(handleErr)
-    .then((res) => res.data.cart)
+    .then((res) => res.data)
 
 const createCustomer = (
   request: CustomerCreateInput,

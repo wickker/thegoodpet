@@ -18,6 +18,32 @@ query ($first: Int) {
               currencyCode
             }
             quantityAvailable
+            sellingPlanAllocations(first: 10) {
+              nodes {
+                sellingPlan {
+                  id
+                  description
+                  checkoutCharge {
+                    type
+                    value
+                  }
+                  name
+                  recurringDeliveries
+                  options {
+                    name
+                    value
+                  }
+                  priceAdjustments {
+                    adjustmentValue {
+                      ... on SellingPlanPercentagePriceAdjustment {
+                        __typename
+                        adjustmentPercentage
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

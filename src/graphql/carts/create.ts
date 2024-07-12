@@ -18,6 +18,23 @@ mutation ($cartInput: CartInput) {
                   }
                 }
               }
+              sellingPlanAllocation {
+                sellingPlan {
+                  id
+                  name
+                }
+                priceAdjustments {
+                  price {
+                    amount
+                  }
+                  compareAtPrice {
+                    amount
+                  }
+                  perDeliveryPrice {
+                    amount
+                  }
+                }
+              }
             }
           }
         }
@@ -37,6 +54,13 @@ mutation ($cartInput: CartInput) {
           totalDutyAmount {
             amount
             currencyCode
+          }
+        }
+        buyerIdentity {
+          email
+          phone
+          customer {
+            id
           }
         }
       }

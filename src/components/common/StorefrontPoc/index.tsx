@@ -24,7 +24,7 @@ export default function StorefrontPoc() {
   const { useCreateCartMutation, useGetCartQuery } = useCart()
   const createCart = useCreateCartMutation((d) => console.log('Cart : ', d))
   const getCart = useGetCartQuery(
-    'gid://shopify/Cart/Z2NwLWFzaWEtc291dGhlYXN0MTowMUoyQkMyVjI3WUowSEJRMVNLSFM5RlFOWA?key=75781f8f9eea363e4844e4b417c52f87',
+    'gid://shopify/Cart/Z2NwLWFzaWEtc291dGhlYXN0MTowMUoySzNYUkFUNjBDUUY5UEJRR0tEN044VA?key=5ca901972ab9cc384a2ca4a4f68dc207',
   )
 
   return (
@@ -70,7 +70,8 @@ export default function StorefrontPoc() {
             lines: [
               {
                 quantity: 1,
-                merchandiseId: 'gid://shopify/ProductVariant/43447200776249',
+                merchandiseId: 'gid://shopify/ProductVariant/43571215368249',
+                sellingPlanId: 'gid://shopify/SellingPlan/5732368441',
               },
             ],
             buyerIdentity: {

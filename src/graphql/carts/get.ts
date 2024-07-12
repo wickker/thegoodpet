@@ -18,6 +18,23 @@ query ($cartId: ID!) {
                 }
               }
             }
+            sellingPlanAllocation {
+              sellingPlan {
+                id
+                name
+              }
+              priceAdjustments {
+                price {
+                  amount
+                }
+                compareAtPrice {
+                  amount
+                }
+                perDeliveryPrice {
+                  amount
+                }
+              }
+            }
           }
         }
       }
