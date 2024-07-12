@@ -1,69 +1,69 @@
 export default `
 mutation ($cartInput: CartInput) {
-    cartCreate(input: $cartInput) {
-      cart {
-        id
-        createdAt
-        updatedAt
-        checkoutUrl
-        lines(first: 50) {
-          edges {
-            node {
-              id
-              merchandise {
-                ... on ProductVariant {
-                  id
-                  image {
-                    url
-                  }
+  cartCreate(input: $cartInput) {
+    cart {
+      id
+      createdAt
+      updatedAt
+      checkoutUrl
+      lines(first: 50) {
+        edges {
+          node {
+            id
+            merchandise {
+              ... on ProductVariant {
+                id
+                image {
+                  url
                 }
               }
-              sellingPlanAllocation {
-                sellingPlan {
-                  id
-                  name
+            }
+            sellingPlanAllocation {
+              sellingPlan {
+                id
+                name
+              }
+              priceAdjustments {
+                price {
+                  amount
                 }
-                priceAdjustments {
-                  price {
-                    amount
-                  }
-                  compareAtPrice {
-                    amount
-                  }
-                  perDeliveryPrice {
-                    amount
-                  }
+                compareAtPrice {
+                  amount
+                }
+                perDeliveryPrice {
+                  amount
                 }
               }
             }
           }
         }
-        cost {
-          totalAmount {
-            amount
-            currencyCode
-          }
-          subtotalAmount {
-            amount
-            currencyCode
-          }
-          totalTaxAmount {
-            amount
-            currencyCode
-          }
-          totalDutyAmount {
-            amount
-            currencyCode
-          }
+      }
+      cost {
+        totalAmount {
+          amount
+          currencyCode
         }
-        buyerIdentity {
-          email
-          phone
-          customer {
-            id
-          }
+        subtotalAmount {
+          amount
+          currencyCode
+        }
+        totalTaxAmount {
+          amount
+          currencyCode
+        }
+        totalDutyAmount {
+          amount
+          currencyCode
+        }
+      }
+      buyerIdentity {
+        email
+        phone
+        customer {
+          id
         }
       }
     }
-  }  
+  }
+}
 `
