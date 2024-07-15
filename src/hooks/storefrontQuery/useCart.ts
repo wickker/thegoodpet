@@ -1,4 +1,5 @@
 import { Cart } from '@shopify/hydrogen-react'
+import { CartBase } from '@shopify/hydrogen-react/cart-types'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import storefrontApi from '@/service/api/storefrontApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKeys'
@@ -17,13 +18,22 @@ const useCart = () => {
       enabled: !!cartId,
     })
 
-  const useUpdateCartQuantityMutation = (onSuccess?: (data: Cart) => void) =>
+  const useUpdateCartQuantityMutation = (
+    onSuccess?: (data: CartBase) => void,
+  ) =>
     useMutation({
       mutationFn: storefrontApi.updateCartItemQuantity,
       onSuccess,
     })
 
+  const useAddItemToCartMutation = (onSuccess?: (data: CartBase) => void) =>
+    useMutation({
+      mutationFn: storefrontApi.addItemToCart,
+      onSuccess,
+    })
+
   return {
+    useAddItemToCartMutation,
     useCreateCartMutation,
     useGetCartQuery,
     useUpdateCartQuantityMutation,
