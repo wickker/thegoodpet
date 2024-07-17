@@ -16,6 +16,15 @@ query ($cartId: ID!) {
               image {
                 url
               }
+              compareAtPrice {
+                amount
+                currencyCode
+              }
+              price {
+                amount
+                currencyCode
+              }
+              title
             }
           }
           sellingPlanAllocation {
@@ -26,12 +35,25 @@ query ($cartId: ID!) {
             priceAdjustments {
               price {
                 amount
+                currencyCode
               }
               compareAtPrice {
                 amount
+                currencyCode
               }
               perDeliveryPrice {
                 amount
+                currencyCode
+              }
+            }
+          }
+          ... on CartLine {
+            merchandise {
+              ... on ProductVariant {
+                product {
+                  description
+                  title
+                }
               }
             }
           }

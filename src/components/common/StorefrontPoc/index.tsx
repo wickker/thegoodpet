@@ -10,7 +10,7 @@ export default function StorefrontPoc() {
   const {
     useCreateCustomerMutation,
     useCreateCustomerAccessTokenMutation,
-    // useGetCustomerOrdersQuery,
+    useGetCustomerOrdersQuery,
   } = useCustomer()
   const createCustomer = useCreateCustomerMutation((d) =>
     console.log('Customer : ', d),
@@ -18,9 +18,9 @@ export default function StorefrontPoc() {
   const createAccessToken = useCreateCustomerAccessTokenMutation((d) =>
     console.log('Access Token : ', d),
   )
-  // const getCustomerOrders = useGetCustomerOrdersQuery(
-  //   '3fe33afb06add3a1b168c2cb3cedf9f1',
-  // )
+  const getCustomerOrders = useGetCustomerOrdersQuery(
+    '3fe33afb06add3a1b168c2cb3cedf9f1',
+  )
   const {
     useCreateCartMutation,
     useGetCartQuery,
@@ -72,7 +72,7 @@ export default function StorefrontPoc() {
         {createAccessToken.isPending ? 'Loading...' : 'Create Access Token'}
       </button>
 
-      {/* <div>{JSON.stringify(getCustomerOrders.data)}</div> */}
+      <div>{JSON.stringify(getCustomerOrders.data)}</div>
 
       <button
         className="m-2 rounded-full bg-blue-700 px-5 py-2.5 text-white"
@@ -104,8 +104,9 @@ export default function StorefrontPoc() {
               'gid://shopify/Cart/Z2NwLWFzaWEtc291dGhlYXN0MTowMUoySzNYUkFUNjBDUUY5UEJRR0tEN044VA?key=5ca901972ab9cc384a2ca4a4f68dc207',
             lines: [
               {
-                merchandiseId: 'gid://shopify/ProductVariant/43447200776249',
+                merchandiseId: 'gid://shopify/ProductVariant/43599695249465',
                 quantity: 1,
+                sellingPlanId: 'gid://shopify/SellingPlan/5732368441',
               },
             ],
           })
@@ -123,7 +124,7 @@ export default function StorefrontPoc() {
             lines: [
               {
                 id: 'gid://shopify/CartLine/23bab46c-a029-4998-b221-dc9297f98efd?cart=Z2NwLWFzaWEtc291dGhlYXN0MTowMUoySzNYUkFUNjBDUUY5UEJRR0tEN044VA',
-                quantity: 3,
+                quantity: 0, // this removes the item from cart
               },
             ],
           })
