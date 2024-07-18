@@ -2,6 +2,7 @@
 
 import { useContext } from 'react'
 import { BsXLg } from 'react-icons/bs'
+import { CartTile } from '@/components/Cart'
 import { CartContext } from '@/contexts/CartProvider'
 import { mc } from '@/utils/functions/common'
 
@@ -19,7 +20,7 @@ export default function Cart() {
       />
       <div
         className={mc(
-          'fixed right-0 z-20 h-full w-[480px] translate-x-[480px] bg-background transition-transform',
+          'fixed right-0 z-20 grid h-full w-[480px] translate-x-[480px] grid-rows-[auto_1fr_auto] bg-background transition-transform',
           isCartOpen && 'translate-x-0 min-[0px]:w-full min-[480px]:w-[480px]',
         )}
       >
@@ -30,7 +31,12 @@ export default function Cart() {
           </button>
         </div>
 
-        <div>{JSON.stringify(getCart?.data)}</div>
+        <div className="overflow-y-auto">
+          {/* TODO: Add loader state and no items in cart state */}
+          {getCart?.data?.lines.edges.map((item) => <CartTile item={item} />)}
+        </div>
+
+        <div className="h-[100px] w-full bg-[#D6EDDF]"></div>
       </div>
     </>
   )

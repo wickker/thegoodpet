@@ -21,10 +21,21 @@ export default function StorefrontPoc() {
   const getCustomerOrders = useGetCustomerOrdersQuery(
     '3fe33afb06add3a1b168c2cb3cedf9f1',
   )
-  const { useCreateCartMutation, useGetCartQuery } = useCart()
+  const {
+    useCreateCartMutation,
+    useGetCartQuery,
+    useAddItemToCartMutation,
+    useUpdateCartQuantityMutation,
+  } = useCart()
   const createCart = useCreateCartMutation((d) => console.log('Cart : ', d))
   const getCart = useGetCartQuery(
     'gid://shopify/Cart/Z2NwLWFzaWEtc291dGhlYXN0MTowMUoySzNYUkFUNjBDUUY5UEJRR0tEN044VA?key=5ca901972ab9cc384a2ca4a4f68dc207',
+  )
+  const addItemToCart = useAddItemToCartMutation((d) =>
+    console.log('Cart : ', d),
+  )
+  const updateCartItemQuantity = useUpdateCartQuantityMutation((d) =>
+    console.log('Cart : ', d),
   )
 
   return (
@@ -84,6 +95,43 @@ export default function StorefrontPoc() {
       </button>
 
       <div>{JSON.stringify(getCart.data)}</div>
+
+      <button
+        className="m-2 rounded-full bg-blue-700 px-5 py-2.5 text-white"
+        onClick={() =>
+          addItemToCart.mutate({
+            cartId:
+              'gid://shopify/Cart/Z2NwLWFzaWEtc291dGhlYXN0MTowMUoySzNYUkFUNjBDUUY5UEJRR0tEN044VA?key=5ca901972ab9cc384a2ca4a4f68dc207',
+            lines: [
+              {
+                merchandiseId: 'gid://shopify/ProductVariant/43599695249465',
+                quantity: 1,
+                sellingPlanId: 'gid://shopify/SellingPlan/5732368441',
+              },
+            ],
+          })
+        }
+      >
+        Add Item to Cart
+      </button>
+
+      <button
+        className="m-2 rounded-full bg-blue-700 px-5 py-2.5 text-white"
+        onClick={() =>
+          updateCartItemQuantity.mutate({
+            cartId:
+              'gid://shopify/Cart/Z2NwLWFzaWEtc291dGhlYXN0MTowMUoySzNYUkFUNjBDUUY5UEJRR0tEN044VA?key=5ca901972ab9cc384a2ca4a4f68dc207',
+            lines: [
+              {
+                id: 'gid://shopify/CartLine/23bab46c-a029-4998-b221-dc9297f98efd?cart=Z2NwLWFzaWEtc291dGhlYXN0MTowMUoySzNYUkFUNjBDUUY5UEJRR0tEN044VA',
+                quantity: 0, // this removes the item from cart
+              },
+            ],
+          })
+        }
+      >
+        Add Quantity to Item
+      </button>
     </>
   )
 }

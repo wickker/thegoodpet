@@ -6,6 +6,7 @@ query ($customerAccessToken: String!, $first: Int) {
       edges {
         node {
           orderNumber
+          id
           billingAddress {
             address1
             address2
