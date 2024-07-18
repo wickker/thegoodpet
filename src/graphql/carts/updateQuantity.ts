@@ -3,7 +3,7 @@ mutation ($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
   cartLinesUpdate(cartId: $cartId, lines: $lines) {
     cart {
       id
-      lines(first: 10) {
+      lines(first: 50) {
         edges {
           node {
             id
