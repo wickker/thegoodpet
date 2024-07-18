@@ -5,3 +5,8 @@ export const capitalize = (str: string) => {
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }
 export const mc = (...inputs: Array<ClassValue>) => twMerge(clsx(inputs))
+
+export const formatPriceString = (price: string | null) => {
+  if (!price) return null
+  return parseInt(price, 10).toFixed(2)
+}
