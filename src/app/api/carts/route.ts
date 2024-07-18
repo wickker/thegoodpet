@@ -11,7 +11,10 @@ export async function GET() {
 
   const res = await storefrontApi.getCart(cartIdCookie.value)
   if (res.errors) {
-    return Response.json(JSON.stringify(res.errors), { status: 500 })
+    return Response.json(
+      { title: 'Unable to get cart', message: JSON.stringify(res.errors) },
+      { status: 500 },
+    )
   }
 
   return Response.json(res.data.cart)
