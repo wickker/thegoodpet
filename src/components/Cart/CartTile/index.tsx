@@ -8,7 +8,7 @@ type CartTileProps = {
 }
 
 export default function CartTile({ item }: CartTileProps) {
-  const getOriginalAndFinalDiscountedPrice = (item: BaseCartLineEdge) => {
+  const getOriginalAndDiscountedPrice = (item: BaseCartLineEdge) => {
     const compareAtPrice = item.node.merchandise.compareAtPrice
     const originalPrice = compareAtPrice
       ? compareAtPrice.amount
@@ -40,8 +40,7 @@ export default function CartTile({ item }: CartTileProps) {
     return tags
   }
 
-  const { discountedPrice, originalPrice } =
-    getOriginalAndFinalDiscountedPrice(item)
+  const { discountedPrice, originalPrice } = getOriginalAndDiscountedPrice(item)
 
   return (
     <div className="border-b border-b-[#E3E3E3] px-[15px] py-2.5">
@@ -76,7 +75,7 @@ export default function CartTile({ item }: CartTileProps) {
             </div>
           </div>
 
-          <div className="my-1 flex items-center justify-between gap-x-2 text-secondary">
+          <div className="mt-1 flex items-center justify-between gap-x-2 text-secondary">
             <QuantityToggleButton
               cartLineId={item.node.id}
               quantity={item.node.quantity}
