@@ -44,7 +44,7 @@ export default function CartTile({ item }: CartTileProps) {
 
   return (
     <div className="border-b border-b-[#E3E3E3] px-[15px] py-2.5">
-      <div className="grid grid-cols-[auto_1fr] gap-x-5" key={item.node.id}>
+      <div className="grid grid-cols-[auto_1fr] gap-x-5">
         <div
           className="aspect-square h-[80px] rounded-full bg-black bg-contain bg-center bg-no-repeat"
           style={{

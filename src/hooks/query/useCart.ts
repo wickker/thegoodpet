@@ -2,8 +2,10 @@ import { Cart } from '@shopify/hydrogen-react'
 import { CartBase } from '@shopify/hydrogen-react/cart-types'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import storefrontApi from '@/service/api/storefrontApi'
+import theGoodPetApi from '@/service/api/theGoodPetApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKeys'
 
+// TODO: Refactor all to proxy pass
 const useCart = () => {
   const useCreateCartMutation = (onSuccess?: (data: Cart) => void) =>
     useMutation({
@@ -11,11 +13,10 @@ const useCart = () => {
       onSuccess,
     })
 
-  const useGetCartQuery = (cartId?: string) =>
+  const useGetCartQuery = () =>
     useQuery({
-      queryKey: QUERY_KEYS.GET_CART(cartId),
-      queryFn: () => storefrontApi.getCart(cartId),
-      enabled: !!cartId,
+      queryKey: QUERY_KEYS.GET_CART,
+      queryFn: theGoodPetApi.getCart,
     })
 
   const useUpdateCartQuantityMutation = (

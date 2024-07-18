@@ -33,7 +33,9 @@ export default function Cart() {
 
         <div className="overflow-y-auto">
           {/* TODO: Add loader state and no items in cart state */}
-          {getCart?.data?.lines.edges.map((item) => <CartTile item={item} />)}
+          {getCart?.data?.lines.edges.map((item) => (
+            <CartTile item={item} key={item.node.id} />
+          ))}
         </div>
 
         <div className="h-[100px] w-full bg-[#D6EDDF]"></div>
