@@ -6,7 +6,7 @@ export async function GET() {
   const cookieStore = cookies()
   const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
   if (!cartIdCookie) {
-    return Response.json([])
+    return Response.json(null)
   }
 
   const res = await storefrontApi.getCart(cartIdCookie.value)

@@ -89,7 +89,7 @@ export default function CartTile({ item }: CartTileProps) {
       </div>
 
       {!!item.node.sellingPlanAllocation && (
-        <div className="mt-2 min-w-fit rounded-sm bg-[#D6EDDF] px-3 py-0.5 text-center text-sm text-secondary">
+        <div className="mt-2 min-w-fit rounded-sm bg-[#E8E0DC] px-3 py-0.5 text-center text-sm text-secondary">
           {item.node.sellingPlanAllocation.sellingPlan.name}
         </div>
       )}
