@@ -4,7 +4,9 @@ import { Gender, PetType } from '@/utils/constants/db'
 export const SurveyPetType = z.nativeEnum(PetType, {
   message: 'Pet type is required',
 })
-export const SurveyGender = z.nativeEnum(Gender)
+export const SurveyGender = z.nativeEnum(Gender, {
+  message: 'Gender is required',
+})
 export const SurveyPetName = z.string().min(1)
 
 export const SurveyDataSchema = z.object({
