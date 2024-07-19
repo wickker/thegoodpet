@@ -15,11 +15,16 @@ export const SurveyDOB = z
   .date()
   .max(new Date(), { message: 'Age is required' })
 
+export const SurveyNeutered = z.boolean({
+  message: 'Neutered status is required',
+})
+
 export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
   gender: SurveyGender,
   name: SurveyPetName,
   dob: SurveyDOB,
+  isNeutered: SurveyNeutered,
 })
 
 export type SurveyData = z.infer<typeof SurveyDataSchema>

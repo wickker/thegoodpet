@@ -11,11 +11,12 @@ import {
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { SurveyData } from '@/@types/survey'
 import {
+  AgeQuestion,
   GenderQuestion,
   NameQuestion,
+  NeuteredQuestion,
   PetTypeQuestion,
 } from '@/components/Survey'
-import AgeQuestion from '@/components/Survey/AgeQuestion'
 
 type SurveyContextSchema = {
   currentStep: number
@@ -51,6 +52,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     GenderQuestion,
     NameQuestion,
     AgeQuestion,
+    NeuteredQuestion,
   ]
 
   // Derived state
