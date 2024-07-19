@@ -7,7 +7,9 @@ export const SurveyPetType = z.nativeEnum(PetType, {
 export const SurveyGender = z.nativeEnum(Gender, {
   message: 'Gender is required',
 })
-export const SurveyPetName = z.string().min(1)
+export const SurveyPetName = z
+  .string({ message: 'Pet name is required' })
+  .min(1, { message: 'Pet name is required' })
 
 export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
