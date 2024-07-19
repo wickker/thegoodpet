@@ -20,7 +20,7 @@ export default function Survey() {
 
         <CurrentQuestion>
           {/*TODO: Change to dynamic pet overlay component */}
-          <img src="/cat-vector.svg" className="mx-auto w-full max-w-[400px]" />
+          {/* <img src="/cat-vector.svg" className="mx-auto w-full max-w-[400px]" /> */}
         </CurrentQuestion>
       </div>
     </>
