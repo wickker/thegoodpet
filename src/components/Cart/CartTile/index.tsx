@@ -9,6 +9,7 @@ type CartTileProps = {
 
 export default function CartTile({ item }: CartTileProps) {
   const getOriginalAndDiscountedPrice = (item: BaseCartLineEdge) => {
+    const quantity = item.node.quantity
     const compareAtPrice = item.node.merchandise.compareAtPrice
     const originalPrice = compareAtPrice
       ? compareAtPrice.amount
@@ -24,8 +25,8 @@ export default function CartTile({ item }: CartTileProps) {
     }
 
     return {
-      originalPrice: formatPriceString(originalPrice),
-      discountedPrice: formatPriceString(discountedPrice),
+      originalPrice: formatPriceString(originalPrice, quantity),
+      discountedPrice: formatPriceString(discountedPrice, quantity),
     }
   }
 

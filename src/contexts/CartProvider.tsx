@@ -10,12 +10,14 @@ type CartContextSchema = {
   closeCart: () => void
   openCart: () => void
   getCart?: UseQueryResult<Cart, Error>
+  refetchCart: () => void
 }
 
 export const CartContext = createContext<CartContextSchema>({
   isCartOpen: false,
   closeCart: () => {},
   openCart: () => {},
+  refetchCart: () => {},
 })
 
 export default function CartProvider({ children }: PropsWithChildren) {
@@ -28,8 +30,12 @@ export default function CartProvider({ children }: PropsWithChildren) {
 
   const closeCart = () => setIsCartOpen(false)
 
+  const refetchCart = () => getCart.refetch()
+
   return (
-    <CartContext.Provider value={{ isCartOpen, openCart, closeCart, getCart }}>
+    <CartContext.Provider
+      value={{ isCartOpen, openCart, closeCart, getCart, refetchCart }}
+    >
       {children}
     </CartContext.Provider>
   )
