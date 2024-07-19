@@ -15,6 +15,7 @@ import {
   NameQuestion,
   PetTypeQuestion,
 } from '@/components/Survey'
+import AgeQuestion from '@/components/Survey/AgeQuestion'
 
 type SurveyContextSchema = {
   currentStep: number
@@ -45,7 +46,12 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
   const parsedStep = parseInt(searchParams.get('step') || '0')
   const [currentStep, setCurrentStep] = useState<number>(parsedStep)
   const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({})
-  const surveyComponents = [PetTypeQuestion, GenderQuestion, NameQuestion]
+  const surveyComponents = [
+    PetTypeQuestion,
+    GenderQuestion,
+    NameQuestion,
+    AgeQuestion,
+  ]
 
   // Derived state
   const isFirstQuestion = currentStep === 0

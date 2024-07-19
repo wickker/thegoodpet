@@ -34,6 +34,7 @@ export default function PetTypeQuestion() {
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-2">
         {Object.values(PetType).map((type) => (
           <OptionCard
+            key={type}
             label={type}
             isSelected={surveyData.petType === type}
             onClick={() => handleSetPetType(type)}

@@ -3,6 +3,8 @@ import { twMerge } from 'tailwind-merge'
 import { ZodError } from 'zod'
 
 export const capitalize = (str: string) => {
+  if (str.length === 0) return ''
+  if (str.length === 1) return str[0].toUpperCase()
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }
 

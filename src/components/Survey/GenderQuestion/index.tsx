@@ -34,6 +34,7 @@ export default function GenderQuestion() {
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-2">
         {Object.values(Gender).map((gender) => (
           <OptionCard
+            key={gender}
             label={gender}
             isSelected={surveyData.gender === gender}
             onClick={() => handleSetGender(gender)}
