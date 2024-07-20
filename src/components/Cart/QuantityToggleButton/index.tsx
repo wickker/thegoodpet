@@ -16,7 +16,7 @@ export default function QuantityToggleButton({
   cartLineId,
 }: QuantityToggleButtonProps) {
   const [buttonClicked, setButtonClicked] = useState<'add' | 'minus'>()
-  const { refetchCart } = useContext(CartContext)
+  const { getCart } = useContext(CartContext)
   const { useUpdateCartQuantityMutation } = useCart()
   const updateCartQuantity = useUpdateCartQuantityMutation(
     updateCartQuantitySuccessCB,
@@ -24,7 +24,7 @@ export default function QuantityToggleButton({
 
   function updateCartQuantitySuccessCB() {
     setButtonClicked(undefined)
-    refetchCart()
+    getCart?.refetch()
   }
 
   const mutateCartQuantity = (newQuantity: number) => {
