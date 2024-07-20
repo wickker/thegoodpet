@@ -1,7 +1,7 @@
 import { mc } from '@/utils/functions/common'
 
 type LoaderProps = {
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md' | 'xs'
   color?: 'inherit' | 'primary' | 'gray'
 }
 
@@ -16,6 +16,7 @@ export default function Loader({
         'animate-spin',
         size === 'md' && 'w-8',
         size === 'sm' && 'w-6',
+        size === 'xs' && 'w-4',
         color === 'primary' && 'text-primary',
         color === 'gray' && 'text-neutral-400',
       )}

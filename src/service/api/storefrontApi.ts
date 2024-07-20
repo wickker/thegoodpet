@@ -97,12 +97,10 @@ const addItemToCart = (request: MutationCartLinesAddArgs): Promise<CartBase> =>
 
 const updateCartItemQuantity = (
   request: MutationCartLinesUpdateArgs,
-): Promise<CartBase> =>
-  client
-    .request(Carts.UpdateQuantity, {
-      variables: request,
-    })
-    .then((res) => res.data)
+): Promise<ClientResponse> =>
+  client.request(Carts.UpdateQuantity, {
+    variables: request,
+  })
 
 export default {
   addItemToCart,

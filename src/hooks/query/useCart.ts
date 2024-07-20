@@ -23,7 +23,7 @@ const useCart = () => {
     onSuccess?: (data: CartBase) => void,
   ) =>
     useMutation({
-      mutationFn: storefrontApi.updateCartItemQuantity,
+      mutationFn: theGoodPetApi.updateCartItemQuantity,
       onSuccess,
     })
 

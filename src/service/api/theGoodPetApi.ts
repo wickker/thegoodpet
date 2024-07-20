@@ -1,4 +1,8 @@
-import { Cart } from '@shopify/hydrogen-react/storefront-api-types'
+import { CartBase } from '@shopify/hydrogen-react/cart-types'
+import {
+  Cart,
+  MutationCartLinesUpdateArgs,
+} from '@shopify/hydrogen-react/storefront-api-types'
 
 const handleRequest = async (res: Response) => {
   const json = await res.json()
@@ -14,6 +18,18 @@ const getCart = async (): Promise<Cart> => {
   return handleRequest(res)
 }
 
+// PUT
+const updateCartItemQuantity = async (
+  request: Partial<MutationCartLinesUpdateArgs>,
+): Promise<CartBase> => {
+  const res = await fetch('/api/carts/items/quantity', {
+    method: 'PUT',
+    body: JSON.stringify(request),
+  })
+  return handleRequest(res)
+}
+
 export default {
   getCart,
+  updateCartItemQuantity,
 }

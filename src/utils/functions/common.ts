@@ -6,7 +6,10 @@ export const capitalize = (str: string) => {
 }
 export const mc = (...inputs: Array<ClassValue>) => twMerge(clsx(inputs))
 
-export const formatPriceString = (price: string | null) => {
+export const formatPriceString = (
+  price?: string | null,
+  quantity: number = 1,
+) => {
   if (!price) return null
-  return parseInt(price, 10).toFixed(2)
+  return (parseInt(price, 10) * quantity).toFixed(2)
 }
