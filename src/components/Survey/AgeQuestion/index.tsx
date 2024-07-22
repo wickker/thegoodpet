@@ -27,7 +27,7 @@ export default function AgeQuestion() {
   }
 
   const setYear = (e: ChangeEvent<HTMLInputElement>) =>
-    handleSetAge((a) => ({ ...a, year: parseInt(e.target.value) }))
+    handleSetAge((a) => ({ ...a, year: parseInt(e.target.value) || 0 }))
 
   const setMonth = (e: ChangeEvent<HTMLInputElement>) =>
     handleSetAge((a) => ({
@@ -38,7 +38,6 @@ export default function AgeQuestion() {
   const handleNext = () => {
     try {
       const dob = DateTime.now().minus({ months: age.month, years: age.year })
-
       SurveyDOB.parse(dob.toJSDate())
       setSurveyData((survey) => ({ ...survey, dob: dob.toJSDate() }))
       nextStep()

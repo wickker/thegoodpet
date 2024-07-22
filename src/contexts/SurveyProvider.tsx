@@ -12,6 +12,7 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { SurveyData } from '@/@types/survey'
 import {
   AgeQuestion,
+  BreedQuestion,
   GenderQuestion,
   NameQuestion,
   NeuteredQuestion,
@@ -53,6 +54,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     NameQuestion,
     AgeQuestion,
     NeuteredQuestion,
+    BreedQuestion,
   ]
 
   // Derived state

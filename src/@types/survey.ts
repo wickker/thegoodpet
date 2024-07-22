@@ -19,12 +19,17 @@ export const SurveyNeutered = z.boolean({
   message: 'Neutered status is required',
 })
 
+export const SurveyBreed = z
+  .string({ message: 'Pet breed is required' })
+  .min(1, { message: 'Pet breed is required' })
+
 export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
   gender: SurveyGender,
   name: SurveyPetName,
   dob: SurveyDOB,
   isNeutered: SurveyNeutered,
+  breed: SurveyBreed,
 })
 
 export type SurveyData = z.infer<typeof SurveyDataSchema>
