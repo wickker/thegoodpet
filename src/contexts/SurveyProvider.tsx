@@ -17,6 +17,7 @@ import {
   NameQuestion,
   NeuteredQuestion,
   PetTypeQuestion,
+  WeightQuestion,
 } from '@/components/Survey'
 
 type SurveyContextSchema = {
@@ -55,6 +56,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     AgeQuestion,
     NeuteredQuestion,
     BreedQuestion,
+    WeightQuestion,
   ]
 
   // Derived state
