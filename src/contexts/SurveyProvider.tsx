@@ -17,6 +17,7 @@ import {
   NameQuestion,
   NeuteredQuestion,
   PetTypeQuestion,
+  WeightGoalQuestion,
   WeightQuestion,
 } from '@/components/Survey'
 
@@ -57,6 +58,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     NeuteredQuestion,
     BreedQuestion,
     WeightQuestion,
+    WeightGoalQuestion,
   ]
 
   // Derived state

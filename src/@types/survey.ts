@@ -27,6 +27,10 @@ export const SurveyWeightGrams = z
   .number({ message: 'Pet weight is required' })
   .min(1, { message: 'Pet weight invalid' })
 
+export const SurveyWeightGoal = z
+  .string({ message: 'Pet weight goal is required' })
+  .min(1, { message: 'Pet weight goal is required' })
+
 export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
   gender: SurveyGender,
@@ -35,6 +39,7 @@ export const SurveyDataSchema = z.object({
   isNeutered: SurveyNeutered,
   breed: SurveyBreed,
   weight: SurveyWeightGrams,
+  weightGoal: SurveyWeightGoal,
 })
 
 export type SurveyData = z.infer<typeof SurveyDataSchema>
