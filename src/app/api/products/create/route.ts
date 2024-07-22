@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
     if (response.ok) {
       const body = await response.json()
-      return Response.json(body, { status: 500 })
+      return Response.json(body, { status: 200 })
     } else {
       return Response.json(
         { error: 'Failed to create product' },
