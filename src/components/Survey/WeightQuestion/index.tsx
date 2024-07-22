@@ -44,7 +44,7 @@ export default function WeightQuestion() {
             step="0.1"
             onChange={handleSetWeight}
           />
-          <div>KG</div>
+          <div>Kg</div>
         </div>
       </div>
 

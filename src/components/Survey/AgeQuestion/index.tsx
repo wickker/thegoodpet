@@ -61,7 +61,7 @@ export default function AgeQuestion() {
             min={0}
             onChange={setYear}
           />
-          <div>Years</div>
+          <p>Years</p>
         </div>
         <div className="flex items-center gap-2">
           <input
@@ -72,7 +72,7 @@ export default function AgeQuestion() {
             max={12}
             onChange={setMonth}
           />
-          <div>Months</div>
+          <p>Months</p>
         </div>
       </div>
 

@@ -11,24 +11,26 @@ export default function BreedDropdown({
   ...rest
 }: BreedDropdownProps) {
   return (
-    <select
-      className="block w-full rounded-lg border px-3 py-2 outline-secondary"
-      {...rest}
-    >
-      <option value=""></option>
-      <>
-        {petType === PetType.CAT
-          ? Cats.map((cat) => (
-              <option value={cat.name} key={cat.name}>
-                {cat.name}
-              </option>
-            ))
-          : Dogs.map((dog) => (
-              <option value={dog.name} key={dog.name}>
-                {dog.name}
-              </option>
-            ))}
-      </>
-    </select>
+    <div className="select-wrapper">
+      <select
+        className="block w-full appearance-none rounded-lg border px-3 py-2 outline-secondary"
+        {...rest}
+      >
+        <option value=""></option>
+        <>
+          {petType === PetType.CAT
+            ? Cats.map((cat) => (
+                <option value={cat.name} key={cat.name}>
+                  {cat.name}
+                </option>
+              ))
+            : Dogs.map((dog) => (
+                <option value={dog.name} key={dog.name}>
+                  {dog.name}
+                </option>
+              ))}
+        </>
+      </select>
+    </div>
   )
 }
