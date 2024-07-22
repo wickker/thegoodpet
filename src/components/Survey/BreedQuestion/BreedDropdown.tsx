@@ -10,7 +10,6 @@ export default function BreedDropdown({
   petType,
   ...rest
 }: BreedDropdownProps) {
-  console.log(petType)
   return (
     <select
       className="block w-full rounded-lg border px-3 py-2 outline-secondary"
