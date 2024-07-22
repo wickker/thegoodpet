@@ -44,7 +44,8 @@ export default function QuantityToggleButton({
 
   const handleDecreaseQuantity = () => {
     setButtonClicked('minus')
-    mutateCartQuantity(quantity - 1)
+    const qty = quantity - 1 < 0 ? 0 : quantity - 1
+    mutateCartQuantity(qty)
   }
 
   return (

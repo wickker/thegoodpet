@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import storefrontApi from '@/service/api/storefrontApi'
 import { SHOPIFY_CART_ID_COOKIE } from '@/utils/constants/cookies'
 
-// Update cart item quantity
+// Add item to cart
 export async function PUT(request: Request) {
   const cookieStore = cookies()
   const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
@@ -11,7 +11,7 @@ export async function PUT(request: Request) {
   }
 
   const req = await request.json()
-  const res = await storefrontApi.updateCartItemQuantity({
+  const res = await storefrontApi.addItemToCart({
     cartId: cartIdCookie.value,
     lines: req.lines,
   })
@@ -19,7 +19,7 @@ export async function PUT(request: Request) {
   if (res.errors) {
     return Response.json(
       {
-        title: 'Unable to update cart item quantity',
+        title: 'Unable to add item to cart',
         message: JSON.stringify(res.errors),
       },
       { status: 500 },
