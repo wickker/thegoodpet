@@ -11,16 +11,25 @@ export default function Survey() {
   const progressPercent = (currentStep / (surveyComponents.length - 1)) * 100
   const CurrentQuestion = surveyComponents[currentStep]
 
+  const surveyHeader = () => {
+    if (currentStep < 3) {
+      return 'About your pet'
+    }
+
+    if (currentStep < 9) {
+      return 'About ' + capitalize(surveyData.name || '')
+    }
+
+    return capitalize(surveyData.name || '') + "'s Meals"
+  }
+
   return (
     <>
       <ProgressBar percent={progressPercent} />
 
       <div className="mt-5">
         <h1 className="text-center font-fredoka text-4xl font-medium text-secondary">
-          About{' '}
-          {surveyData.name && currentStep > 2
-            ? capitalize(surveyData.name)
-            : 'your pet'}
+          {surveyHeader()}
         </h1>
 
         <div className="pb-20 md:pb-0">
