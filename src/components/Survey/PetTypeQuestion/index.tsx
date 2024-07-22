@@ -1,24 +1,29 @@
-import { useContext } from 'react'
+'use client'
+
+import { useContext, useState } from 'react'
 import { SurveyPetType } from '@/@types/survey'
-import SurveyFooter from '@/components/Survey/SurveyFooter'
+import { FormErrorMessage, OptionCard, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { PetType } from '@/utils/constants/db'
-import { capitalize, mc } from '@/utils/functions/common'
+import { isZodError } from '@/utils/functions/common'
 
 export default function PetTypeQuestion() {
   const { isFirstQuestion, nextStep, surveyData, setSurveyData } =
     useContext(SurveyContext)
+  const [errorDisplay, setErrorDisplay] = useState<string>('')
 
-  const handleSetPetType = (petType: PetType) =>
+  const handleSetPetType = (petType: PetType) => {
     setSurveyData((data) => ({ ...data, petType }))
+    setErrorDisplay('')
+  }
 
   const handleNext = () => {
     try {
       SurveyPetType.parse(surveyData.petType)
       nextStep()
     } catch (e) {
-      // TODO: Handle proper error message
-      console.log(e)
+      if (!isZodError(e)) return
+      setErrorDisplay(e.issues[0]?.message)
     }
   }
 
@@ -28,19 +33,16 @@ export default function PetTypeQuestion() {
 
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-2">
         {Object.values(PetType).map((type) => (
-          <button
+          <OptionCard
             key={type}
-            className={mc(
-              'grid h-44 w-full max-w-36 items-center justify-center place-self-center rounded-lg bg-white transition-colors',
-              'hover:bg-secondary hover:text-white',
-              surveyData.petType === type && 'bg-secondary text-white',
-            )}
+            label={type}
+            isSelected={surveyData.petType === type}
             onClick={() => handleSetPetType(type)}
-          >
-            {capitalize(type)}
-          </button>
+          />
         ))}
       </div>
+
+      <FormErrorMessage message={errorDisplay} />
 
       <SurveyFooter onNext={handleNext} hideBackButton={isFirstQuestion} />
     </>

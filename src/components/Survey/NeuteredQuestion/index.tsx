@@ -1,25 +1,24 @@
 'use client'
 
 import { useContext, useState } from 'react'
-import { SurveyGender } from '@/@types/survey'
+import { SurveyNeutered } from '@/@types/survey'
 import { FormErrorMessage, OptionCard, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
-import { Gender } from '@/utils/constants/db'
-import { isZodError } from '@/utils/functions/common'
+import { capitalize, isZodError } from '@/utils/functions/common'
 
-export default function GenderQuestion() {
+export default function NeuteredQuestion() {
   const { nextStep, prevStep, surveyData, setSurveyData } =
     useContext(SurveyContext)
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
-  const handleSetGender = (gender: Gender) => {
-    setSurveyData((data) => ({ ...data, gender }))
+  const handleSetNeutered = (isNeutered: boolean) => {
+    setSurveyData((data) => ({ ...data, isNeutered }))
     setErrorDisplay('')
   }
 
   const handleNext = () => {
     try {
-      SurveyGender.parse(surveyData.gender)
+      SurveyNeutered.parse(surveyData.isNeutered)
       nextStep()
     } catch (e) {
       if (!isZodError(e)) return
@@ -29,15 +28,17 @@ export default function GenderQuestion() {
 
   return (
     <>
-      <p className="my-5 text-center font-inter">Select pet's gender</p>
+      <p className="my-5 text-center font-inter">
+        Is {capitalize(surveyData.name || '')} Neutered?
+      </p>
 
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-2">
-        {Object.values(Gender).map((gender) => (
+        {[true, false].map((v) => (
           <OptionCard
-            key={gender}
-            label={gender}
-            isSelected={surveyData.gender === gender}
-            onClick={() => handleSetGender(gender)}
+            key={v.toString()}
+            label={v ? 'Yes' : 'No'}
+            isSelected={surveyData.isNeutered === v}
+            onClick={() => handleSetNeutered(v)}
           />
         ))}
       </div>

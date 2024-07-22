@@ -11,9 +11,13 @@ import {
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { SurveyData } from '@/@types/survey'
 import {
+  AgeQuestion,
+  BreedQuestion,
   GenderQuestion,
   NameQuestion,
+  NeuteredQuestion,
   PetTypeQuestion,
+  WeightQuestion,
 } from '@/components/Survey'
 
 type SurveyContextSchema = {
@@ -45,7 +49,15 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
   const parsedStep = parseInt(searchParams.get('step') || '0')
   const [currentStep, setCurrentStep] = useState<number>(parsedStep)
   const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({})
-  const surveyComponents = [PetTypeQuestion, GenderQuestion, NameQuestion]
+  const surveyComponents = [
+    PetTypeQuestion,
+    GenderQuestion,
+    NameQuestion,
+    AgeQuestion,
+    NeuteredQuestion,
+    BreedQuestion,
+    WeightQuestion,
+  ]
 
   // Derived state
   const isFirstQuestion = currentStep === 0

@@ -3,3 +3,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper::after {
+  display: flex;
+  content: '▼';
+  top: 0px;
+  bottom: 0px;
+  right: 15px;
+  align-items: center;
+  position: absolute;
+}

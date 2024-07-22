@@ -5,7 +5,8 @@ import { ProgressBar } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 
 export default function Survey() {
-  const { currentStep, surveyComponents } = useContext(SurveyContext)
+  const { currentStep, surveyComponents, surveyData } =
+    useContext(SurveyContext)
   const progressPercent = (currentStep / (surveyComponents.length - 1)) * 100
   const CurrentQuestion = surveyComponents[currentStep]
 
@@ -15,12 +16,13 @@ export default function Survey() {
 
       <div className="mt-5">
         <h1 className="text-center font-fredoka text-4xl font-medium text-secondary">
-          About your pet
+          About{' '}
+          {surveyData.name && currentStep > 2 ? surveyData.name : 'your pet'}
         </h1>
 
         <CurrentQuestion>
           {/*TODO: Change to dynamic pet overlay component */}
-          <img src="/cat-vector.svg" className="mx-auto w-full max-w-[400px]" />
+          {/* <img src="/cat-vector.svg" className="mx-auto w-full max-w-[400px]" /> */}
         </CurrentQuestion>
       </div>
     </>
