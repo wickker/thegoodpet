@@ -29,4 +29,16 @@ export const FOOD_GOALS = [
   'Other',
 ]
 
-export const INGREDIENTS = ['Chicken', 'Beef', 'Duck', 'Lamb']
+export const Ingredient = {
+  BEEF: 'BEEF',
+  CHICKEN: 'CHICKEN',
+  DUCK: 'DUCK',
+  LAMB: 'LAMB',
+} as const
+
+export type Ingredient = (typeof Ingredient)[keyof typeof Ingredient]
+
+export const MealDoneness = {
+  RAW: 'RAW',
+  GENTLY_COOKED: 'GENTLY_COOKED',
+}

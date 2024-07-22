@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Gender, PetType } from '@/utils/constants/db'
+import { Gender, Ingredient, MealDoneness, PetType } from '@/utils/constants/db'
 
 export const SurveyPetType = z.nativeEnum(PetType, {
   message: 'Pet type is required',
@@ -40,6 +40,16 @@ export const SurveyFoodGoal = z
   .string({ message: 'Pet food goal is required' })
   .min(1, { message: 'Pet food goal is required' })
 
+export const SurveyAllergicOmitIngredients = z.array(z.nativeEnum(Ingredient))
+
+export const SurveyMealDoneness = z.nativeEnum(MealDoneness, {
+  message: 'Meal doneness is required',
+})
+
+export const SurveyEmail = z.string().email()
+
+export const SurveyAcceptsMarketing = z.boolean()
+
 export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
   gender: SurveyGender,
@@ -51,6 +61,11 @@ export const SurveyDataSchema = z.object({
   weightGoal: SurveyWeightGoal,
   activityLevel: SurveyActivityLevel,
   foodGoal: SurveyFoodGoal,
+  allergicIngredients: SurveyAllergicOmitIngredients,
+  omitIngredients: SurveyAllergicOmitIngredients,
+  mealDoneness: SurveyMealDoneness,
+  email: SurveyEmail,
+  acceptsMarketing: SurveyAcceptsMarketing,
 })
 
 export type SurveyData = z.infer<typeof SurveyDataSchema>
