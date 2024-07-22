@@ -16,5 +16,12 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     if (isZodError(err)) return { error: err.format() }
   }
 
+  // TODO:
+  // Query db for customer
+  // Call Shopify API to create access token
+  // Update customer in db
+  // Set auth cookie
+  // Redirect to home page
+
   return { error: null }
 }
