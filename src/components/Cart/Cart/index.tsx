@@ -11,7 +11,7 @@ export default function Cart() {
   const { closeCart, isCartOpen, getCart } = useContext(CartContext)
 
   const generateCartItems = () => {
-    const hasItems = getCart?.isSuccess && getCart.data.lines.edges.length > 0
+    const hasItems = getCart?.isSuccess && getCart.data?.lines.edges.length > 0
     if (hasItems) {
       return getCart?.data?.lines.edges.map((item) => (
         <CartTile item={item} key={item.node.id} />
