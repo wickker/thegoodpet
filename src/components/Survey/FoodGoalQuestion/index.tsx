@@ -4,16 +4,8 @@ import { ChangeEvent, useContext, useState } from 'react'
 import { SurveyFoodGoal } from '@/@types/survey'
 import { FormErrorMessage, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
+import { FOOD_GOALS } from '@/utils/constants/db'
 import { capitalize, isZodError } from '@/utils/functions/common'
-
-const goalOptions = [
-  'Helps him manage his weight',
-  'Has timely delivery',
-  'Keeps him in good health',
-  'Contains the proper ingredients',
-  'Has a taste he loves',
-  'Other',
-]
 
 export default function FoodGoalQuestion() {
   const { nextStep, prevStep, surveyData, setSurveyData } =
@@ -34,7 +26,7 @@ export default function FoodGoalQuestion() {
 
   const handleNext = () => {
     try {
-      if (foodGoal === goalOptions[goalOptions.length - 1]) {
+      if (foodGoal === FOOD_GOALS[FOOD_GOALS.length - 1]) {
         SurveyFoodGoal.parse(otherOption)
         setSurveyData((data) => ({ ...data, foodGoal: otherOption }))
       } else {
@@ -56,7 +48,7 @@ export default function FoodGoalQuestion() {
       </p>
 
       <div className="mx-auto flex w-max max-w-[360px] flex-col justify-center gap-3">
-        {goalOptions.map((goal) => (
+        {FOOD_GOALS.map((goal) => (
           <label key={goal} className="flex gap-2">
             <input
               type="radio"
@@ -72,7 +64,7 @@ export default function FoodGoalQuestion() {
           onChange={setOtherOption}
           className="ml-5 block w-full rounded-lg border px-3 py-2 outline-secondary"
           placeholder="If other, specify here"
-          disabled={foodGoal !== goalOptions[goalOptions.length - 1]}
+          disabled={foodGoal !== FOOD_GOALS[FOOD_GOALS.length - 1]}
         />
       </div>
 

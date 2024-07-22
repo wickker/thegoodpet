@@ -4,15 +4,8 @@ import { ChangeEvent, useContext, useState } from 'react'
 import { SurveyWeightGoal } from '@/@types/survey'
 import { FormErrorMessage, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
+import { WEIGHT_GOALS } from '@/utils/constants/db'
 import { capitalize, isZodError } from '@/utils/functions/common'
-
-const goalOptions = [
-  'Lose a lot of weight',
-  'Lose a little weight',
-  'Maintain weight',
-  'Gain a little weight',
-  'Gain a lot of weight',
-]
 
 export default function WeightGoalQuestion() {
   const { nextStep, prevStep, surveyData, setSurveyData } =
@@ -40,7 +33,7 @@ export default function WeightGoalQuestion() {
       </p>
 
       <div className="mx-auto flex w-max max-w-[360px] flex-col justify-center gap-4">
-        {goalOptions.map((goal) => (
+        {WEIGHT_GOALS.map((goal) => (
           <label key={goal} className="flex gap-2">
             <input
               type="radio"
