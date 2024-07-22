@@ -61,6 +61,12 @@ export default function AllergicIngredientsQuestion() {
             key={i}
             onClick={() => setSelectedIngredients(i)}
             isSelected={selectedIngredients.includes(i)}
+            disabled={
+              (i === Ingredient.BEEF &&
+                selectedIngredients.includes(Ingredient.CHICKEN)) ||
+              (i === Ingredient.CHICKEN &&
+                selectedIngredients.includes(Ingredient.BEEF))
+            }
           />
         ))}
       </div>
