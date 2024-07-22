@@ -13,9 +13,10 @@ import { SurveyData } from '@/@types/survey'
 import {
   ActivityLevelQuestion,
   AgeQuestion,
+  AllergicIngredientsQuestion,
   BreedQuestion,
-  FoodGoalDetails,
-  FoodGoalQuestion,
+  // FoodGoalDetails,   TODO: skip question for now
+  // FoodGoalQuestion,  TODO: skip question for now
   GenderQuestion,
   NameQuestion,
   NeuteredQuestion,
@@ -65,8 +66,9 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     WeightQuestion,
     WeightGoalQuestion,
     ActivityLevelQuestion,
-    FoodGoalQuestion,
-    FoodGoalDetails,
+    // FoodGoalQuestion,
+    // FoodGoalDetails,
+    AllergicIngredientsQuestion,
   ]
 
   // Derived state
