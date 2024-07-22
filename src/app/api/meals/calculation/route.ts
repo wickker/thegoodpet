@@ -73,7 +73,7 @@ export async function POST(request: Request) {
     }
 
     if (!petType) {
-      return Response.json({ error: 'Species are required' }, { status: 400 })
+      return Response.json({ error: 'Pet type are required' }, { status: 400 })
     }
 
     // Calculate Resting Energy Requirements (RER)
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     } else if (petType === 'CAT') {
       ratio = getCatActivityRatio(age, isNeutered, weightGoal, activityLevel)
     } else {
-      return Response.json({ error: 'Invalid species' }, { status: 400 })
+      return Response.json({ error: 'Invalid pet type' }, { status: 400 })
     }
 
     // Calculate Daily Energy Requirements (DER)
