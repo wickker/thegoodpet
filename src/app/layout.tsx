@@ -19,7 +19,7 @@ export default function RootLayout({
       </head>
       <body>
         <ReactQueryProvider>
-          <main className="h-dvh overflow-y-auto bg-background font-inter">
+          <main className="h-dvh overflow-y-auto bg-background font-inter text-neutral-900">
             <CartProvider>
               <Cart />
               <Header />

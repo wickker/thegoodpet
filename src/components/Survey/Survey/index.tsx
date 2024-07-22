@@ -3,6 +3,7 @@
 import { useContext } from 'react'
 import { ProgressBar } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
+import { capitalize } from '@/utils/functions/common'
 
 export default function Survey() {
   const { currentStep, surveyComponents, surveyData } =
@@ -17,7 +18,9 @@ export default function Survey() {
       <div className="mt-5">
         <h1 className="text-center font-fredoka text-4xl font-medium text-secondary">
           About{' '}
-          {surveyData.name && currentStep > 2 ? surveyData.name : 'your pet'}
+          {surveyData.name && currentStep > 2
+            ? capitalize(surveyData.name)
+            : 'your pet'}
         </h1>
 
         <CurrentQuestion>
