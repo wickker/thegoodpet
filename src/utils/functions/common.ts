@@ -15,3 +15,11 @@ export function isZodError(err: unknown): err is ZodError {
 }
 
 export const mc = (...inputs: Array<ClassValue>) => twMerge(clsx(inputs))
+
+export const formatPriceString = (
+  price?: string | null,
+  quantity: number = 1,
+) => {
+  if (!price) return null
+  return (parseInt(price, 10) * quantity).toFixed(2)
+}

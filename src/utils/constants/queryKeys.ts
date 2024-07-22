@@ -3,17 +3,17 @@ import {
   CustomerOrdersArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
 
-export const STOREFRONT = 'storefront'
+export const THE_GOOD_PET = 'the-good-pet'
 
 export const QUERY_KEYS = {
   GET_ALL_PRODUCTS: ({ first }: QueryRootProductsArgs) => [
-    STOREFRONT,
+    THE_GOOD_PET,
     'products',
     { first },
   ],
-  GET_CART: (cartId?: string) => [STOREFRONT, 'carts', cartId],
+  GET_CART: [THE_GOOD_PET, 'carts'],
   GET_CUSTOMER_ORDERS: ({ first }: CustomerOrdersArgs) => [
-    STOREFRONT,
+    THE_GOOD_PET,
     'customer-orders',
     { first },
   ],

@@ -1,4 +1,5 @@
-import { Header, Cart } from '@/components/common'
+import { Cart } from '@/components/Cart'
+import { Header } from '@/components/common'
 import { CartProvider } from '@/contexts'
 import ReactQueryProvider from '@/hooks/ReactQueryProvider'
 import './styles.css'

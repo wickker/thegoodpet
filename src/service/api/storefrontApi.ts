@@ -10,7 +10,7 @@ import type {
   Customer,
   CartInput,
   MutationCartLinesAddArgs,
-  Cart,
+  MutationCartLinesUpdateArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import {
   ClientResponse,
@@ -27,15 +27,6 @@ const client = createStorefrontApiClient({
   publicAccessToken: Config.SHOPIFY_PUBLIC_ACCESS_TOKEN,
 })
 
-// GQL errors are status 200
-const handleErr = (res: ClientResponse) => {
-  if (res.errors) {
-    // TODO: Refine this
-    console.error(res.errors)
-  }
-  return res
-}
-
 // GET
 const getAllProducts = (
   request: QueryRootProductsArgs,
@@ -44,16 +35,12 @@ const getAllProducts = (
     .request(Products.GetAll, {
       variables: request,
     })
-    .then(handleErr)
     .then((res) => res.data.products.nodes)
 
-const getCart = (cartId?: string): Promise<Cart> =>
-  client
-    .request(Carts.Get, {
-      variables: { cartId },
-    })
-    .then(handleErr)
-    .then((res) => res.data.cart)
+const getCart = (cartId?: string): Promise<ClientResponse> =>
+  client.request(Carts.Get, {
+    variables: { cartId },
+  })
 
 const getCustomerOrders = (
   accessToken: string,
@@ -66,7 +53,6 @@ const getCustomerOrders = (
         ...request,
       },
     })
-    .then(handleErr)
     .then((res) => res.data)
 
 // POST
@@ -77,7 +63,6 @@ const createCart = (request: CartInput): Promise<CartBase> =>
         cartInput: request,
       },
     })
-    .then(handleErr)
     .then((res) => res.data)
 
 const createCustomer = (
@@ -89,7 +74,6 @@ const createCustomer = (
         input: request,
       },
     })
-    .then(handleErr)
     .then((res) => res.data.customerCreate)
 
 const createCustomerAccessToken = (
@@ -101,21 +85,25 @@ const createCustomerAccessToken = (
         input: request,
       },
     })
-    .then(handleErr)
     .then((res) => res.data)
 
 // PUT
-const updateCartItemQuantity = (
-  request: MutationCartLinesAddArgs,
-): Promise<CartBase> =>
+const addItemToCart = (request: MutationCartLinesAddArgs): Promise<CartBase> =>
   client
-    .request(Carts.UpdateQuantity, {
+    .request(Carts.AddItem, {
       variables: request,
     })
-    .then(handleErr)
-    .then((res) => res.data.cart)
+    .then((res) => res.data)
+
+const updateCartItemQuantity = (
+  request: MutationCartLinesUpdateArgs,
+): Promise<ClientResponse> =>
+  client.request(Carts.UpdateQuantity, {
+    variables: request,
+  })
 
 export default {
+  addItemToCart,
   createCart,
   createCustomer,
   createCustomerAccessToken,

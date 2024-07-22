@@ -18,6 +18,10 @@ query ($first: Int) {
               currencyCode
             }
             quantityAvailable
+            compareAtPrice {
+              amount
+              currencyCode
+            }
             sellingPlanAllocations(first: 10) {
               nodes {
                 sellingPlan {

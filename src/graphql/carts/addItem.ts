@@ -1,12 +1,11 @@
 export default `
-mutation ($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
-  cartLinesUpdate(cartId: $cartId, lines: $lines) {
+mutation ($cartId: ID!, $lines: [CartLineInput!]!) {
+  cartLinesAdd(cartId: $cartId, lines: $lines) {
     cart {
       id
       lines(first: 50) {
         edges {
           node {
-            id
             quantity
             merchandise {
               ... on ProductVariant {
@@ -35,6 +34,10 @@ mutation ($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
         }
       }
     }
+    userErrors {
+      field
+      message
+    }
   }
-}
+} 
 `
