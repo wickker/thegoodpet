@@ -88,13 +88,6 @@ const createCustomerAccessToken = (
     .then((res) => res.data)
 
 // PUT
-// const addItemToCart = (request: MutationCartLinesAddArgs): Promise<CartBase> =>
-//   client
-//     .request(Carts.AddItem, {
-//       variables: request,
-//     })
-//     .then((res) => res.data)
-
 const addItemToCart = (
   request: MutationCartLinesAddArgs,
 ): Promise<ClientResponse> =>
