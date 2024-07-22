@@ -9,9 +9,9 @@ import { formatPriceString, mc } from '@/utils/functions/common'
 
 export default function Cart() {
   const { closeCart, isCartOpen, getCart } = useContext(CartContext)
+  const hasItems = getCart?.isSuccess && getCart.data?.lines.edges.length > 0
 
   const generateCartItems = () => {
-    const hasItems = getCart?.isSuccess && getCart.data.lines.edges.length > 0
     if (hasItems) {
       return getCart?.data?.lines.edges.map((item) => (
         <CartTile item={item} key={item.node.id} />
@@ -19,7 +19,7 @@ export default function Cart() {
     }
     return (
       <div className="flex h-full flex-col items-center justify-center">
-        <p className="mt-2 text-neutral-500">No items yet</p>
+        <p className="mt-2 text-neutral-500">No items yet.</p>
       </div>
     )
   }
@@ -56,18 +56,20 @@ export default function Cart() {
           )}
         </div>
 
-        <div className="w-full bg-[#D6EDDF] p-[15px]">
-          <div className="mb-4 flex justify-between text-secondary">
-            <p>Subtotal</p>
-            <p>
-              ${formatPriceString(getCart?.data?.cost.subtotalAmount.amount)}
-              <span className="pl-1">
-                {getCart?.data?.cost.subtotalAmount.currencyCode}
-              </span>
-            </p>
+        {hasItems && (
+          <div className="w-full bg-[#D6EDDF] p-[15px]">
+            <div className="mb-4 flex justify-between text-secondary">
+              <p>Subtotal</p>
+              <p>
+                ${formatPriceString(getCart?.data?.cost.subtotalAmount.amount)}
+                <span className="pl-1">
+                  {getCart?.data?.cost.subtotalAmount.currencyCode}
+                </span>
+              </p>
+            </div>
+            <Button width="w-full">Checkout</Button>
           </div>
-          <Button width="w-full">Checkout</Button>
-        </div>
+        )}
       </div>
     </>
   )
