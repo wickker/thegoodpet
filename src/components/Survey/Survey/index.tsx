@@ -23,10 +23,12 @@ export default function Survey() {
             : 'your pet'}
         </h1>
 
-        <CurrentQuestion>
-          {/*TODO: Change to dynamic pet overlay component */}
-          {/* <img src="/cat-vector.svg" className="mx-auto w-full max-w-[400px]" /> */}
-        </CurrentQuestion>
+        <div className="pb-20 md:pb-0">
+          <CurrentQuestion>
+            {/*TODO: Change to dynamic pet overlay component */}
+            {/* <img src="/cat-vector.svg" className="mx-auto w-full max-w-[400px]" /> */}
+          </CurrentQuestion>
+        </div>
       </div>
     </>
   )

@@ -14,6 +14,7 @@ import {
   ActivityLevelQuestion,
   AgeQuestion,
   BreedQuestion,
+  FoodGoalQuestion,
   GenderQuestion,
   NameQuestion,
   NeuteredQuestion,
@@ -63,6 +64,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     WeightQuestion,
     WeightGoalQuestion,
     ActivityLevelQuestion,
+    FoodGoalQuestion,
   ]
 
   // Derived state
