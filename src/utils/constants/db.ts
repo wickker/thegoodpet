@@ -28,3 +28,5 @@ export const FOOD_GOALS = [
   'Has a taste he loves',
   'Other',
 ]
+
+export const INGREDIENTS = ['Chicken', 'Beef', 'Duck', 'Lamb']
