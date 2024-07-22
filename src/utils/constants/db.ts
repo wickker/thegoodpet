@@ -40,5 +40,7 @@ export type Ingredient = (typeof Ingredient)[keyof typeof Ingredient]
 
 export const MealDoneness = {
   RAW: 'RAW',
-  GENTLY_COOKED: 'GENTLY_COOKED',
-}
+  GENTLY_COOKED: 'GENTLY COOKED',
+} as const
+
+export type MealDoneness = (typeof MealDoneness)[keyof typeof MealDoneness]

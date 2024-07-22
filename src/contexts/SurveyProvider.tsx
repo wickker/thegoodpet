@@ -18,6 +18,7 @@ import {
   // FoodGoalDetails,   TODO: skip question for now
   // FoodGoalQuestion,  TODO: skip question for now
   GenderQuestion,
+  MealDonenessQuestion,
   NameQuestion,
   NeuteredQuestion,
   OmitIngredientsQuestion,
@@ -71,6 +72,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     // FoodGoalDetails,
     AllergicIngredientsQuestion,
     OmitIngredientsQuestion,
+    MealDonenessQuestion,
   ]
 
   // Derived state
