@@ -20,6 +20,7 @@ import {
   GenderQuestion,
   NameQuestion,
   NeuteredQuestion,
+  OmitIngredientsQuestion,
   PetTypeQuestion,
   WeightGoalQuestion,
   WeightQuestion,
@@ -69,6 +70,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     // FoodGoalQuestion,
     // FoodGoalDetails,
     AllergicIngredientsQuestion,
+    OmitIngredientsQuestion,
   ]
 
   // Derived state

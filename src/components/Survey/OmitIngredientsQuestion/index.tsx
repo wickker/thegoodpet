@@ -11,7 +11,9 @@ import { SurveyContext } from '@/contexts/SurveyProvider'
 import { Ingredient } from '@/utils/constants/db'
 import { capitalize, isZodError } from '@/utils/functions/common'
 
-export default function AllergicIngredientsQuestion() {
+// TODO: clean or combine with allgeric question
+
+export default function OmitIngredientsQuestion() {
   const { nextStep, prevStep, surveyData, setSurveyData } =
     useContext(SurveyContext)
   const [selectedIngredients, _setSelectedIngredients] = useState<
@@ -38,7 +40,7 @@ export default function AllergicIngredientsQuestion() {
       SurveyAllergicOmitIngredients.parse(selectedIngredients)
       setSurveyData((data) => ({
         ...data,
-        allergicIngredients: selectedIngredients,
+        omitIngredients: selectedIngredients,
       }))
       nextStep()
     } catch (e) {
@@ -50,25 +52,33 @@ export default function AllergicIngredientsQuestion() {
   return (
     <>
       <p className="my-5 text-center font-inter">
-        Are there any ingredients {capitalize(surveyData.name || '')} is
-        allergic to?
+        Are there any ingredients you rather {capitalize(surveyData.name || '')}{' '}
+        didn't have?
       </p>
 
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-4 gap-2">
-        {Object.values(Ingredient).map((i) => (
-          <IngredientTile
-            label={i}
-            key={i}
-            onClick={() => setSelectedIngredients(i)}
-            isSelected={selectedIngredients.includes(i)}
-            disabled={
-              (i === Ingredient.BEEF &&
-                selectedIngredients.includes(Ingredient.CHICKEN)) ||
-              (i === Ingredient.CHICKEN &&
-                selectedIngredients.includes(Ingredient.BEEF))
-            }
-          />
-        ))}
+        {Object.values(Ingredient)
+          .filter((i) => !surveyData.allergicIngredients?.includes(i))
+          .map((i) => (
+            <IngredientTile
+              label={i}
+              key={i}
+              onClick={() => setSelectedIngredients(i)}
+              isSelected={selectedIngredients.includes(i)}
+              disabled={
+                (i === Ingredient.BEEF &&
+                  selectedIngredients.includes(Ingredient.CHICKEN)) ||
+                (i === Ingredient.BEEF &&
+                  surveyData.allergicIngredients?.includes(
+                    Ingredient.CHICKEN,
+                  )) ||
+                (i === Ingredient.CHICKEN &&
+                  selectedIngredients.includes(Ingredient.BEEF)) ||
+                (i === Ingredient.CHICKEN &&
+                  surveyData.allergicIngredients?.includes(Ingredient.BEEF))
+              }
+            />
+          ))}
       </div>
 
       <FormErrorMessage message={errorDisplay} />
