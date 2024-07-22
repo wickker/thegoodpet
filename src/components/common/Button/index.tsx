@@ -1,6 +1,6 @@
 'use client'
 
-import { PropsWithChildren, useState } from 'react'
+import { HTMLProps, PropsWithChildren, useState } from 'react'
 import { Loader } from '@/components/common'
 import { mc } from '@/utils/functions/common'
 
@@ -10,7 +10,8 @@ type ButtonProps = {
   disabled?: boolean
   isLoading?: boolean
   minLoadDuration?: number
-}
+  type?: 'submit' | 'reset' | 'button'
+} & HTMLProps<HTMLButtonElement>
 
 export default function Button({
   children,
@@ -19,6 +20,7 @@ export default function Button({
   onClick,
   isLoading = false,
   minLoadDuration = 0,
+  ...props
 }: ButtonProps & PropsWithChildren) {
   const [isLoadingLock, setIsLoadingLock] = useState(false)
 
@@ -48,6 +50,7 @@ export default function Button({
         { 'cursor-wait': isLoading || isLoadingLock },
       )}
       onClick={handleClick}
+      {...props}
     >
       {(isLoading || isLoadingLock) && <Loader size="sm" />}
       {children}

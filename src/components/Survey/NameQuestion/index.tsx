@@ -2,7 +2,8 @@
 
 import { ChangeEvent, useContext, useState } from 'react'
 import { SurveyPetName } from '@/@types/survey'
-import { FormErrorMessage, SurveyFooter } from '@/components/Survey'
+import { FormErrorMessage } from '@/components/common'
+import { SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { Gender } from '@/utils/constants/db'
 import { isZodError } from '@/utils/functions/common'

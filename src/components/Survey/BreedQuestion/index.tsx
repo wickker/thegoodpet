@@ -2,7 +2,8 @@
 
 import { ChangeEvent, useContext, useState } from 'react'
 import { SurveyBreed } from '@/@types/survey'
-import { FormErrorMessage, SurveyFooter } from '@/components/Survey'
+import { FormErrorMessage } from '@/components/common'
+import { SurveyFooter } from '@/components/Survey'
 import BreedDropdown from '@/components/Survey/BreedQuestion/BreedDropdown'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { Gender } from '@/utils/constants/db'

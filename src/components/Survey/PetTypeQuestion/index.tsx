@@ -2,7 +2,8 @@
 
 import { useContext, useState } from 'react'
 import { SurveyPetType } from '@/@types/survey'
-import { FormErrorMessage, OptionCard, SurveyFooter } from '@/components/Survey'
+import { FormErrorMessage } from '@/components/common'
+import { OptionCard, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { PetType } from '@/utils/constants/db'
 import { isZodError } from '@/utils/functions/common'
