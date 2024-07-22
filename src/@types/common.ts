@@ -8,3 +8,9 @@ export type BaseError = {
 export type ServerActionError<T> = {
   error: ZodFormattedError<T> | null
 }
+
+export type Meat = {
+  grams: number
+  type: string // TODO: Arix update type to meat
+  quantity: number
+}

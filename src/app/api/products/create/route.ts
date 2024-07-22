@@ -1,3 +1,4 @@
+import { Meat } from '@/@types/common'
 import client from '@/service/api/shopifyClient'
 
 export async function POST(request: Request) {
@@ -11,11 +12,15 @@ export async function POST(request: Request) {
       )
     }
 
+    if (!name) {
+      return Response.json({ error: 'Name is required' }, { status: 400 })
+    }
+
     // Prepare product details
     const productData = {
       product: {
         title: `${name}'s Tailor-made meals`,
-        body_html: `<strong>Tailor-made meals with the following meats:</strong><br/>${meats.map((meat: { grams: number; type: string; quantity: number }) => `${meat.grams} grams of ${meat.type}, ${meat.quantity} packs`).join('<br/>')}`,
+        body_html: `<strong>Tailor-made meals with the following meats:</strong><br/>${meats.map((meat: Meat) => `${meat.grams} grams of ${meat.type}, ${meat.quantity} packs`).join('<br/>')}`,
         variants: [
           {
             price: 50,
