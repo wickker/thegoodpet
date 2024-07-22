@@ -1,3 +1,5 @@
+import { PetType } from '@/utils/constants/db'
+
 // Define activity ratios for dogs based on age, neutered status, and activity
 const getDogActivityRatio = (
   age: number,
@@ -81,9 +83,9 @@ export async function POST(request: Request) {
 
     // Get the appropriate ratio
     let ratio
-    if (petType === 'DOG') {
+    if (petType === PetType.DOG) {
       ratio = getDogActivityRatio(age, isNeutered, weightGoal, activityLevel)
-    } else if (petType === 'CAT') {
+    } else if (petType === PetType.CAT) {
       ratio = getCatActivityRatio(age, isNeutered, weightGoal, activityLevel)
     } else {
       return Response.json({ error: 'Invalid pet type' }, { status: 400 })
