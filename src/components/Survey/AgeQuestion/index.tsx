@@ -56,7 +56,7 @@ export default function AgeQuestion() {
         <div className="flex items-center justify-end gap-2">
           <input
             type="number"
-            className="block w-12 rounded-lg border px-3 py-2 outline-secondary"
+            className="block w-16 rounded-lg border px-3 py-2 outline-secondary"
             value={age.year}
             min={0}
             onChange={setYear}
@@ -66,7 +66,7 @@ export default function AgeQuestion() {
         <div className="flex items-center gap-2">
           <input
             type="number"
-            className="block w-12 rounded-lg border px-3 py-2 outline-secondary"
+            className="block w-16 rounded-lg border px-3 py-2 outline-secondary"
             value={age.month}
             min={0}
             max={12}
