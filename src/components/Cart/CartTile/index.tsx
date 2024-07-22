@@ -1,6 +1,10 @@
+import { useContext } from 'react'
 import { BaseCartLineEdge } from '@shopify/hydrogen-react/storefront-api-types'
 import { BsTrash } from 'react-icons/bs'
 import { QuantityToggleButton } from '@/components/Cart'
+import { Loader } from '@/components/common'
+import { CartContext } from '@/contexts/CartProvider'
+import useCart from '@/hooks/query/useCart'
 import { formatPriceString } from '@/utils/functions/common'
 
 type CartTileProps = {
@@ -8,6 +12,12 @@ type CartTileProps = {
 }
 
 export default function CartTile({ item }: CartTileProps) {
+  const { getCart } = useContext(CartContext)
+  const { useUpdateCartQuantityMutation } = useCart()
+  const updateCartQuantity = useUpdateCartQuantityMutation(() =>
+    getCart?.refetch(),
+  )
+
   const getOriginalAndDiscountedPrice = (item: BaseCartLineEdge) => {
     const quantity = item.node.quantity
     const compareAtPrice = item.node.merchandise.compareAtPrice
@@ -42,6 +52,16 @@ export default function CartTile({ item }: CartTileProps) {
   }
 
   const { discountedPrice, originalPrice } = getOriginalAndDiscountedPrice(item)
+
+  const handleDeleteItem = (cartLineId: string) =>
+    updateCartQuantity.mutate({
+      lines: [
+        {
+          id: cartLineId,
+          quantity: 0,
+        },
+      ],
+    })
 
   return (
     <div className="border-b border-b-[#E3E3E3] px-[15px] py-2.5">
@@ -81,9 +101,16 @@ export default function CartTile({ item }: CartTileProps) {
               cartLineId={item.node.id}
               quantity={item.node.quantity}
             />
-            {/* TODO: Add delete item functionality */}
-            <button className="text-[18px]">
-              <BsTrash />
+            <button
+              className="text-[18px]"
+              onClick={() => handleDeleteItem(item.node.id)}
+              disabled={updateCartQuantity.isPending}
+            >
+              {updateCartQuantity.isPending ? (
+                <Loader size="sm" />
+              ) : (
+                <BsTrash />
+              )}
             </button>
           </div>
         </div>
