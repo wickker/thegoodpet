@@ -27,7 +27,7 @@ export default function QuantityToggleButton({
     getCart?.refetch()
   }
 
-  const mutateCartQuantity = (newQuantity: number) => {
+  const mutateCartQuantity = (newQuantity: number) =>
     updateCartQuantity.mutate({
       lines: [
         {
@@ -36,7 +36,6 @@ export default function QuantityToggleButton({
         },
       ],
     })
-  }
 
   const handleIncreaseQuantity = () => {
     setButtonClicked('add')
@@ -45,7 +44,8 @@ export default function QuantityToggleButton({
 
   const handleDecreaseQuantity = () => {
     setButtonClicked('minus')
-    mutateCartQuantity(quantity - 1)
+    const qty = quantity - 1 < 0 ? 0 : quantity - 1
+    mutateCartQuantity(qty)
   }
 
   return (

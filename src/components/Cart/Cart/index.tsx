@@ -9,17 +9,17 @@ import { formatPriceString, mc } from '@/utils/functions/common'
 
 export default function Cart() {
   const { closeCart, isCartOpen, getCart } = useContext(CartContext)
-  const hasItems = getCart?.isSuccess && getCart.data?.lines.edges.length > 0
+  const hasItems = getCart?.isSuccess && getCart?.data?.lines.edges.length > 0
 
   const generateCartItems = () => {
     if (hasItems) {
-      return getCart?.data?.lines.edges.map((item) => (
+      return getCart.data.lines.edges.map((item) => (
         <CartTile item={item} key={item.node.id} />
       ))
     }
     return (
       <div className="flex h-full flex-col items-center justify-center">
-        <p className="mt-2 text-neutral-500">No items yet.</p>
+        <p className="mt-2 text-neutral-500">No items yet</p>
       </div>
     )
   }
@@ -61,9 +61,9 @@ export default function Cart() {
             <div className="mb-4 flex justify-between text-secondary">
               <p>Subtotal</p>
               <p>
-                ${formatPriceString(getCart?.data?.cost.subtotalAmount.amount)}
+                ${formatPriceString(getCart.data.cost.subtotalAmount.amount)}
                 <span className="pl-1">
-                  {getCart?.data?.cost.subtotalAmount.currencyCode}
+                  {getCart.data.cost.subtotalAmount.currencyCode}
                 </span>
               </p>
             </div>

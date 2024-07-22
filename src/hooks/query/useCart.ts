@@ -5,10 +5,10 @@ import storefrontApi from '@/service/api/storefrontApi'
 import theGoodPetApi from '@/service/api/theGoodPetApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKeys'
 
-// TODO: Refactor all to proxy pass
 const useCart = () => {
   const useCreateCartMutation = (onSuccess?: (data: Cart) => void) =>
     useMutation({
+      // TODO: Refactor to proxy pass
       mutationFn: storefrontApi.createCart,
       onSuccess,
     })
@@ -20,16 +20,18 @@ const useCart = () => {
     })
 
   const useUpdateCartQuantityMutation = (
-    onSuccess?: (data: CartBase) => void,
+    onSuccess?: (data: CartBase | null) => void,
   ) =>
     useMutation({
       mutationFn: theGoodPetApi.updateCartItemQuantity,
       onSuccess,
     })
 
-  const useAddItemToCartMutation = (onSuccess?: (data: CartBase) => void) =>
+  const useAddItemToCartMutation = (
+    onSuccess?: (data: CartBase | null) => void,
+  ) =>
     useMutation({
-      mutationFn: storefrontApi.addItemToCart,
+      mutationFn: theGoodPetApi.addItemToCart,
       onSuccess,
     })
 
