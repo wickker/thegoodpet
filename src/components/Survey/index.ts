@@ -1,3 +1,4 @@
+export { default as ActivityLevelQuestion } from './ActivityLevelQuestion'
 export { default as AgeQuestion } from './AgeQuestion'
 export { default as BreedQuestion } from './BreedQuestion'
 export { default as FormErrorMessage } from './FormErrorMessage'
