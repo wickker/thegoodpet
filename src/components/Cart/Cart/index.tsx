@@ -19,7 +19,7 @@ export default function Cart() {
     }
     return (
       <div className="flex h-full flex-col items-center justify-center">
-        <p className="mt-2 text-neutral-500">No items yet</p>
+        <p className="mt-2 text-neutral-500">No items yet.</p>
       </div>
     )
   }
