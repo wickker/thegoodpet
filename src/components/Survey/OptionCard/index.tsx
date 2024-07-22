@@ -1,9 +1,8 @@
 import { capitalize, mc } from '@/utils/functions/common'
 
-type OptionCardProps = {
-  isSelected: boolean
+type OptionCardProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  isSelected?: boolean
   label: string
-  onClick: () => void
 }
 
 export default function OptionCard({
@@ -14,9 +13,9 @@ export default function OptionCard({
   return (
     <button
       className={mc(
-        'grid h-44 w-full max-w-36 items-center justify-center place-self-center rounded-lg bg-white transition-colors',
-        'hover:bg-secondary hover:text-white',
-        isSelected && 'bg-secondary text-white',
+        'grid h-44 w-full max-w-36 items-center justify-center place-self-center rounded-lg bg-white transition-all md:active:scale-90',
+        isSelected &&
+          'bg-secondary text-white active:scale-90 md:active:scale-100',
       )}
       {...rest}
     >
