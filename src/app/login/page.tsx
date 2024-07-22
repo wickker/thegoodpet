@@ -30,7 +30,7 @@ export default function LoginPage() {
           />
           <FormErrorMessage
             message={state.error?.email && state.error.email._errors[0]}
-            styles="text-left mt-2 mb-3"
+            className="mb-3 mt-2 text-left"
           />
 
           <p className="mb-2.5 text-neutral-900">Password</p>
