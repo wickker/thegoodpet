@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useFormState } from 'react-dom'
 import { signUp } from './actions'
 import { ServerActionError } from '@/@types/common'
@@ -11,6 +13,13 @@ export default function AccountSetupPage() {
     ServerActionError<SignUpForm>,
     FormData
   >(signUp, { error: null })
+  const searchParams = useSearchParams()
+  const [origin, setOrigin] = useState('')
+
+  useEffect(() => {
+    const origin = searchParams.get('origin') || ''
+    setOrigin(origin)
+  }, [searchParams])
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
@@ -101,6 +110,8 @@ export default function AccountSetupPage() {
             }
             className="my-1 text-left"
           />
+
+          <input name="origin" value={origin} hidden />
 
           <Button width="w-full mb-10" type="submit">
             Submit

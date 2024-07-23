@@ -13,6 +13,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     verifyPassword: form.get('verifyPassword'),
     countryCode: form.get('countryCode'),
     mobileNumber: form.get('mobileNumber'),
+    origin: form.get('origin'),
   }
 
   try {
