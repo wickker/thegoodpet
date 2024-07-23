@@ -11,12 +11,19 @@ import {
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { SurveyData } from '@/@types/survey'
 import {
+  ActivityLevelQuestion,
   AgeQuestion,
+  AllergicIngredientsQuestion,
   BreedQuestion,
+  // FoodGoalDetails,   TODO: skip question for now
+  // FoodGoalQuestion,  TODO: skip question for now
   GenderQuestion,
+  MealDonenessQuestion,
   NameQuestion,
   NeuteredQuestion,
+  OmitIngredientsQuestion,
   PetTypeQuestion,
+  WeightGoalQuestion,
   WeightQuestion,
 } from '@/components/Survey'
 
@@ -48,7 +55,9 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
   const searchParams = useSearchParams()
   const parsedStep = parseInt(searchParams.get('step') || '0')
   const [currentStep, setCurrentStep] = useState<number>(parsedStep)
-  const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({})
+  const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({
+    activityLevel: 3,
+  })
   const surveyComponents = [
     PetTypeQuestion,
     GenderQuestion,
@@ -57,6 +66,13 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     NeuteredQuestion,
     BreedQuestion,
     WeightQuestion,
+    WeightGoalQuestion,
+    ActivityLevelQuestion,
+    // FoodGoalQuestion,
+    // FoodGoalDetails,
+    AllergicIngredientsQuestion,
+    OmitIngredientsQuestion,
+    MealDonenessQuestion,
   ]
 
   // Derived state

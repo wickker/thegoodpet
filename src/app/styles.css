@@ -17,3 +17,31 @@
   align-items: center;
   position: absolute;
 }
+
+.slider {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  @apply outline-secondary;
+  @apply bg-neutral-300;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 100vh;
+  cursor: pointer;
+  @apply bg-primary;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 100vh;
+  cursor: pointer;
+  @apply bg-primary;
+}
