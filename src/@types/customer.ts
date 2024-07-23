@@ -14,16 +14,13 @@ export const SignUpFormSchema = z
   .object({
     firstName: z
       .string()
-      .min(1, { message: 'First name must be a minimum of 1 character' })
+      .min(1, { message: 'First name is required' })
       .max(191, {
         message: 'First name must be a maximum of 191 characters',
       }),
-    lastName: z
-      .string()
-      .min(1, { message: 'Last name must be a minimum of 1 character' })
-      .max(191, {
-        message: 'Last name must be a maximum of 191 characters',
-      }),
+    lastName: z.string().min(1, { message: 'Last name is required' }).max(191, {
+      message: 'Last name must be a maximum of 191 characters',
+    }),
     verifyPassword: z
       .string()
       .min(8, { message: 'Password must be a minimum of 8 characters' })

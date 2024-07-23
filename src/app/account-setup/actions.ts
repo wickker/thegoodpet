@@ -19,8 +19,10 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   try {
     SignUpFormSchema.parse(data)
   } catch (err) {
-    if (isZodError(err)) return { error: err.format() }
+    if (isZodError(err)) return { zodError: err.format() }
   }
 
-  return { error: null }
+  // TODO:
+
+  return { zodError: null }
 }

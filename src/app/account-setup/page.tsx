@@ -12,7 +12,7 @@ export default function AccountSetupPage() {
   const [state, formAction] = useFormState<
     ServerActionError<SignUpForm>,
     FormData
-  >(signUp, { error: null })
+  >(signUp, { zodError: null })
   const searchParams = useSearchParams()
   const [origin, setOrigin] = useState('')
 
@@ -37,7 +37,7 @@ export default function AccountSetupPage() {
             className="block w-full rounded-lg border px-3 py-2 outline-secondary"
           />
           <FormErrorMessage
-            message={state.error?.email && state.error.email._errors[0]}
+            message={state.zodError?.email && state.zodError.email._errors[0]}
             className="my-1 text-left"
           />
 
@@ -48,7 +48,9 @@ export default function AccountSetupPage() {
             className="block w-full rounded-lg border px-3 py-2 outline-secondary"
           />
           <FormErrorMessage
-            message={state.error?.firstName && state.error.firstName._errors[0]}
+            message={
+              state.zodError?.firstName && state.zodError.firstName._errors[0]
+            }
             className="my-1 text-left"
           />
 
@@ -59,7 +61,9 @@ export default function AccountSetupPage() {
             className="block w-full rounded-lg border px-3 py-2 outline-secondary"
           />
           <FormErrorMessage
-            message={state.error?.lastName && state.error.lastName._errors[0]}
+            message={
+              state.zodError?.lastName && state.zodError.lastName._errors[0]
+            }
             className="my-1 text-left"
           />
 
@@ -70,7 +74,9 @@ export default function AccountSetupPage() {
             className="block w-full rounded-lg border px-3 py-2 outline-secondary"
           />
           <FormErrorMessage
-            message={state.error?.password && state.error.password._errors[0]}
+            message={
+              state.zodError?.password && state.zodError.password._errors[0]
+            }
             className="my-1 text-left"
           />
 
@@ -82,8 +88,8 @@ export default function AccountSetupPage() {
           />
           <FormErrorMessage
             message={
-              state.error?.verifyPassword &&
-              state.error.verifyPassword._errors[0]
+              state.zodError?.verifyPassword &&
+              state.zodError.verifyPassword._errors[0]
             }
             className="my-1 text-left"
           />
@@ -104,9 +110,10 @@ export default function AccountSetupPage() {
           </div>
           <FormErrorMessage
             message={
-              (state.error?.mobileNumber &&
-                state.error.mobileNumber._errors[0]) ||
-              (state.error?.countryCode && state.error.countryCode._errors[0])
+              (state.zodError?.mobileNumber &&
+                state.zodError.mobileNumber._errors[0]) ||
+              (state.zodError?.countryCode &&
+                state.zodError.countryCode._errors[0])
             }
             className="my-1 text-left"
           />
