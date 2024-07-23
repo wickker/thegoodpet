@@ -2,7 +2,8 @@
 
 import { useContext, useState } from 'react'
 import { SurveyNeutered } from '@/@types/survey'
-import { FormErrorMessage, OptionCard, SurveyFooter } from '@/components/Survey'
+import { FormErrorMessage } from '@/components/common'
+import { OptionCard, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { capitalize, isZodError } from '@/utils/functions/common'
 
