@@ -2,7 +2,8 @@
 
 import { ChangeEvent, useContext, useState } from 'react'
 import { SurveyFoodGoal } from '@/@types/survey'
-import { FormErrorMessage, SurveyFooter } from '@/components/Survey'
+import { FormErrorMessage } from '@/components/common'
+import { SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { FOOD_GOALS } from '@/utils/constants/db'
 import { capitalize, isZodError } from '@/utils/functions/common'

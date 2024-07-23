@@ -2,11 +2,8 @@
 
 import { useContext, useState } from 'react'
 import { SurveyAllergicOmitIngredients } from '@/@types/survey'
-import {
-  FormErrorMessage,
-  IngredientTile,
-  SurveyFooter,
-} from '@/components/Survey'
+import { FormErrorMessage } from '@/components/common'
+import { IngredientTile, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { Ingredient } from '@/utils/constants/db'
 import { capitalize, isZodError } from '@/utils/functions/common'
@@ -52,8 +49,8 @@ export default function OmitIngredientsQuestion() {
   return (
     <>
       <p className="my-5 text-center font-inter">
-        Are there any ingredients you rather {capitalize(surveyData.name || '')}{' '}
-        didn't have?
+        Are there any ingredients you would rather{' '}
+        {capitalize(surveyData.name || '')} didn't have?
       </p>
 
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-4 gap-2">

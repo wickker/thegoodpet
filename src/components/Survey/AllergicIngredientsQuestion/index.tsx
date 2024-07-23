@@ -2,11 +2,8 @@
 
 import { useContext, useState } from 'react'
 import { SurveyAllergicOmitIngredients } from '@/@types/survey'
-import {
-  FormErrorMessage,
-  IngredientTile,
-  SurveyFooter,
-} from '@/components/Survey'
+import { FormErrorMessage } from '@/components/common'
+import { IngredientTile, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { Ingredient } from '@/utils/constants/db'
 import { capitalize, isZodError } from '@/utils/functions/common'
