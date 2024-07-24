@@ -1,4 +1,7 @@
+import { NeonDbError } from '@neondatabase/serverless'
 import { sql } from '@/database'
+
+// TODO: Add logging
 
 const create = async (
   email: string,
@@ -23,6 +26,20 @@ WHERE (email = ${email} OR mobile_number = ${phone})
 AND deleted_at IS NULL;
 `
 
+const findByEmail = async (email: string) => {
+  try {
+    const data = await sql`
+    SELECT id, shopify_cart_id, password_hash
+    FROM customers
+    WHERE email = ${email}
+    AND deleted_at IS NULL;
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
 const updateShopifyAccessToken = async (
   accessToken: string,
   expiresAt: string,
@@ -38,6 +55,7 @@ WHERE id = ${customerId};
 
 const Customers = {
   create,
+  findByEmail,
   findByEmailOrPhone,
   updateShopifyAccessToken,
 }

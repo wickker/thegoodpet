@@ -46,12 +46,19 @@ export default function LoginPage() {
             className="mb-3 mt-2 text-left"
           />
 
-          <p className="mb-16 text-sm text-neutral-900">
+          <p className="mb-8 text-sm text-neutral-900">
             Don't have an account?{' '}
             <Suspense>
               <SignUpLink />
             </Suspense>
           </p>
+
+          <FormErrorMessage
+            message={
+              state.error && `${state.error.title}: ${state.error.message}`
+            }
+            className="mb-8 mt-0"
+          />
 
           <ButtonSubmitFormAction className="w-full">
             Login
