@@ -11,6 +11,10 @@ export const SurveyPetName = z
   .string({ message: 'Pet name is required' })
   .min(1, { message: 'Pet name is required' })
 
+export const SurveyAgeYear = z.number()
+
+export const SurveyAgeMonth = z.number()
+
 export const SurveyDOB = z
   .date()
   .max(new Date(), { message: 'Age is required' })
@@ -55,6 +59,8 @@ export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
   gender: SurveyGender,
   name: SurveyPetName,
+  ageYear: SurveyAgeYear,
+  ageMonth: SurveyAgeMonth,
   dob: SurveyDOB,
   isNeutered: SurveyNeutered,
   breed: SurveyBreed,

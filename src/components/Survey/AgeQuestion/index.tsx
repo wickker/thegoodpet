@@ -11,34 +11,33 @@ import { capitalize, isZodError } from '@/utils/functions/common'
 export default function AgeQuestion() {
   const { nextStep, prevStep, surveyData, setSurveyData } =
     useContext(SurveyContext)
-  const [age, setAge] = useState({
-    year: 0,
-    month: 0,
-  })
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetAge = (
     value: SetStateAction<{
-      year: number
-      month: number
+      ageYear?: number
+      ageMonth?: number
     }>,
   ) => {
-    setAge(value)
+    setSurveyData(value)
     setErrorDisplay('')
   }
 
   const setYear = (e: ChangeEvent<HTMLInputElement>) =>
-    handleSetAge((a) => ({ ...a, year: parseInt(e.target.value) || 0 }))
+    handleSetAge((a) => ({ ...a, ageYear: parseInt(e.target.value) || 0 }))
 
   const setMonth = (e: ChangeEvent<HTMLInputElement>) =>
     handleSetAge((a) => ({
       ...a,
-      month: Math.min(parseInt(e.target.value) | 0, 12),
+      ageMonth: Math.min(parseInt(e.target.value) | 0, 12),
     }))
 
   const handleNext = () => {
     try {
-      const dob = DateTime.now().minus({ months: age.month, years: age.year })
+      const dob = DateTime.now().minus({
+        months: surveyData.ageMonth,
+        years: surveyData.ageYear,
+      })
       SurveyDOB.parse(dob.toJSDate())
       setSurveyData((survey) => ({ ...survey, dob: dob.toJSDate() }))
       nextStep()
@@ -58,7 +57,7 @@ export default function AgeQuestion() {
           <input
             type="number"
             className="block w-16 rounded-lg border px-3 py-2 outline-secondary"
-            value={age.year}
+            value={surveyData.ageYear}
             min={0}
             onChange={setYear}
           />
@@ -68,7 +67,7 @@ export default function AgeQuestion() {
           <input
             type="number"
             className="block w-16 rounded-lg border px-3 py-2 outline-secondary"
-            value={age.month}
+            value={surveyData.ageMonth}
             min={0}
             max={12}
             onChange={setMonth}

@@ -57,6 +57,8 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
   const parsedStep = parseInt(searchParams.get('step') || '0')
   const [currentStep, setCurrentStep] = useState<number>(parsedStep)
   const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({
+    ageYear: 0,
+    ageMonth: 0,
     activityLevel: 3,
     acceptsMarketing: true,
   })
