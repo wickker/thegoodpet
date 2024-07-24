@@ -5,11 +5,17 @@ import {
   CustomerCreatePayload,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { ServerActionError } from '@/@types/common'
 import { SignUpForm, SignUpFormSchema } from '@/@types/customer'
+import Config from '@/configs'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
-import { SHOPIFY_CART_ID_COOKIE } from '@/utils/constants/cookies'
+import {
+  SHOPIFY_CART_ID_COOKIE,
+  SHOPIFY_CUSTOMER_TOKEN,
+  SHOPIFY_CUSTOMER_EMAIL,
+} from '@/utils/constants/cookies'
 import { isZodError } from '@/utils/functions/common'
 import { getPasswordHash } from '@/utils/functions/password'
 
@@ -131,6 +137,23 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   )
 
   // set auth cookie
+  const isLocal = Config.ENV === 'local'
+  cookieStore.set(
+    SHOPIFY_CUSTOMER_TOKEN,
+    shopifyToken.customerAccessToken.accessToken,
+    {
+      httpOnly: true,
+      path: '/',
+      secure: !isLocal,
+      expires: new Date(shopifyToken.customerAccessToken.expiresAt),
+    },
+  )
+  cookieStore.set(SHOPIFY_CUSTOMER_EMAIL, data.email, {
+    httpOnly: true,
+    path: '/',
+    secure: !isLocal,
+    expires: new Date(shopifyToken.customerAccessToken.expiresAt),
+  })
 
-  return { zodError: null }
+  redirect('/')
 }
