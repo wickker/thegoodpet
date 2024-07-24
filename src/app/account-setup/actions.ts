@@ -16,8 +16,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     origin: form.get('origin'),
   }
 
-  console.log(data)
-
   try {
     SignUpFormSchema.parse(data)
   } catch (err) {
