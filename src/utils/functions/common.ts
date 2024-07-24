@@ -9,11 +9,10 @@ export const capitalize = (str: string) => {
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }
 
-export function isZodError(err: unknown): err is ZodError {
-  return Boolean(
+export const isZodError = (err: unknown): err is ZodError =>
+  Boolean(
     err && (err instanceof ZodError || (err as ZodError).name === 'ZodError'),
   )
-}
 
 export const mc = (...inputs: Array<ClassValue>) => twMerge(clsx(inputs))
 
