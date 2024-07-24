@@ -6,8 +6,8 @@ import { isZodError } from '@/utils/functions/common'
 
 export async function login(_: ServerActionError<LoginForm>, form: FormData) {
   const data = {
-    email: form.get('email'),
-    password: form.get('password'),
+    email: form.get('email')?.toString() || '',
+    password: form.get('password')?.toString() || '',
   }
 
   try {

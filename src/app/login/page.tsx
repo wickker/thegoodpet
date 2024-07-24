@@ -53,7 +53,7 @@ export default function LoginPage() {
             </Suspense>
           </p>
 
-          <Button width="w-full" type="submit">
+          <Button className="w-full" type="submit">
             Login
           </Button>
         </form>

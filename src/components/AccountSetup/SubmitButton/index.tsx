@@ -9,7 +9,7 @@ export default function SubmitButton({ children }: PropsWithChildren) {
 
   return (
     <Button
-      width="w-full mb-10"
+      className="mb-10 w-full"
       type="submit"
       isLoading={pending}
       disabled={pending}

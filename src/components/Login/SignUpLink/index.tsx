@@ -10,11 +10,15 @@ export default function SignUpLink() {
   const searchParam = origin ? `?origin=${origin}` : ''
 
   return (
-    <Link
-      href={`${Route.ACCOUNT_SETUP}${searchParam}`}
-      className="text-primary underline"
-    >
-      Sign up
-    </Link>
+    <>
+      <Link
+        href={`${Route.ACCOUNT_SETUP}${searchParam}`}
+        className="text-primary underline"
+      >
+        Sign up
+      </Link>
+
+      <input value={origin} name="origin" hidden readOnly />
+    </>
   )
 }
