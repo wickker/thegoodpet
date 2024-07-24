@@ -17,6 +17,7 @@ import {
   SHOPIFY_CUSTOMER_TOKEN,
   SHOPIFY_CUSTOMER_EMAIL,
 } from '@/utils/constants/cookies'
+import { Route } from '@/utils/constants/routes'
 import { isZodError } from '@/utils/functions/common'
 import { getPasswordHash } from '@/utils/functions/password'
 
@@ -37,8 +38,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   } catch (err) {
     if (isZodError(err)) return { zodError: err.format() }
   }
-
-  console.log('DATA : ', data)
 
   const cookieStore = cookies()
   const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
@@ -187,12 +186,11 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       }
     }
 
-    console.log('CART : ', shopifyCart)
-
+    // redirect to Shopify checkout link if customer is coming from the checkout page
     if (data.origin === 'checkout') {
       redirect(shopifyCart.cart.checkoutUrl)
     }
   }
 
-  redirect('/')
+  redirect(Route.HOME)
 }

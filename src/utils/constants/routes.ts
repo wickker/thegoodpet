@@ -1,6 +1,9 @@
 export const Route = {
-  SHOP: '/',
+  ACCOUNT_SETUP: '/account-setup',
+  HOME: '/',
   LEARN: '/',
+  LOGIN: '/login',
+  SHOP: '/',
   SUBSCRIBE: '/',
 } as const
 

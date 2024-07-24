@@ -1,6 +1,12 @@
+'use client'
+
 import { Button } from '@/components/common'
+import useCart from '@/hooks/query/useCart'
 
 export default function HeroBanner() {
+  const { useCreateCartMutation } = useCart()
+  const createCart = useCreateCartMutation((d) => console.log('Cart : ', d))
+
   return (
     <div className="bg-background">
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 px-[15px] md:grid-cols-2 md:gap-x-8">
@@ -11,7 +17,21 @@ export default function HeroBanner() {
             Tailored raw meals for your pet
           </h1>
           <p className="text-lg">Human Grade. Nutrient Dense. Well-Balanced.</p>
-          <Button>Customise now!</Button>
+          <Button
+            onClick={() =>
+              createCart.mutate({
+                lines: [
+                  {
+                    quantity: 1,
+                    merchandiseId:
+                      'gid://shopify/ProductVariant/43447200776249',
+                  },
+                ],
+              })
+            }
+          >
+            Customise now!
+          </Button>
         </div>
       </div>
     </div>
