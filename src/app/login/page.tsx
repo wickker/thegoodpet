@@ -47,8 +47,8 @@ export default function LoginPage() {
           />
 
           <p className="mb-16 text-sm text-neutral-900">
-            Don't have an account? {/* TODO: Link this to account setup page */}
-            <Link href={Route.LEARN} className="text-primary underline">
+            Don't have an account?{' '}
+            <Link href={Route.ACCOUNT_SETUP} className="text-primary underline">
               Sign up
             </Link>
           </p>
