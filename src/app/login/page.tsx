@@ -1,12 +1,12 @@
 'use client'
 
-import Link from 'next/link'
+import { Suspense } from 'react'
 import { useFormState } from 'react-dom'
 import { login } from './actions'
 import { ServerActionError } from '@/@types/common'
 import { LoginForm } from '@/@types/customer'
 import { Button, FormErrorMessage } from '@/components/common'
-import { Route } from '@/utils/constants/routes'
+import { SignUpLink } from '@/components/Login'
 
 export default function LoginPage() {
   const [state, formAction] = useFormState<
@@ -48,9 +48,9 @@ export default function LoginPage() {
 
           <p className="mb-16 text-sm text-neutral-900">
             Don't have an account?{' '}
-            <Link href={Route.ACCOUNT_SETUP} className="text-primary underline">
-              Sign up
-            </Link>
+            <Suspense>
+              <SignUpLink />
+            </Suspense>
           </p>
 
           <Button width="w-full" type="submit">
