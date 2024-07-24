@@ -6,5 +6,6 @@ export type BaseError = {
 }
 
 export type ServerActionError<T> = {
-  error: ZodFormattedError<T> | null
+  zodError: ZodFormattedError<T> | null
+  error?: BaseError
 }

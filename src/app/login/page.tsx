@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [state, formAction] = useFormState<
     ServerActionError<LoginForm>,
     FormData
-  >(login, { error: null })
+  >(login, { zodError: null })
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
@@ -29,7 +29,7 @@ export default function LoginPage() {
             className="block w-full rounded-lg border px-3 py-2 outline-secondary"
           />
           <FormErrorMessage
-            message={state.error?.email && state.error.email._errors[0]}
+            message={state.zodError?.email && state.zodError.email._errors[0]}
             className="mb-3 mt-2 text-left"
           />
 
@@ -40,7 +40,9 @@ export default function LoginPage() {
             className="block w-full rounded-lg border px-3 py-2 outline-secondary"
           />
           <FormErrorMessage
-            message={state.error?.password && state.error.password._errors[0]}
+            message={
+              state.zodError?.password && state.zodError.password._errors[0]
+            }
             className="mb-3 mt-2 text-left"
           />
 

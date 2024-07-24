@@ -13,7 +13,7 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
   try {
     LoginFormSchema.parse(data)
   } catch (err) {
-    if (isZodError(err)) return { error: err.format() }
+    if (isZodError(err)) return { zodError: err.format() }
   }
 
   // TODO:
@@ -23,5 +23,5 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
   // Set auth cookie
   // Redirect to home page
 
-  return { error: null }
+  return { zodError: null }
 }
