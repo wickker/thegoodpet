@@ -48,8 +48,18 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   const phone = `${data.countryCode}${data.mobileNumber}`
 
   // create customer in db if mobile number and email does not exist
-  const rows = await Customers.findByEmailOrPhone(data.email, phone)
-  if (rows.length > 0) {
+  const { data: existingCustomers, error: selectErr } =
+    await Customers.findByEmailOrPhone(data.email, phone)
+  if (selectErr || !existingCustomers) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to find db customers',
+        message: selectErr,
+      },
+    }
+  }
+  if (existingCustomers.length > 0) {
     return {
       zodError: {
         _errors: [],
@@ -62,7 +72,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       },
     }
   }
-  const [{ id: customerId }] = await Customers.create(
+  const { data: newCustomer, error: createErr } = await Customers.create(
     data.email,
     data.firstName,
     data.lastName,
@@ -70,6 +80,16 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     phone,
     cartId,
   )
+  if (createErr || !newCustomer || newCustomer.length === 0) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to create db customer',
+        message: createErr,
+      },
+    }
+  }
+  const customerId = newCustomer[0].id
 
   // create shopify customer
   const customerRes = await storefrontApi.createCustomer({
@@ -131,11 +151,20 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   }
 
   // update shopify fields in db
-  await Customers.updateShopifyAccessToken(
+  const { error: updateErr } = await Customers.updateShopifyAccessToken(
     shopifyToken.customerAccessToken.accessToken,
     shopifyToken.customerAccessToken.expiresAt,
     customerId,
   )
+  if (updateErr) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to update db customer',
+        message: updateErr,
+      },
+    }
+  }
 
   // set auth cookies
   const expiryDate = new Date(shopifyToken.customerAccessToken.expiresAt)

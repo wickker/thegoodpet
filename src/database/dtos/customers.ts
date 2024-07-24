@@ -10,21 +10,33 @@ const create = async (
   passwordHash: string,
   mobileNumber: string,
   cartId: string,
-) =>
-  await sql`
-INSERT INTO customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
-VALUES
-  (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, true)
-RETURNING id;  
-`
+) => {
+  try {
+    const data = await sql`
+    INSERT INTO customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
+    VALUES
+        (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, true)
+    RETURNING id;  
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
 
-const findByEmailOrPhone = async (email: string, phone: string) =>
-  await sql`
-SELECT id
-FROM customers
-WHERE (email = ${email} OR mobile_number = ${phone})
-AND deleted_at IS NULL;
-`
+const findByEmailOrPhone = async (email: string, phone: string) => {
+  try {
+    const data = await sql`
+      SELECT id
+      FROM customers
+      WHERE (email = ${email} OR mobile_number = ${phone})
+      AND deleted_at IS NULL;
+      `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
 
 const findByEmail = async (email: string) => {
   try {
@@ -44,14 +56,20 @@ const updateShopifyAccessToken = async (
   accessToken: string,
   expiresAt: string,
   customerId: number,
-) =>
-  await sql`
-UPDATE customers
-SET shopify_access_token = ${accessToken},
-shopify_access_token_expires_at = ${expiresAt},
-updated_at = NOW()
-WHERE id = ${customerId};
-`
+) => {
+  try {
+    const data = await sql`
+    UPDATE customers
+    SET shopify_access_token = ${accessToken},
+    shopify_access_token_expires_at = ${expiresAt},
+    updated_at = NOW()
+    WHERE id = ${customerId};
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
 
 const Customers = {
   create,

@@ -24,19 +24,19 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
   console.log('FORM DATA : ', data)
 
   // get customer by email and validate password
-  const { data: dbCustomer, error } = await Customers.findByEmail(data.email)
-  if (error || !dbCustomer) {
+  const { data: dbCustomers, error } = await Customers.findByEmail(data.email)
+  if (error || !dbCustomers) {
     return {
       zodError: null,
       error: {
-        title: 'Failed to find customer by email',
+        title: 'Failed to find db customers',
         message: error,
       },
     }
   }
   if (
-    dbCustomer.length === 0 ||
-    !doesPasswordMatch(data.password, dbCustomer[0].passwordHash)
+    dbCustomers.length === 0 ||
+    !doesPasswordMatch(data.password, dbCustomers[0].passwordHash)
   ) {
     return {
       zodError: {
