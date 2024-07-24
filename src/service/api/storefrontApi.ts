@@ -1,7 +1,6 @@
 import { CartBase } from '@shopify/hydrogen-react/cart-types'
 import type {
   Product,
-  CustomerCreatePayload,
   CustomerAccessTokenCreateInput,
   CustomerAccessTokenCreatePayload,
   CustomerCreateInput,
@@ -65,16 +64,15 @@ const createCart = (request: CartInput): Promise<CartBase> =>
     })
     .then((res) => res.data)
 
+// Automatically triggers a 'Customer account confimation' email sent from Shopify
 const createCustomer = (
   request: CustomerCreateInput,
-): Promise<CustomerCreatePayload> =>
-  client
-    .request(Customers.Create, {
-      variables: {
-        input: request,
-      },
-    })
-    .then((res) => res.data.customerCreate)
+): Promise<ClientResponse> =>
+  client.request(Customers.Create, {
+    variables: {
+      input: request,
+    },
+  })
 
 const createCustomerAccessToken = (
   request: CustomerAccessTokenCreateInput,
