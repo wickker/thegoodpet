@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
-import { cookies } from 'next/headers'
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 import { twMerge } from 'tailwind-merge'
 import { ZodError } from 'zod'
 import Config from '@/configs'
@@ -24,8 +24,13 @@ export const formatPriceString = (
   return (parseInt(price, 10) * quantity).toFixed(2)
 }
 
-export const setCookie = (name: string, value: string, expiry?: Date) =>
-  cookies().set(name, value, {
+export const setCookie = (
+  cookieStore: ReadonlyRequestCookies,
+  name: string,
+  value: string,
+  expiry?: Date,
+) =>
+  cookieStore.set(name, value, {
     httpOnly: true,
     path: '/',
     secure: !(Config.ENV === 'local'),

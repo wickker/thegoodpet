@@ -140,11 +140,12 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   // set auth cookies
   const expiryDate = new Date(shopifyToken.customerAccessToken.expiresAt)
   setCookie(
+    cookieStore,
     SHOPIFY_CUSTOMER_TOKEN,
     shopifyToken.customerAccessToken.accessToken,
     expiryDate,
   )
-  setCookie(SHOPIFY_CUSTOMER_EMAIL, data.email, expiryDate)
+  setCookie(cookieStore, SHOPIFY_CUSTOMER_EMAIL, data.email, expiryDate)
 
   // update cart with buyer identity if cart exists
   if (cartId) {
