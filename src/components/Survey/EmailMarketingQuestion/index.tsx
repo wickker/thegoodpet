@@ -8,8 +8,7 @@ import { SurveyContext } from '@/contexts/SurveyProvider'
 import { isZodError } from '@/utils/functions/common'
 
 export default function EmailMarketingQuestion() {
-  const { nextStep, prevStep, surveyData, setSurveyData } =
-    useContext(SurveyContext)
+  const { prevStep, surveyData, setSurveyData } = useContext(SurveyContext)
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +28,7 @@ export default function EmailMarketingQuestion() {
       SurveyEmail.parse(surveyData.email)
       SurveyAcceptsMarketing.parse(surveyData.acceptsMarketing)
       console.log(surveyData)
-      nextStep()
+      // TODO: server action
     } catch (e) {
       if (!isZodError(e)) return
       setErrorDisplay(e.issues[0]?.message)
