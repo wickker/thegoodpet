@@ -47,7 +47,7 @@ export const SurveyMealDoneness = z.nativeEnum(MealDoneness, {
   message: 'Meal doneness is required',
 })
 
-export const SurveyEmail = z.string().email()
+export const SurveyEmail = z.string({ message: 'Email is Required' }).email()
 
 export const SurveyAcceptsMarketing = z.boolean()
 

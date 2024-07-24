@@ -21,7 +21,6 @@ export default function WeightGoalQuestion() {
   const handleNext = () => {
     try {
       SurveyWeightGoal.parse(surveyData.weightGoal)
-      console.log(surveyData)
       nextStep()
     } catch (e) {
       if (!isZodError(e)) return

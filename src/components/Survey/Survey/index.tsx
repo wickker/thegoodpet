@@ -16,11 +16,17 @@ export default function Survey() {
       return 'About your pet'
     }
 
+    const petName = capitalize(surveyData.name || '')
+
     if (currentStep < 9) {
-      return 'About ' + capitalize(surveyData.name || '')
+      return 'About ' + petName
     }
 
-    return capitalize(surveyData.name || '') + "'s Meals"
+    if (currentStep < 12) {
+      return petName + "'s Meals"
+    }
+
+    return petName + "'s meal is almost ready"
   }
 
   return (
