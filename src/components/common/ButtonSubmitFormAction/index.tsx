@@ -4,12 +4,19 @@ import { PropsWithChildren } from 'react'
 import { useFormStatus } from 'react-dom'
 import { Button } from '@/components/common'
 
-export default function SubmitButton({ children }: PropsWithChildren) {
+type ButtonSubmitFormActionProps = {
+  className?: string
+} & PropsWithChildren
+
+export default function ButtonSubmitFormAction({
+  children,
+  className,
+}: ButtonSubmitFormActionProps) {
   const { pending } = useFormStatus() // needs to be a child component of a form
 
   return (
     <Button
-      className="mb-10 w-full"
+      className={className}
       type="submit"
       isLoading={pending}
       disabled={pending}

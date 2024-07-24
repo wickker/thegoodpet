@@ -5,7 +5,7 @@ import { useFormState } from 'react-dom'
 import { login } from './actions'
 import { ServerActionError } from '@/@types/common'
 import { LoginForm } from '@/@types/customer'
-import { Button, FormErrorMessage } from '@/components/common'
+import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { SignUpLink } from '@/components/Login'
 
 export default function LoginPage() {
@@ -53,9 +53,9 @@ export default function LoginPage() {
             </Suspense>
           </p>
 
-          <Button className="w-full" type="submit">
+          <ButtonSubmitFormAction className="w-full">
             Login
-          </Button>
+          </ButtonSubmitFormAction>
         </form>
       </div>
     </div>
