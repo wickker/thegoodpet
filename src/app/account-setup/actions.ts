@@ -1,6 +1,7 @@
 'use server'
 
 import {
+  CartBuyerIdentityUpdatePayload,
   CustomerAccessTokenCreatePayload,
   CustomerCreatePayload,
 } from '@shopify/hydrogen-react/storefront-api-types'
@@ -36,6 +37,8 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   } catch (err) {
     if (isZodError(err)) return { zodError: err.format() }
   }
+
+  console.log('DATA : ', data)
 
   const cookieStore = cookies()
   const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
@@ -154,6 +157,42 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     secure: !isLocal,
     expires: new Date(shopifyToken.customerAccessToken.expiresAt),
   })
+
+  // update cart with buyer identity if cart exists
+  if (cartId) {
+    const cartRes = await storefrontApi.updateCartBuyerEmail({
+      cartId,
+      buyerIdentity: {
+        email: data.email,
+      },
+    })
+    if (cartRes.errors) {
+      return {
+        zodError: null,
+        error: {
+          title: 'Failed to update cart buyer email',
+          message: JSON.stringify(cartRes.errors),
+        },
+      }
+    }
+    const shopifyCart = cartRes.data
+      .cartBuyerIdentityUpdate as CartBuyerIdentityUpdatePayload
+    if (shopifyCart.userErrors.length > 0 || !shopifyCart.cart) {
+      return {
+        zodError: null,
+        error: {
+          title: 'Failed to update cart buyer email',
+          message: JSON.stringify(shopifyCart.userErrors),
+        },
+      }
+    }
+
+    console.log('CART : ', shopifyCart)
+
+    if (data.origin === 'checkout') {
+      redirect(shopifyCart.cart.checkoutUrl)
+    }
+  }
 
   redirect('/')
 }
