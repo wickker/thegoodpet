@@ -53,7 +53,7 @@ export default function EmailMarketingQuestion() {
           We'd love to send you free samples, new product updates and news from
           us and our partners. Sounds good?
         </p>
-        <div className="flex justify-around">
+        <div className="mt-3 flex justify-around">
           {[true, false].map((v) => (
             <label className="flex gap-2" key={v.toString()}>
               <input
