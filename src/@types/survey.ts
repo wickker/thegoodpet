@@ -28,8 +28,9 @@ export const SurveyWeightGrams = z
   .min(1, { message: 'Pet weight invalid' })
 
 export const SurveyWeightGoal = z
-  .string({ message: 'Pet weight goal is required' })
-  .min(1, { message: 'Pet weight goal is required' })
+  .number({ message: 'Pet weight goal is required' })
+  .min(1, { message: 'Pet weight goal invalid' })
+  .max(5, { message: 'Pet weight goal invalid' })
 
 export const SurveyActivityLevel = z
   .number({ message: 'Pet activity level is required' })
