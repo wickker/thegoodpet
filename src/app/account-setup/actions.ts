@@ -1,6 +1,9 @@
 'use server'
 
-import { CustomerCreatePayload } from '@shopify/hydrogen-react/storefront-api-types'
+import {
+  CustomerAccessTokenCreatePayload,
+  CustomerCreatePayload,
+} from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
 import { ServerActionError } from '@/@types/common'
 import { SignUpForm, SignUpFormSchema } from '@/@types/customer'
@@ -37,31 +40,32 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   const passwordHash = getPasswordHash(data.password)
   const phone = `${data.countryCode}${data.mobileNumber}`
 
-  //   const rows = await Customers.findByEmailOrPhone(data.email, phone)
-  //   if (rows.length > 0) {
-  //     return {
-  //       zodError: {
-  //         _errors: [],
-  //         email: {
-  //           _errors: ['Phone or email is already taken'],
-  //         },
-  //         mobileNumber: {
-  //           _errors: ['Phone or email is already taken'],
-  //         },
-  //       },
-  //     }
-  //   }
+  // create customer in db if mobile number and email does not exist
+  const rows = await Customers.findByEmailOrPhone(data.email, phone)
+  if (rows.length > 0) {
+    return {
+      zodError: {
+        _errors: [],
+        email: {
+          _errors: ['Phone or email is already taken'],
+        },
+        mobileNumber: {
+          _errors: ['Phone or email is already taken'],
+        },
+      },
+    }
+  }
+  const [{ id: customerId }] = await Customers.create(
+    data.email,
+    data.firstName,
+    data.lastName,
+    passwordHash,
+    phone,
+    cartId,
+  )
 
-  //   const [{ id: customerId }] = await Customers.create(
-  //     data.email,
-  //     data.firstName,
-  //     data.lastName,
-  //     passwordHash,
-  //     phone,
-  //     cartId,
-  //   )
-
-  const res = await storefrontApi.createCustomer({
+  // create shopify customer
+  const customerRes = await storefrontApi.createCustomer({
     firstName: data.firstName,
     lastName: data.lastName,
     email: data.email,
@@ -69,28 +73,64 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     password: data.password, // original password
     acceptsMarketing: true,
   })
-  if (res.errors) {
+  if (customerRes.errors) {
     return {
       zodError: null,
       error: {
-        title: 'Unable to create Shopify customer',
-        message: JSON.stringify(res.errors),
+        title: 'Failed to create Shopify customer',
+        message: JSON.stringify(customerRes.errors),
       },
     }
   }
-  const shopifyCustomer = res.data.customerCreate as CustomerCreatePayload
-  if (shopifyCustomer.customerUserErrors) {
+  const shopifyCustomer = customerRes.data
+    .customerCreate as CustomerCreatePayload
+  if (shopifyCustomer.customerUserErrors.length > 0) {
     return {
       zodError: null,
       error: {
-        title: 'Unable to create Shopify customer',
+        title: 'Failed to create Shopify customer',
         message: JSON.stringify(shopifyCustomer.customerUserErrors),
       },
     }
   }
 
-  
+  // create shopify customer access token
+  const tokenRes = await storefrontApi.createCustomerAccessToken({
+    email: data.email,
+    password: data.password,
+  })
+  if (tokenRes.errors) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to create Shopify customer token',
+        message: JSON.stringify(tokenRes.errors),
+      },
+    }
+  }
+  const shopifyToken = tokenRes.data
+    .customerAccessTokenCreate as CustomerAccessTokenCreatePayload
+  if (
+    shopifyToken.customerUserErrors.length > 0 ||
+    !shopifyToken.customerAccessToken
+  ) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to create Shopify customer token',
+        message: JSON.stringify(shopifyToken.customerUserErrors),
+      },
+    }
+  }
 
+  // update shopify fields in db
+  await Customers.updateShopifyAccessToken(
+    shopifyToken.customerAccessToken.accessToken,
+    shopifyToken.customerAccessToken.expiresAt,
+    customerId,
+  )
+
+  // set auth cookie
 
   return { zodError: null }
 }

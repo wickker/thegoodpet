@@ -19,7 +19,7 @@ export async function PUT(request: Request) {
   if (res.errors) {
     return Response.json(
       {
-        title: 'Unable to add item to cart',
+        title: 'Failed to add item to cart',
         message: JSON.stringify(res.errors),
       },
       { status: 500 },

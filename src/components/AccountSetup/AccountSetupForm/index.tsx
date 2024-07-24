@@ -103,6 +103,11 @@ export default function AccountSetupForm() {
 
       <input name="origin" value={origin} hidden readOnly />
 
+      <FormErrorMessage
+        message={state.error && state.error.title}
+        className="mb-2 mt-1 text-left"
+      />
+
       <Button width="w-full mb-10" type="submit">
         Submit
       </Button>

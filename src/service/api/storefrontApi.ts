@@ -2,7 +2,6 @@ import { CartBase } from '@shopify/hydrogen-react/cart-types'
 import type {
   Product,
   CustomerAccessTokenCreateInput,
-  CustomerAccessTokenCreatePayload,
   CustomerCreateInput,
   QueryRootProductsArgs,
   CustomerOrdersArgs,
@@ -76,14 +75,12 @@ const createCustomer = (
 
 const createCustomerAccessToken = (
   request: CustomerAccessTokenCreateInput,
-): Promise<CustomerAccessTokenCreatePayload> =>
-  client
-    .request(Customers.CreateAccessToken, {
-      variables: {
-        input: request,
-      },
-    })
-    .then((res) => res.data)
+): Promise<ClientResponse> =>
+  client.request(Customers.CreateAccessToken, {
+    variables: {
+      input: request,
+    },
+  })
 
 // PUT
 const addItemToCart = (

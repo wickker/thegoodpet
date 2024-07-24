@@ -23,9 +23,23 @@ WHERE (email = ${email} OR mobile_number = ${phone})
 AND deleted_at IS NULL;
 `
 
+const updateShopifyAccessToken = async (
+  accessToken: string,
+  expiresAt: string,
+  customerId: number,
+) =>
+  await sql`
+UPDATE customers
+SET shopify_access_token = ${accessToken},
+shopify_access_token_expires_at = ${expiresAt},
+updated_at = NOW()
+WHERE id = ${customerId};
+`
+
 const Customers = {
-  findByEmailOrPhone,
   create,
+  findByEmailOrPhone,
+  updateShopifyAccessToken,
 }
 
 export default Customers
