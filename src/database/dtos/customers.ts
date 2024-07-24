@@ -9,7 +9,7 @@ const create = async (
   cartId: string,
 ) =>
   await sql`
-INSERT into customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
+INSERT INTO customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
 VALUES
   (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, true)
 RETURNING id;  

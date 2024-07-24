@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from 'clsx'
+import { cookies } from 'next/headers'
 import { twMerge } from 'tailwind-merge'
 import { ZodError } from 'zod'
+import Config from '@/configs'
 
 export const capitalize = (str: string) => {
   if (!str) return ''
@@ -22,3 +24,11 @@ export const formatPriceString = (
   if (!price) return null
   return (parseInt(price, 10) * quantity).toFixed(2)
 }
+
+export const setCookie = (name: string, value: string, expiry?: Date) =>
+  cookies().set(name, value, {
+    httpOnly: true,
+    path: '/',
+    secure: !(Config.ENV === 'local'),
+    expires: expiry,
+  })

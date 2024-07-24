@@ -9,7 +9,6 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { ServerActionError } from '@/@types/common'
 import { SignUpForm, SignUpFormSchema } from '@/@types/customer'
-import Config from '@/configs'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
@@ -18,7 +17,7 @@ import {
   SHOPIFY_CUSTOMER_EMAIL,
 } from '@/utils/constants/cookies'
 import { Route } from '@/utils/constants/routes'
-import { isZodError } from '@/utils/functions/common'
+import { isZodError, setCookie } from '@/utils/functions/common'
 import { getPasswordHash } from '@/utils/functions/password'
 
 export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
@@ -138,24 +137,14 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     customerId,
   )
 
-  // set auth cookie
-  const isLocal = Config.ENV === 'local'
-  cookieStore.set(
+  // set auth cookies
+  const expiryDate = new Date(shopifyToken.customerAccessToken.expiresAt)
+  setCookie(
     SHOPIFY_CUSTOMER_TOKEN,
     shopifyToken.customerAccessToken.accessToken,
-    {
-      httpOnly: true,
-      path: '/',
-      secure: !isLocal,
-      expires: new Date(shopifyToken.customerAccessToken.expiresAt),
-    },
+    expiryDate,
   )
-  cookieStore.set(SHOPIFY_CUSTOMER_EMAIL, data.email, {
-    httpOnly: true,
-    path: '/',
-    secure: !isLocal,
-    expires: new Date(shopifyToken.customerAccessToken.expiresAt),
-  })
+  setCookie(SHOPIFY_CUSTOMER_EMAIL, data.email, expiryDate)
 
   // update cart with buyer identity if cart exists
   if (cartId) {
@@ -186,7 +175,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       }
     }
 
-    // redirect to Shopify checkout link if customer is coming from the checkout page
+    // redirect to shopify checkout link if customer has clicked checkout
     if (data.origin === 'checkout') {
       redirect(shopifyCart.cart.checkoutUrl)
     }
