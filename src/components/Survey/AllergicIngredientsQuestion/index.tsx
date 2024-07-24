@@ -13,7 +13,7 @@ export default function AllergicIngredientsQuestion() {
     useContext(SurveyContext)
   const [selectedIngredients, _setSelectedIngredients] = useState<
     Array<Ingredient>
-  >([])
+  >(surveyData.allergicIngredients || [])
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const setSelectedIngredients = (ingredient: Ingredient) => {
