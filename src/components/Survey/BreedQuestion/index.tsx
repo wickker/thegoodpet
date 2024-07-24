@@ -12,7 +12,9 @@ import { capitalize, isZodError } from '@/utils/functions/common'
 export default function BreedQuestion() {
   const { nextStep, prevStep, surveyData, setSurveyData } =
     useContext(SurveyContext)
-  const [isUnknownBreed, setIsUnknownBreed] = useState<boolean>(false)
+  const [isUnknownBreed, setIsUnknownBreed] = useState<boolean>(
+    surveyData.breed === 'Unknown',
+  )
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetBreed = (e: ChangeEvent<HTMLSelectElement>) => {
