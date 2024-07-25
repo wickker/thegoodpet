@@ -119,7 +119,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       zodError: null,
       error: {
         title: 'Failed to create Shopify customer',
-        message: customerErr,
+        message: customerErr || '',
       },
     }
   }
@@ -140,7 +140,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       zodError: null,
       error: {
         title: 'Failed to create Shopify customer token',
-        message: tokenErr,
+        message: tokenErr || '',
       },
     }
   }
@@ -189,7 +189,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
         zodError: null,
         error: {
           title: 'Failed to update cart buyer email',
-          message: cartErr,
+          message: cartErr || '',
         },
       }
     }
