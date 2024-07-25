@@ -17,7 +17,15 @@ import {
   SHOPIFY_CUSTOMER_EMAIL,
 } from '@/utils/constants/cookies'
 import { Route } from '@/utils/constants/routes'
-import { isZodError, setCookie } from '@/utils/functions/common'
+import {
+  StorefrontDataKey,
+  StorefrontErrorKey,
+} from '@/utils/constants/storefrontGql'
+import {
+  handleStorefrontGqlResponse,
+  isZodError,
+  setCookie,
+} from '@/utils/functions/common'
 import { getPasswordHash } from '@/utils/functions/password'
 
 export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
@@ -48,8 +56,18 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   const phone = `${data.countryCode}${data.mobileNumber}`
 
   // create customer in db if mobile number and email does not exist
-  const rows = await Customers.findByEmailOrPhone(data.email, phone)
-  if (rows.length > 0) {
+  const { data: existingCustomers, error: selectErr } =
+    await Customers.findByEmailOrPhone(data.email, phone)
+  if (selectErr || !existingCustomers) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to find db customers',
+        message: selectErr,
+      },
+    }
+  }
+  if (existingCustomers.length > 0) {
     return {
       zodError: {
         _errors: [],
@@ -62,7 +80,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       },
     }
   }
-  const [{ id: customerId }] = await Customers.create(
+  const { data: newCustomer, error: createErr } = await Customers.create(
     data.email,
     data.firstName,
     data.lastName,
@@ -70,6 +88,16 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     phone,
     cartId,
   )
+  if (createErr || !newCustomer || newCustomer.length === 0) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to create db customer',
+        message: createErr || '',
+      },
+    }
+  }
+  const customerId = newCustomer[0].id
 
   // create shopify customer
   const customerRes = await storefrontApi.createCustomer({
@@ -80,23 +108,18 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     password: data.password, // original password
     acceptsMarketing: true,
   })
-  if (customerRes.errors) {
+  const { data: shopifyCustomer, error: customerErr } =
+    handleStorefrontGqlResponse<CustomerCreatePayload>(
+      customerRes,
+      StorefrontDataKey.CUSTOMER_CREATE,
+      StorefrontErrorKey.CUSTOMER_USER_ERRORS,
+    )
+  if (customerErr || !shopifyCustomer?.customer) {
     return {
       zodError: null,
       error: {
         title: 'Failed to create Shopify customer',
-        message: JSON.stringify(customerRes.errors),
-      },
-    }
-  }
-  const shopifyCustomer = customerRes.data
-    .customerCreate as CustomerCreatePayload
-  if (shopifyCustomer.customerUserErrors.length > 0) {
-    return {
-      zodError: null,
-      error: {
-        title: 'Failed to create Shopify customer',
-        message: JSON.stringify(shopifyCustomer.customerUserErrors),
+        message: customerErr || '',
       },
     }
   }
@@ -106,43 +129,44 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     email: data.email,
     password: data.password,
   })
-  if (tokenRes.errors) {
+  const { data: token, error: tokenErr } =
+    handleStorefrontGqlResponse<CustomerAccessTokenCreatePayload>(
+      tokenRes,
+      StorefrontDataKey.CUSTOMER_ACCESS_TOKEN_CREATE,
+      StorefrontErrorKey.CUSTOMER_USER_ERRORS,
+    )
+  if (tokenErr || !token || !token.customerAccessToken) {
     return {
       zodError: null,
       error: {
         title: 'Failed to create Shopify customer token',
-        message: JSON.stringify(tokenRes.errors),
-      },
-    }
-  }
-  const shopifyToken = tokenRes.data
-    .customerAccessTokenCreate as CustomerAccessTokenCreatePayload
-  if (
-    shopifyToken.customerUserErrors.length > 0 ||
-    !shopifyToken.customerAccessToken
-  ) {
-    return {
-      zodError: null,
-      error: {
-        title: 'Failed to create Shopify customer token',
-        message: JSON.stringify(shopifyToken.customerUserErrors),
+        message: tokenErr || '',
       },
     }
   }
 
   // update shopify fields in db
-  await Customers.updateShopifyAccessToken(
-    shopifyToken.customerAccessToken.accessToken,
-    shopifyToken.customerAccessToken.expiresAt,
+  const { error: updateErr } = await Customers.updateShopifyAccessToken(
+    token.customerAccessToken.accessToken,
+    token.customerAccessToken.expiresAt,
     customerId,
   )
+  if (updateErr) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to update db customer',
+        message: updateErr,
+      },
+    }
+  }
 
   // set auth cookies
-  const expiryDate = new Date(shopifyToken.customerAccessToken.expiresAt)
+  const expiryDate = new Date(token.customerAccessToken.expiresAt)
   setCookie(
     cookieStore,
     SHOPIFY_CUSTOMER_TOKEN,
-    shopifyToken.customerAccessToken.accessToken,
+    token.customerAccessToken.accessToken,
     expiryDate,
   )
   setCookie(cookieStore, SHOPIFY_CUSTOMER_EMAIL, data.email, expiryDate)
@@ -155,30 +179,24 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
         email: data.email,
       },
     })
-    if (cartRes.errors) {
+    const { data: cart, error: cartErr } =
+      handleStorefrontGqlResponse<CartBuyerIdentityUpdatePayload>(
+        cartRes,
+        StorefrontDataKey.CART_BUYER_IDENTITY_UPDATE,
+      )
+    if (cartErr || !cart?.cart) {
       return {
         zodError: null,
         error: {
           title: 'Failed to update cart buyer email',
-          message: JSON.stringify(cartRes.errors),
-        },
-      }
-    }
-    const shopifyCart = cartRes.data
-      .cartBuyerIdentityUpdate as CartBuyerIdentityUpdatePayload
-    if (shopifyCart.userErrors.length > 0 || !shopifyCart.cart) {
-      return {
-        zodError: null,
-        error: {
-          title: 'Failed to update cart buyer email',
-          message: JSON.stringify(shopifyCart.userErrors),
+          message: cartErr || '',
         },
       }
     }
 
     // redirect to shopify checkout link if customer has clicked checkout
     if (data.origin === 'checkout') {
-      redirect(shopifyCart.cart.checkoutUrl)
+      redirect(cart.cart.checkoutUrl)
     }
   }
 

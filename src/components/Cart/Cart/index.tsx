@@ -67,7 +67,7 @@ export default function Cart() {
                 </span>
               </p>
             </div>
-            <Button width="w-full">Checkout</Button>
+            <Button className="w-full">Checkout</Button>
           </div>
         )}
       </div>

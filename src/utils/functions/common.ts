@@ -1,8 +1,14 @@
+import { ClientResponse } from '@shopify/storefront-api-client'
 import { type ClassValue, clsx } from 'clsx'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 import { twMerge } from 'tailwind-merge'
 import { ZodError } from 'zod'
 import Config from '@/configs'
+import {
+  StorefrontDataKeys,
+  StorefrontErrorKey,
+  StorefrontErrorKeys,
+} from '@/utils/constants/storefrontGql'
 
 export const capitalize = (str: string) => {
   if (!str) return ''
@@ -36,3 +42,20 @@ export const setCookie = (
     secure: !(Config.ENV === 'local'),
     expires: expiry,
   })
+
+export const handleStorefrontGqlResponse = <T>(
+  res: ClientResponse,
+  dataKey: StorefrontDataKeys,
+  errorKey: StorefrontErrorKeys = StorefrontErrorKey.USER_ERRORS,
+) => {
+  if (res.errors) {
+    return { data: null, error: JSON.stringify(res.errors) }
+  }
+  if (res.data?.[dataKey]?.[errorKey]?.length > 0) {
+    return {
+      data: null,
+      error: JSON.stringify(res.data?.[dataKey]?.[errorKey]),
+    }
+  }
+  return { data: res.data?.[dataKey] as T, error: null }
+}

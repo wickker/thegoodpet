@@ -5,7 +5,7 @@ import { Loader } from '@/components/common'
 import { mc } from '@/utils/functions/common'
 
 type ButtonProps = {
-  width?: string
+  className?: string
   onClick?: () => void
   disabled?: boolean
   isLoading?: boolean
@@ -15,7 +15,7 @@ type ButtonProps = {
 
 export default function Button({
   children,
-  width,
+  className,
   disabled = false,
   onClick,
   isLoading = false,
@@ -44,7 +44,7 @@ export default function Button({
     <button
       className={mc(
         'flex w-fit items-center justify-center gap-x-2 rounded-full bg-primary px-7 py-2.5 text-lg text-white transition-all',
-        width,
+        className,
         !disabled && `hover:scale-105 hover:bg-secondary`,
         disabled && `cursor-not-allowed opacity-50`,
         { 'cursor-wait': isLoading || isLoadingLock },

@@ -5,8 +5,7 @@ import { useFormState } from 'react-dom'
 import { ServerActionError } from '@/@types/common'
 import { SignUpForm } from '@/@types/customer'
 import { signUp } from '@/app/account-setup/actions'
-import { SubmitButton } from '@/components/AccountSetup'
-import { FormErrorMessage } from '@/components/common'
+import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 
 export default function AccountSetupForm() {
   const [state, formAction] = useFormState<
@@ -109,7 +108,9 @@ export default function AccountSetupForm() {
         className="mb-2 mt-1"
       />
 
-      <SubmitButton>Submit</SubmitButton>
+      <ButtonSubmitFormAction className="mb-10 w-full">
+        Submit
+      </ButtonSubmitFormAction>
     </form>
   )
 }
