@@ -1,11 +1,20 @@
 'use server'
 
 // import { cookies } from 'next/headers'
+import { CustomerAccessTokenCreatePayload } from '@shopify/hydrogen-react/storefront-api-types'
 import { ServerActionError } from '@/@types/common'
 import { LoginForm, LoginFormSchema } from '@/@types/customer'
 // import { SHOPIFY_CART_ID_COOKIE } from '@/utils/constants/cookies'
 import Customers from '@/database/dtos/customers'
-import { isZodError } from '@/utils/functions/common'
+import storefrontApi from '@/service/api/storefrontApi'
+import {
+  StorefrontDataKey,
+  StorefrontErrorKey,
+} from '@/utils/constants/storefrontGql'
+import {
+  handleStorefrontGqlResponse,
+  isZodError,
+} from '@/utils/functions/common'
 import { doesPasswordMatch } from '@/utils/functions/password'
 
 export async function login(_: ServerActionError<LoginForm>, form: FormData) {
@@ -24,19 +33,20 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
   console.log('FORM DATA : ', data)
 
   // get customer by email and validate password
-  const { data: dbCustomers, error } = await Customers.findByEmail(data.email)
-  if (error || !dbCustomers) {
+  const { data: existingCustomers, error: selectErr } =
+    await Customers.findByEmail(data.email)
+  if (selectErr || !existingCustomers) {
     return {
       zodError: null,
       error: {
         title: 'Failed to find db customers',
-        message: error,
+        message: selectErr,
       },
     }
   }
   if (
-    dbCustomers.length === 0 ||
-    !doesPasswordMatch(data.password, dbCustomers[0].passwordHash)
+    existingCustomers.length === 0 ||
+    !doesPasswordMatch(data.password, existingCustomers[0].password_hash)
   ) {
     return {
       zodError: {
@@ -51,9 +61,31 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     }
   }
 
+  // create shopify customer access token
+  const tokenRes = await storefrontApi.createCustomerAccessToken({
+    email: data.email,
+    password: data.password,
+  })
+  const { data: token, error: tokenErr } =
+    handleStorefrontGqlResponse<CustomerAccessTokenCreatePayload>(
+      tokenRes,
+      StorefrontDataKey.CUSTOMER_ACCESS_TOKEN_CREATE,
+      StorefrontErrorKey.CUSTOMER_USER_ERRORS,
+    )
+  if (tokenErr || !token) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to create Shopify customer token',
+        message: tokenErr,
+      },
+    }
+  }
+
   // TODO:
   // Query db for customer
   // Call Shopify API to create access token
+
   // Update customer in db (token, expiry, cartId if exists in cookie and null in query)
   // Set auth cookie
   // Set cart cookie if cookie is null and query is not null

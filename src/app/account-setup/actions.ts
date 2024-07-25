@@ -85,7 +85,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       zodError: null,
       error: {
         title: 'Failed to create db customer',
-        message: createErr,
+        message: createErr || '',
       },
     }
   }
