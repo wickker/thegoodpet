@@ -88,28 +88,45 @@ export default function BuildYourBoxQuestion() {
         <FormErrorMessage message={errorDisplay} />
 
         <div className="grid w-full grid-cols-3 gap-x-2 gap-y-5">
-          {Object.values(Ingredient).map((i) => (
-            <div className="grid w-[90px] justify-self-center" key={i}>
-              <IngredientTile label={i} key={i} />
-              <div className="mt-3 grid grid-cols-3 overflow-hidden rounded-md bg-neutral-300">
-                <button
-                  className="grid aspect-square place-items-center bg-primary text-white"
-                  onClick={() => handleDecreaseQuantity(i)}
-                >
-                  <BsDash />
-                </button>
-                <p className="grid place-items-center text-sm">
-                  {selectedIngredients[i]}
-                </p>
-                <button
-                  className="grid aspect-square place-items-center bg-primary text-white"
-                  onClick={() => handleIncreaseQuantity(i)}
-                >
-                  <BsPlus />
-                </button>
+          {Object.values(Ingredient)
+            .filter(
+              (i) =>
+                ![
+                  ...(surveyData.allergicIngredients || []),
+                  ...(surveyData.omitIngredients || []),
+                ].includes(i),
+            )
+            .map((i) => (
+              <div className="grid w-[90px] justify-self-center" key={i}>
+                <div>
+                  <IngredientTile label={i} key={i} />
+                </div>
+
+                {(
+                  [Ingredient.DUCK, Ingredient.LAMB] as Array<Ingredient>
+                ).includes(i) ? (
+                  <div className="mt-3 grid text-sm">Coming soon</div>
+                ) : (
+                  <div className="mt-3 grid grid-cols-3 overflow-hidden rounded-md bg-neutral-300">
+                    <button
+                      className="grid aspect-square place-items-center bg-primary text-white"
+                      onClick={() => handleDecreaseQuantity(i)}
+                    >
+                      <BsDash />
+                    </button>
+                    <p className="grid place-items-center text-sm">
+                      {selectedIngredients[i]}
+                    </p>
+                    <button
+                      className="grid aspect-square place-items-center bg-primary text-white"
+                      onClick={() => handleIncreaseQuantity(i)}
+                    >
+                      <BsPlus />
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
 
