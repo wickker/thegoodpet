@@ -28,6 +28,8 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { openCart, getCart } = useContext(CartContext)
 
+  const handleCloseMenu = () => setIsMenuOpen(false)
+
   return (
     <>
       <Suspense>
@@ -80,7 +82,11 @@ export default function Header() {
           </div>
         </div>
 
-        <HeaderMobileMenu isMenuOpen={isMenuOpen} links={links} />
+        <HeaderMobileMenu
+          isMenuOpen={isMenuOpen}
+          links={links}
+          onClickLink={handleCloseMenu}
+        />
       </div>
     </>
   )

@@ -10,17 +10,12 @@ type ButtonSubmitFormActionProps = {
 
 export default function ButtonSubmitFormAction({
   children,
-  className,
+  ...rest
 }: ButtonSubmitFormActionProps) {
   const { pending } = useFormStatus() // needs to be a child component of a form
 
   return (
-    <Button
-      className={className}
-      type="submit"
-      isLoading={pending}
-      disabled={pending}
-    >
+    <Button type="submit" isLoading={pending} disabled={pending} {...rest}>
       {children}
     </Button>
   )
