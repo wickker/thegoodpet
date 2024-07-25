@@ -1,12 +1,21 @@
 'use server'
 
-// import { cookies } from 'next/headers'
-import { CustomerAccessTokenCreatePayload } from '@shopify/hydrogen-react/storefront-api-types'
+import {
+  CartBuyerIdentityUpdatePayload,
+  CustomerAccessTokenCreatePayload,
+} from '@shopify/hydrogen-react/storefront-api-types'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { ServerActionError } from '@/@types/common'
 import { LoginForm, LoginFormSchema } from '@/@types/customer'
-// import { SHOPIFY_CART_ID_COOKIE } from '@/utils/constants/cookies'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
+import {
+  SHOPIFY_CART_ID_COOKIE,
+  SHOPIFY_CUSTOMER_EMAIL,
+  SHOPIFY_CUSTOMER_TOKEN,
+} from '@/utils/constants/cookies'
+import { Route } from '@/utils/constants/routes'
 import {
   StorefrontDataKey,
   StorefrontErrorKey,
@@ -14,6 +23,7 @@ import {
 import {
   handleStorefrontGqlResponse,
   isZodError,
+  setCookie,
 } from '@/utils/functions/common'
 import { doesPasswordMatch } from '@/utils/functions/password'
 
@@ -29,8 +39,6 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
   } catch (err) {
     if (isZodError(err)) return { zodError: err.format() }
   }
-
-  console.log('FORM DATA : ', data)
 
   // get customer by email and validate password
   const { data: existingCustomers, error: selectErr } =
@@ -60,6 +68,7 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
       },
     }
   }
+  const dbCustomer = existingCustomers[0]
 
   // create shopify customer access token
   const tokenRes = await storefrontApi.createCustomerAccessToken({
@@ -72,7 +81,7 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
       StorefrontDataKey.CUSTOMER_ACCESS_TOKEN_CREATE,
       StorefrontErrorKey.CUSTOMER_USER_ERRORS,
     )
-  if (tokenErr || !token) {
+  if (tokenErr || !token || !token.customerAccessToken) {
     return {
       zodError: null,
       error: {
@@ -82,17 +91,71 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     }
   }
 
-  // TODO:
-  // Query db for customer
-  // Call Shopify API to create access token
+  const cookieStore = cookies()
+  const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
 
-  // Update customer in db (token, expiry, cartId if exists in cookie and null in query)
-  // Set auth cookie
-  // Set cart cookie if cookie is null and query is not null
-  // If cart cookie is not null and query is null, update cart buyer email
+  let cartIdToUpdate = ''
+  let checkoutLink = ''
+  if (cartIdCookie) {
+    cartIdToUpdate = cartIdCookie.value // update db cart with cookie value even if another cart is currently linked
 
-  // Redirect to checkout link
-  // Redirect to home page
+    // update cart with buyer identity
+    const cartRes = await storefrontApi.updateCartBuyerEmail({
+      cartId: cartIdToUpdate,
+      buyerIdentity: {
+        email: data.email,
+      },
+    })
+    const { data: cart, error: cartErr } =
+      handleStorefrontGqlResponse<CartBuyerIdentityUpdatePayload>(
+        cartRes,
+        StorefrontDataKey.CART_BUYER_IDENTITY_UPDATE,
+      )
+    if (cartErr || !cart?.cart) {
+      return {
+        zodError: null,
+        error: {
+          title: 'Failed to update cart buyer email',
+          message: cartErr,
+        },
+      }
+    }
+    checkoutLink = cart.cart.checkoutUrl
+  }
 
-  return { zodError: null }
+  // update customer db fields
+  const { error: updateErr } =
+    await Customers.updateShopifyAccessTokenAndCartId(
+      token.customerAccessToken.accessToken,
+      token.customerAccessToken.expiresAt,
+      dbCustomer.id,
+      cartIdToUpdate,
+    )
+  if (updateErr) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to update db customer',
+        message: updateErr,
+      },
+    }
+  }
+
+  // set auth and cart cookies
+  const expiryDate = new Date(token.customerAccessToken.expiresAt)
+  setCookie(
+    cookieStore,
+    SHOPIFY_CUSTOMER_TOKEN,
+    token.customerAccessToken.accessToken,
+    expiryDate,
+  )
+  setCookie(cookieStore, SHOPIFY_CUSTOMER_EMAIL, data.email, expiryDate)
+  if (!cartIdCookie && dbCustomer.shopify_cart_id) {
+    setCookie(cookieStore, SHOPIFY_CART_ID_COOKIE, dbCustomer.shopify_cart_id) // no expiry for cart cookie
+  }
+
+  if (data.origin === 'checkout' && checkoutLink) {
+    redirect(checkoutLink)
+  }
+  redirect(`${Route.HOME}?refetchCart=true`)
 }

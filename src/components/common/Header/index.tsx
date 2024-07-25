@@ -1,8 +1,9 @@
 'use client'
 
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { BsPersonCircle, BsList, BsXLg } from 'react-icons/bs'
 import { HeaderMobileMenu, ButtonCart } from '@/components/common'
 import { CartContext } from '@/contexts/CartProvider'
@@ -26,6 +27,16 @@ const links = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { openCart, getCart } = useContext(CartContext)
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  // refetch cart when redirected from login and cart cookie is freshly set
+  useEffect(() => {
+    const refetchCart = searchParams.get('refetchCart')
+    if (refetchCart && pathname === Route.HOME) {
+      getCart?.refetch()
+    }
+  }, [searchParams])
 
   return (
     <div className="sticky top-0">

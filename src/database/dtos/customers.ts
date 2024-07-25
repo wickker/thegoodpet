@@ -2,6 +2,7 @@ import { NeonDbError } from '@neondatabase/serverless'
 import { sql } from '@/database'
 
 // TODO: Add logging
+// TODO: Add typing
 
 const create = async (
   email: string,
@@ -71,11 +72,36 @@ const updateShopifyAccessToken = async (
   }
 }
 
+const updateShopifyAccessTokenAndCartId = async (
+  accessToken: string,
+  expiresAt: string,
+  customerId: number,
+  cartId: string,
+) => {
+  if (cartId) {
+    try {
+      const data = await sql`
+        UPDATE customers
+        SET shopify_access_token = ${accessToken},
+        shopify_access_token_expires_at = ${expiresAt},
+        shopify_cart_id = ${cartId},
+        updated_at = NOW()
+        WHERE id = ${customerId};
+        `
+      return { data, error: null }
+    } catch (err) {
+      return { data: null, error: (err as NeonDbError).message }
+    }
+  }
+  return updateShopifyAccessToken(accessToken, expiresAt, customerId)
+}
+
 const Customers = {
   create,
   findByEmail,
   findByEmailOrPhone,
   updateShopifyAccessToken,
+  updateShopifyAccessTokenAndCartId,
 }
 
 export default Customers
