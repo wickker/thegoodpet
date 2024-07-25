@@ -12,12 +12,8 @@ import { getMealMetrics } from '@/utils/functions/meal'
 export default function BuildYourBoxQuestion() {
   const { nextStep, prevStep, surveyData, setSurveyData } =
     useContext(SurveyContext)
-  const [selectedIngredients, setSelectedIngredients] = useState({
-    [Ingredient.BEEF]: 0,
-    [Ingredient.CHICKEN]: 0,
-    [Ingredient.DUCK]: 0,
-    [Ingredient.LAMB]: 0,
-  })
+  const [selectedIngredients, setSelectedIngredients] =
+    useState(getInitialData())
   const totalPacks = Object.values(selectedIngredients).reduce(
     (total, curr) => total + curr,
     0,
@@ -36,6 +32,20 @@ export default function BuildYourBoxQuestion() {
       ),
     [surveyData],
   )
+
+  // named function for hoisting
+  function getInitialData(): Record<Ingredient, number> {
+    const data = {} as Record<Ingredient, number>
+
+    Object.values(Ingredient).forEach((i) => {
+      const initialValue = surveyData.meatSelection
+        ? surveyData.meatSelection[i] || 0
+        : 0
+      data[i] = initialValue
+    })
+
+    return data
+  }
 
   const handleIncreaseQuantity = (i: Ingredient) => {
     const packsLeft = 14 - (totalPacks - selectedIngredients[i])
@@ -59,14 +69,13 @@ export default function BuildYourBoxQuestion() {
       setErrorDisplay(`Please select ${14 - totalPacks} more items`)
       return
     }
-    // TODO: setSurveyData
-    setSurveyData((data) => ({ ...data }))
+    setSurveyData((data) => ({ ...data, meatSelection: selectedIngredients }))
     nextStep()
   }
 
   return (
     <>
-      <div className="mx-auto w-full max-w-[360px]">
+      <div className="mx-auto w-full max-w-[460px]">
         <p className="my-5 text-justify">
           Based on our calculations, {capitalize(surveyData.name || '')} will
           need {DER.toFixed(2)} calories daily. Our food packs will be adjusted

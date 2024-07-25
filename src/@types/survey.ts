@@ -55,6 +55,11 @@ export const SurveyEmail = z.string({ message: 'Email is Required' }).email()
 
 export const SurveyAcceptsMarketing = z.boolean()
 
+export const SurveyMeatSelection = z.record(
+  z.nativeEnum(Ingredient),
+  z.number(),
+)
+
 export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
   gender: SurveyGender,
@@ -73,6 +78,7 @@ export const SurveyDataSchema = z.object({
   mealDoneness: SurveyMealDoneness,
   email: SurveyEmail,
   acceptsMarketing: SurveyAcceptsMarketing,
+  meatSelection: SurveyMeatSelection,
 })
 
 export type SurveyData = z.infer<typeof SurveyDataSchema>
