@@ -68,7 +68,7 @@ export default function EmailMarketingQuestion() {
         </div>
       </div>
 
-      <SurveyFooter onBack={prevStep} onNext={handleNext} />
+      <SurveyFooter onBack={prevStep} onNext={handleNext} nextLabel="Submit" />
     </>
   )
 }

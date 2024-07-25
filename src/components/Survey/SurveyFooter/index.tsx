@@ -4,6 +4,7 @@ import { mc } from '@/utils/functions/common'
 type SurveyFooterProps = {
   hideBackButton?: boolean
   hideNextButton?: boolean
+  nextLabel?: string
   onNext?: () => void
   onBack?: () => void
 }
@@ -11,6 +12,7 @@ type SurveyFooterProps = {
 export default function SurveyFooter({
   hideBackButton = false,
   hideNextButton = false,
+  nextLabel = 'Next',
   onNext = () => {},
   onBack = () => {},
 }: SurveyFooterProps) {
@@ -27,7 +29,7 @@ export default function SurveyFooter({
       {!hideNextButton && (
         <div className={mc('flex justify-end', hideBackButton && 'col-span-2')}>
           <Button width="w-full md:w-32" onClick={onNext}>
-            Next
+            {nextLabel}
           </Button>
         </div>
       )}
