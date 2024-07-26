@@ -53,8 +53,6 @@ export const SurveyMealDoneness = z.nativeEnum(MealDoneness, {
 
 export const SurveyEmail = z.string({ message: 'Email is Required' }).email()
 
-export const SurveyAcceptsMarketing = z.boolean()
-
 export const SurveyMeatSelection = z.record(
   z.nativeEnum(Ingredient),
   z.number(),
@@ -77,7 +75,6 @@ export const SurveyDataSchema = z.object({
   omitIngredients: SurveyAllergicOmitIngredients,
   mealDoneness: SurveyMealDoneness,
   email: SurveyEmail,
-  acceptsMarketing: SurveyAcceptsMarketing,
   meatSelection: SurveyMeatSelection,
 })
 

@@ -1,8 +1,8 @@
 'use client'
 
 import { ChangeEvent, useContext, useState } from 'react'
-import { SurveyEmail, SurveyAcceptsMarketing } from '@/@types/survey'
-import { FormErrorMessage } from '@/components/common'
+import { SurveyEmail } from '@/@types/survey'
+import { Button, FormErrorMessage } from '@/components/common'
 import { SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { isZodError } from '@/utils/functions/common'
@@ -16,17 +16,9 @@ export default function EmailMarketingQuestion() {
     setErrorDisplay('')
   }
 
-  const handleSetMarketing = (e: ChangeEvent<HTMLInputElement>) => {
-    setSurveyData((data) => ({
-      ...data,
-      acceptsMarketing: e.target.value === 'true',
-    }))
-  }
-
   const handleNext = () => {
     try {
       SurveyEmail.parse(surveyData.email)
-      SurveyAcceptsMarketing.parse(surveyData.acceptsMarketing)
       console.log(surveyData)
       // TODO: server action
     } catch (e) {
@@ -34,6 +26,14 @@ export default function EmailMarketingQuestion() {
       setErrorDisplay(e.issues[0]?.message)
     }
   }
+
+  const SubmitButton = (
+    <form className="w-full md:w-32">
+      <Button width="w-full" onClick={undefined}>
+        Submit
+      </Button>
+    </form>
+  )
 
   return (
     <>
@@ -47,28 +47,13 @@ export default function EmailMarketingQuestion() {
           className="block w-full rounded-lg border px-3 py-2 outline-secondary"
         />
         <FormErrorMessage message={errorDisplay} />
-
-        <p className="text-justify text-sm">
-          We'd love to send you free samples, new product updates and news from
-          us and our partners. Sounds good?
-        </p>
-        <div className="mt-3 flex justify-around">
-          {[true, false].map((v) => (
-            <label className="flex gap-2" key={v.toString()}>
-              <input
-                type="radio"
-                name="accept_marketing"
-                value={v.toString()}
-                defaultChecked={v === surveyData.acceptsMarketing}
-                onChange={handleSetMarketing}
-              />
-              {v ? 'Yes' : 'No'}
-            </label>
-          ))}
-        </div>
       </div>
 
-      <SurveyFooter onBack={prevStep} onNext={handleNext} nextLabel="Submit" />
+      <SurveyFooter
+        onBack={prevStep}
+        onNext={handleNext}
+        customNextButton={SubmitButton}
+      />
     </>
   )
 }
