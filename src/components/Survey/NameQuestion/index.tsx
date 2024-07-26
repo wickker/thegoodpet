@@ -39,6 +39,7 @@ export default function NameQuestion() {
         <input
           type="text"
           onChange={handleSetName}
+          defaultValue={surveyData.name}
           className="block w-full rounded-lg border px-3 py-2 outline-secondary"
         />
       </div>

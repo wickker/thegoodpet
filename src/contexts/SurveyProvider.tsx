@@ -15,6 +15,8 @@ import {
   AgeQuestion,
   AllergicIngredientsQuestion,
   BreedQuestion,
+  BuildYourBoxQuestion,
+  EmailQuestion,
   // FoodGoalDetails,   TODO: skip question for now
   // FoodGoalQuestion,  TODO: skip question for now
   GenderQuestion,
@@ -56,6 +58,8 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
   const parsedStep = parseInt(searchParams.get('step') || '0')
   const [currentStep, setCurrentStep] = useState<number>(parsedStep)
   const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({
+    ageYear: 0,
+    ageMonth: 0,
     activityLevel: 3,
   })
   const surveyComponents = [
@@ -73,6 +77,8 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     AllergicIngredientsQuestion,
     OmitIngredientsQuestion,
     MealDonenessQuestion,
+    BuildYourBoxQuestion,
+    EmailQuestion,
   ]
 
   // Derived state

@@ -11,6 +11,10 @@ export const SurveyPetName = z
   .string({ message: 'Pet name is required' })
   .min(1, { message: 'Pet name is required' })
 
+export const SurveyAgeYear = z.number()
+
+export const SurveyAgeMonth = z.number()
+
 export const SurveyDOB = z
   .date()
   .max(new Date(), { message: 'Age is required' })
@@ -28,8 +32,9 @@ export const SurveyWeightGrams = z
   .min(1, { message: 'Pet weight invalid' })
 
 export const SurveyWeightGoal = z
-  .string({ message: 'Pet weight goal is required' })
-  .min(1, { message: 'Pet weight goal is required' })
+  .number({ message: 'Pet weight goal is required' })
+  .min(1, { message: 'Pet weight goal invalid' })
+  .max(5, { message: 'Pet weight goal invalid' })
 
 export const SurveyActivityLevel = z
   .number({ message: 'Pet activity level is required' })
@@ -46,14 +51,19 @@ export const SurveyMealDoneness = z.nativeEnum(MealDoneness, {
   message: 'Meal doneness is required',
 })
 
-export const SurveyEmail = z.string().email()
+export const SurveyEmail = z.string({ message: 'Email is Required' }).email()
 
-export const SurveyAcceptsMarketing = z.boolean()
+export const SurveyMeatSelection = z.record(
+  z.nativeEnum(Ingredient),
+  z.number(),
+)
 
 export const SurveyDataSchema = z.object({
   petType: SurveyPetType,
   gender: SurveyGender,
   name: SurveyPetName,
+  ageYear: SurveyAgeYear,
+  ageMonth: SurveyAgeMonth,
   dob: SurveyDOB,
   isNeutered: SurveyNeutered,
   breed: SurveyBreed,
@@ -65,7 +75,7 @@ export const SurveyDataSchema = z.object({
   omitIngredients: SurveyAllergicOmitIngredients,
   mealDoneness: SurveyMealDoneness,
   email: SurveyEmail,
-  acceptsMarketing: SurveyAcceptsMarketing,
+  meatSelection: SurveyMeatSelection,
 })
 
 export type SurveyData = z.infer<typeof SurveyDataSchema>

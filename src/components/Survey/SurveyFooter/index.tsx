@@ -2,6 +2,7 @@ import { Button } from '@/components/common'
 import { mc } from '@/utils/functions/common'
 
 type SurveyFooterProps = {
+  customNextButton?: JSX.Element
   hideBackButton?: boolean
   hideNextButton?: boolean
   onNext?: () => void
@@ -9,6 +10,7 @@ type SurveyFooterProps = {
 }
 
 export default function SurveyFooter({
+  customNextButton,
   hideBackButton = false,
   hideNextButton = false,
   onNext = () => {},
@@ -26,9 +28,13 @@ export default function SurveyFooter({
 
       {!hideNextButton && (
         <div className={mc('flex justify-end', hideBackButton && 'col-span-2')}>
-          <Button className="w-full md:w-32" onClick={onNext}>
-            Next
-          </Button>
+          {customNextButton ? (
+            customNextButton
+          ) : (
+            <Button width="w-full md:w-32" onClick={onNext}>
+              Next
+            </Button>
+          )}
         </div>
       )}
     </div>

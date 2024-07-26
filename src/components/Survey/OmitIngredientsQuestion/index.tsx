@@ -15,7 +15,7 @@ export default function OmitIngredientsQuestion() {
     useContext(SurveyContext)
   const [selectedIngredients, _setSelectedIngredients] = useState<
     Array<Ingredient>
-  >([])
+  >(surveyData.omitIngredients || [])
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const setSelectedIngredients = (ingredient: Ingredient) => {

@@ -14,7 +14,7 @@ export default function WeightGoalQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetWeightGoal = (e: ChangeEvent<HTMLInputElement>) => {
-    setSurveyData((data) => ({ ...data, weightGoal: e.target.value }))
+    setSurveyData((data) => ({ ...data, weightGoal: parseInt(e.target.value) }))
     setErrorDisplay('')
   }
 
@@ -34,13 +34,14 @@ export default function WeightGoalQuestion() {
       </p>
 
       <div className="mx-auto flex w-max max-w-[360px] flex-col justify-center gap-4">
-        {WEIGHT_GOALS.map((goal) => (
+        {WEIGHT_GOALS.map((goal, index) => (
           <label key={goal} className="flex gap-2">
             <input
               type="radio"
               name="weight_goal"
-              value={goal}
+              value={index + 1}
               onChange={handleSetWeightGoal}
+              defaultChecked={surveyData.weightGoal === index + 1}
             />
             {goal}
           </label>

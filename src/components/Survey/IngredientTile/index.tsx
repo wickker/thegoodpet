@@ -20,7 +20,7 @@ export default function IngredientTile({
   return (
     <button
       className={mc(
-        'grid aspect-square items-center justify-center rounded-lg bg-white text-sm transition-all md:active:scale-90',
+        'grid aspect-square w-full items-center justify-center rounded-lg bg-white text-sm transition-all md:active:scale-90',
         isSelected &&
           'bg-secondary text-white active:scale-90 md:active:scale-100',
         disabled &&

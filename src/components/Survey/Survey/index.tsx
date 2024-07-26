@@ -16,23 +16,35 @@ export default function Survey() {
       return 'About your pet'
     }
 
+    const petName = capitalize(surveyData.name || '')
+
     if (currentStep < 9) {
-      return 'About ' + capitalize(surveyData.name || '')
+      return `About ${petName}`
     }
 
-    return capitalize(surveyData.name || '') + "'s Meals"
+    if (currentStep < 12) {
+      return `${petName}'s Meal`
+    }
+
+    if (currentStep < 13) {
+      return `Build ${petName}'s meal`
+    }
+
+    return `${petName}'s meal is ready`
   }
 
   return (
     <>
-      <ProgressBar percent={progressPercent} />
+      <div className="sticky top-[120px] bg-background">
+        <ProgressBar percent={progressPercent} />
+      </div>
 
       <div className="mt-5">
         <h1 className="text-center font-fredoka text-4xl font-medium text-secondary">
           {surveyHeader()}
         </h1>
 
-        <div className="pb-20 md:pb-0">
+        <div className="pb-24 md:pb-0">
           <CurrentQuestion>
             {/*TODO: Change to dynamic pet overlay component */}
             {/* <img src="/cat-vector.svg" className="mx-auto w-full max-w-[400px]" /> */}
