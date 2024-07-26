@@ -2,29 +2,32 @@
 
 import { useContext, useMemo, useState } from 'react'
 import { BsDash, BsPlus } from 'react-icons/bs'
-import { FormErrorMessage } from '@/components/common'
+import { SurveyData } from '@/@types/survey'
+import { createSurveyAndCustomProduct } from '@/app/survey/actions'
+import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { IngredientTile, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
-import { Ingredient, PetType } from '@/utils/constants/db'
+import { Ingredient, Species } from '@/utils/constants/db'
 import { capitalize } from '@/utils/functions/common'
 import { getMealMetrics } from '@/utils/functions/meal'
 
 export default function BuildYourBoxQuestion() {
-  const { nextStep, prevStep, surveyData, setSurveyData } =
-    useContext(SurveyContext)
-  const [selectedIngredients, setSelectedIngredients] =
-    useState(getInitialData())
-  const totalPacks = Object.values(selectedIngredients).reduce(
+  const { prevStep, surveyData, setSurveyData } = useContext(SurveyContext)
+  const totalPacks = Object.values(surveyData.mealTypeToQuantity || {}).reduce(
     (total, curr) => total + curr,
     0,
   )
   const [errorDisplay, setErrorDisplay] = useState<string>('')
+  const createSurveyAndProductWithData = createSurveyAndCustomProduct.bind(
+    null,
+    surveyData as SurveyData,
+  )
 
   const { DER } = useMemo(
     () =>
       getMealMetrics(
         surveyData.weight || 0,
-        surveyData.petType || PetType.DOG,
+        surveyData.species || Species.DOG,
         (surveyData.ageMonth || 0) + (surveyData.ageYear || 0) * 12,
         surveyData.isNeutered || false,
         surveyData.weightGoal || 3,
@@ -33,33 +36,36 @@ export default function BuildYourBoxQuestion() {
     [surveyData],
   )
 
-  // named function for hoisting
-  function getInitialData(): Record<Ingredient, number> {
-    const data = {} as Record<Ingredient, number>
-
-    Object.values(Ingredient).forEach((i) => {
-      const initialValue = surveyData.meatSelection
-        ? surveyData.meatSelection[i] || 0
-        : 0
-      data[i] = initialValue
-    })
-
-    return data
-  }
-
   const handleIncreaseQuantity = (i: Ingredient) => {
-    const packsLeft = 14 - (totalPacks - selectedIngredients[i])
-    setSelectedIngredients((current) => ({
+    const currentQuantity = surveyData.mealTypeToQuantity
+      ? surveyData.mealTypeToQuantity[i] || 0
+      : 0
+    const packsLeft = 14 - (totalPacks - currentQuantity)
+    const newQuantity = Math.min(packsLeft, currentQuantity + 1)
+
+    setSurveyData((current) => ({
       ...current,
-      [i]: Math.min(packsLeft, current[i] + 1),
+      mealTypeToQuantity: {
+        ...current.mealTypeToQuantity,
+        [i]: newQuantity,
+      },
     }))
+
     setErrorDisplay('')
   }
 
   const handleDecreaseQuantity = (i: Ingredient) => {
-    setSelectedIngredients((current) => ({
+    const currentQuantity = surveyData.mealTypeToQuantity
+      ? surveyData.mealTypeToQuantity[i] || 0
+      : 0
+    const newQuantity = Math.max(0, currentQuantity - 1)
+
+    setSurveyData((current) => ({
       ...current,
-      [i]: Math.max(0, current[i] - 1),
+      mealTypeToQuantity: {
+        ...current.mealTypeToQuantity,
+        [i]: newQuantity,
+      },
     }))
     setErrorDisplay('')
   }
@@ -69,9 +75,19 @@ export default function BuildYourBoxQuestion() {
       setErrorDisplay(`Please select ${14 - totalPacks} more items`)
       return
     }
-    setSurveyData((data) => ({ ...data, meatSelection: selectedIngredients }))
-    nextStep()
   }
+
+  const submitFormButton =
+    totalPacks === 14 ? (
+      <form
+        action={createSurveyAndProductWithData}
+        className="w-full transition-[width] md:w-32"
+      >
+        <ButtonSubmitFormAction className="w-full">
+          Submit
+        </ButtonSubmitFormAction>
+      </form>
+    ) : undefined
 
   return (
     <>
@@ -115,7 +131,9 @@ export default function BuildYourBoxQuestion() {
                       <BsDash />
                     </button>
                     <p className="grid place-items-center text-sm">
-                      {selectedIngredients[i]}
+                      {surveyData.mealTypeToQuantity
+                        ? surveyData.mealTypeToQuantity[i] || 0
+                        : 0}
                     </p>
                     <button
                       className="grid aspect-square place-items-center bg-primary text-white"
@@ -130,7 +148,12 @@ export default function BuildYourBoxQuestion() {
         </div>
       </div>
 
-      <SurveyFooter onBack={prevStep} onNext={handleNext} />
+      <SurveyFooter
+        onBack={prevStep}
+        onNext={handleNext}
+        nextLabel="Submit"
+        customNextButton={submitFormButton}
+      />
     </>
   )
 }

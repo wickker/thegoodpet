@@ -1,25 +1,39 @@
 CREATE TABLE pets (
     id SERIAL PRIMARY KEY,
-    species VARCHAR(191) DEFAULT NULL,
     name VARCHAR(191),
-    dob DATE,
-    gender VARCHAR(15),
-    is_neutered BOOLEAN,
-    breed VARCHAR(191) DEFAULT NULL,
-    food_goal TEXT,
-    weight_gram INTEGER,
-    weight_goal VARCHAR(191),
-    activity_level INTEGER,
-    allergic_ingredients JSONB DEFAULT NULL,
-    omit_ingredients JSONB DEFAULT NULL,
-    meal_doneness VARCHAR(191),
-    customer_id INTEGER DEFAULT NULL,
+    customer_id INTEGER,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT NULL,
-    deleted_at TIMESTAMP DEFAULT NULL 
+    deleted_at TIMESTAMP DEFAULT NULL
 );
 
 CREATE INDEX pets_customer_id_idx ON pets (customer_id);
+
+CREATE TABLE surveys (
+    id SERIAL PRIMARY KEY,
+    species VARCHAR(191),
+    gender VARCHAR(15),
+    name VARCHAR(191),
+    age_year INTEGER,
+    age_month INTEGER,
+    is_neutered BOOLEAN,
+    breed VARCHAR(191),
+    weight_gram INTEGER,
+    weight_goal INTEGER,
+    activity_level INTEGER,
+    food_goal TEXT,
+    allergic_ingredients JSONB DEFAULT NULL,
+    omit_ingredients JSONB DEFAULT NULL,
+    meal_doneness VARCHAR(191),
+    meal_type_to_quantity JSONB,
+    pet_id INTEGER DEFAULT NULL,
+    shopify_product_id VARCHAR(191),
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    updated_at TIMESTAMP DEFAULT NULL,
+    deleted_at TIMESTAMP DEFAULT NULL
+);
+
+CREATE INDEX surveys_pet_id_idx ON surveys (pet_id);
 
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
