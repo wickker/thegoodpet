@@ -1,17 +1,17 @@
 'use client'
 
 import { useContext, useMemo, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { BsDash, BsPlus } from 'react-icons/bs'
 import { FormErrorMessage } from '@/components/common'
 import { IngredientTile, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
-import { Ingredient, PetType } from '@/utils/constants/db'
+import { Ingredient, Species } from '@/utils/constants/db'
 import { capitalize } from '@/utils/functions/common'
 import { getMealMetrics } from '@/utils/functions/meal'
 
 export default function BuildYourBoxQuestion() {
-  const { nextStep, prevStep, surveyData, setSurveyData } =
-    useContext(SurveyContext)
+  const { prevStep, surveyData, setSurveyData } = useContext(SurveyContext)
   const [selectedIngredients, setSelectedIngredients] =
     useState(getInitialData())
   const totalPacks = Object.values(selectedIngredients).reduce(
@@ -24,7 +24,7 @@ export default function BuildYourBoxQuestion() {
     () =>
       getMealMetrics(
         surveyData.weight || 0,
-        surveyData.petType || PetType.DOG,
+        surveyData.species || Species.DOG,
         (surveyData.ageMonth || 0) + (surveyData.ageYear || 0) * 12,
         surveyData.isNeutered || false,
         surveyData.weightGoal || 3,
@@ -69,8 +69,13 @@ export default function BuildYourBoxQuestion() {
       setErrorDisplay(`Please select ${14 - totalPacks} more items`)
       return
     }
-    setSurveyData((data) => ({ ...data, meatSelection: selectedIngredients }))
-    nextStep()
+    flushSync(() => {
+      setSurveyData((data) => ({
+        ...data,
+        mealTypeToQuantity: selectedIngredients,
+      }))
+    })
+    console.log(surveyData)
   }
 
   return (

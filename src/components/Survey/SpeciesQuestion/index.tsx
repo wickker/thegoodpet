@@ -1,26 +1,26 @@
 'use client'
 
 import { useContext, useState } from 'react'
-import { SurveyPetType } from '@/@types/survey'
+import { SurveySpecies } from '@/@types/survey'
 import { FormErrorMessage } from '@/components/common'
 import { OptionCard, SurveyFooter } from '@/components/Survey'
 import { SurveyContext } from '@/contexts/SurveyProvider'
-import { PetType } from '@/utils/constants/db'
+import { Species } from '@/utils/constants/db'
 import { isZodError } from '@/utils/functions/common'
 
-export default function PetTypeQuestion() {
+export default function SpeciesQuestion() {
   const { isFirstQuestion, nextStep, surveyData, setSurveyData } =
     useContext(SurveyContext)
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
-  const handleSetPetType = (petType: PetType) => {
-    setSurveyData((data) => ({ ...data, petType }))
+  const handleSetSpecies = (species: Species) => {
+    setSurveyData((data) => ({ ...data, species }))
     setErrorDisplay('')
   }
 
   const handleNext = () => {
     try {
-      SurveyPetType.parse(surveyData.petType)
+      SurveySpecies.parse(surveyData.species)
       nextStep()
     } catch (e) {
       if (!isZodError(e)) return
@@ -33,12 +33,12 @@ export default function PetTypeQuestion() {
       <p className="my-5 text-center font-inter">Select your pet type</p>
 
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-2">
-        {Object.values(PetType).map((type) => (
+        {Object.values(Species).map((s) => (
           <OptionCard
-            key={type}
-            label={type}
-            isSelected={surveyData.petType === type}
-            onClick={() => handleSetPetType(type)}
+            key={s}
+            label={s}
+            isSelected={surveyData.species === s}
+            onClick={() => handleSetSpecies(s)}
           />
         ))}
       </div>

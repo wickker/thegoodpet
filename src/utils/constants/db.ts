@@ -5,12 +5,12 @@ export const Gender = {
 
 export type Gender = (typeof Gender)[keyof typeof Gender]
 
-export const PetType = {
+export const Species = {
   CAT: 'CAT',
   DOG: 'DOG',
 } as const
 
-export type PetType = (typeof PetType)[keyof typeof PetType]
+export type Species = (typeof Species)[keyof typeof Species]
 
 export const WEIGHT_GOALS = [
   'Lose a lot of weight',

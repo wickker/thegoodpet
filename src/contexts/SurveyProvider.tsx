@@ -23,7 +23,7 @@ import {
   NameQuestion,
   NeuteredQuestion,
   OmitIngredientsQuestion,
-  PetTypeQuestion,
+  SpeciesQuestion,
   WeightGoalQuestion,
   WeightQuestion,
 } from '@/components/Survey'
@@ -62,7 +62,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     activityLevel: 3,
   })
   const surveyComponents = [
-    PetTypeQuestion,
+    SpeciesQuestion,
     GenderQuestion,
     NameQuestion,
     AgeQuestion,

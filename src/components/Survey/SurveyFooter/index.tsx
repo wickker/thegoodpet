@@ -27,11 +27,16 @@ export default function SurveyFooter({
       )}
 
       {!hideNextButton && (
-        <div className={mc('flex justify-end', hideBackButton && 'col-span-2')}>
+        <div
+          className={mc(
+            'flex w-full justify-end',
+            hideBackButton && 'col-span-2',
+          )}
+        >
           {customNextButton ? (
             customNextButton
           ) : (
-            <Button width="w-full md:w-32" onClick={onNext}>
+            <Button className="w-full md:w-32" onClick={onNext}>
               Next
             </Button>
           )}

@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { Gender, Ingredient, MealDoneness, PetType } from '@/utils/constants/db'
+import { Gender, Ingredient, MealDoneness, Species } from '@/utils/constants/db'
 
-export const SurveyPetType = z.nativeEnum(PetType, {
+export const SurveySpecies = z.nativeEnum(Species, {
   message: 'Pet type is required',
 })
 export const SurveyGender = z.nativeEnum(Gender, {
@@ -59,7 +59,7 @@ export const SurveyMeatTypeToQuantity = z.record(
 )
 
 export const SurveyDataSchema = z.object({
-  petType: SurveyPetType,
+  species: SurveySpecies,
   gender: SurveyGender,
   name: SurveyPetName,
   ageYear: SurveyAgeYear,
