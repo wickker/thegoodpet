@@ -7,6 +7,7 @@ import {
 } from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { createPetsFromCart } from './createPetsFromCart'
 import { ServerActionError } from '@/@types/common'
 import { SignUpForm, SignUpFormSchema } from '@/@types/customer'
 import Customers from '@/database/dtos/customers'
@@ -194,7 +195,17 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       }
     }
 
-    // TODO:
+    // create pets from unlinked surveys
+    const err = await createPetsFromCart(customerId, cartId)
+    if (err) {
+      return {
+        zodError: null,
+        error: {
+          title: 'Failed to create pets from cart products',
+          message: err,
+        },
+      }
+    }
 
     // redirect to shopify checkout link if customer has clicked checkout
     if (data.origin === 'checkout') {
