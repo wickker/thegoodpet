@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  createContext,
-  Dispatch,
-  PropsWithChildren,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, PropsWithChildren, useEffect, useState } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { SurveyData } from '@/@types/survey'
 import {
@@ -36,7 +29,7 @@ type SurveyContextSchema = {
   prevStep: () => void
   surveyComponents: Array<(props: PropsWithChildren) => JSX.Element>
   surveyData: Partial<SurveyData>
-  setSurveyData: Dispatch<SetStateAction<Partial<SurveyData>>>
+  setSurveyData: (data: Partial<SurveyData>) => void
 }
 
 export const SurveyContext = createContext<SurveyContextSchema>({
@@ -56,11 +49,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
   const searchParams = useSearchParams()
   const parsedStep = parseInt(searchParams.get('step') || '0')
   const [currentStep, setCurrentStep] = useState<number>(parsedStep)
-  const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({
-    ageYear: 0,
-    ageMonth: 0,
-    activityLevel: 3,
-  })
+  const [surveyData, _setSurveyData] = useState<Partial<SurveyData>>({})
   const surveyComponents = [
     SpeciesQuestion,
     GenderQuestion,
@@ -94,14 +83,39 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     router.push(pathname + `?step=${prevStep}`)
   }
 
+  const setSurveyData = (data: Partial<SurveyData>) => {
+    _setSurveyData(data)
+    localStorage.setItem('the-good-pet-survey', JSON.stringify(data))
+  }
+
+  function getInitialSurveyData(): Partial<SurveyData> {
+    const defaultValue: Partial<SurveyData> = {
+      ageYear: 0,
+      ageMonth: 0,
+      activityLevel: 3,
+    }
+
+    const existingSurveyStr = localStorage.getItem('the-good-pet-survey')
+
+    if (!existingSurveyStr) {
+      return defaultValue
+    }
+
+    try {
+      const existingSurvey = JSON.parse(existingSurveyStr)
+      return existingSurvey
+    } catch (e) {
+      return defaultValue
+    }
+  }
+
   // Side effects
   useEffect(() => {
     const step = parseInt(searchParams.get('step') || '0')
     setCurrentStep(step)
   }, [searchParams])
 
-  // TODO: Save survey data to local storage on data change
-  // TODO: Populate survey data state from local storage onMount
+  useEffect(() => setSurveyData(getInitialSurveyData()), [])
 
   return (
     <SurveyContext.Provider
