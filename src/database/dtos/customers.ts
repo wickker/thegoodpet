@@ -11,12 +11,13 @@ const create = async (
   passwordHash: string,
   mobileNumber: string,
   cartId: string,
+  acceptsMarketing: boolean,
 ) => {
   try {
     const data = await sql`
     INSERT INTO customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
     VALUES
-        (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, true)
+        (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, ${acceptsMarketing})
     RETURNING id;  
     `
     return { data, error: null }

@@ -38,6 +38,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     verifyPassword: form.get('verifyPassword')?.toString() || '',
     countryCode: form.get('countryCode')?.toString() || '',
     mobileNumber: form.get('mobileNumber')?.toString() || '',
+    acceptsMarketing: Boolean(form.get('acceptsMarketing') || 'false'),
     origin: form.get('origin')?.toString() || '',
   }
 
@@ -88,6 +89,7 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     passwordHash,
     phone,
     cartId,
+    data.acceptsMarketing,
   )
   if (createErr || !newCustomer || newCustomer.length === 0) {
     return {
