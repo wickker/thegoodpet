@@ -5,6 +5,7 @@ type SurveyFooterProps = {
   customNextButton?: JSX.Element
   hideBackButton?: boolean
   hideNextButton?: boolean
+  nextLabel?: string
   onNext?: () => void
   onBack?: () => void
 }
@@ -13,6 +14,7 @@ export default function SurveyFooter({
   customNextButton,
   hideBackButton = false,
   hideNextButton = false,
+  nextLabel = 'Next',
   onNext = () => {},
   onBack = () => {},
 }: SurveyFooterProps) {
@@ -37,7 +39,7 @@ export default function SurveyFooter({
             customNextButton
           ) : (
             <Button className="w-full md:w-32" onClick={onNext}>
-              Next
+              {nextLabel}
             </Button>
           )}
         </div>
