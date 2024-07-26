@@ -18,7 +18,7 @@ export default function BreedQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetBreed = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSurveyData((data) => ({ ...data, breed: e.target.value }))
+    setSurveyData({ ...surveyData, breed: e.target.value })
     setErrorDisplay('')
   }
 
@@ -27,10 +27,10 @@ export default function BreedQuestion() {
     const isChecked = e.target.checked
     setIsUnknownBreed(isChecked)
     if (isChecked) {
-      setSurveyData((data) => ({ ...data, breed: 'Unknown' }))
+      setSurveyData({ ...surveyData, breed: 'Unknown' })
       return
     }
-    setSurveyData((data) => ({ ...data, breed: '' }))
+    setSurveyData({ ...surveyData, breed: '' })
   }
 
   const handleNext = () => {

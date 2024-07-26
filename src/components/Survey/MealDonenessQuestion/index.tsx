@@ -14,7 +14,7 @@ export default function MealDonenessQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const setMealDoneness = (mealDoneness: MealDoneness) => {
-    setSurveyData((data) => ({ ...data, mealDoneness }))
+    setSurveyData({ ...surveyData, mealDoneness })
     setErrorDisplay('')
   }
 

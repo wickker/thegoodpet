@@ -43,13 +43,13 @@ export default function BuildYourBoxQuestion() {
     const packsLeft = 14 - (totalPacks - currentQuantity)
     const newQuantity = Math.min(packsLeft, currentQuantity + 1)
 
-    setSurveyData((current) => ({
-      ...current,
+    setSurveyData({
+      ...surveyData,
       mealTypeToQuantity: {
-        ...current.mealTypeToQuantity,
+        ...surveyData.mealTypeToQuantity,
         [i]: newQuantity,
       },
-    }))
+    })
 
     setErrorDisplay('')
   }
@@ -60,13 +60,13 @@ export default function BuildYourBoxQuestion() {
       : 0
     const newQuantity = Math.max(0, currentQuantity - 1)
 
-    setSurveyData((current) => ({
-      ...current,
+    setSurveyData({
+      ...surveyData,
       mealTypeToQuantity: {
-        ...current.mealTypeToQuantity,
+        ...surveyData.mealTypeToQuantity,
         [i]: newQuantity,
       },
-    }))
+    })
     setErrorDisplay('')
   }
 

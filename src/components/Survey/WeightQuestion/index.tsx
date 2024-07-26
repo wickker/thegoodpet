@@ -13,10 +13,10 @@ export default function WeightQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetWeight = (e: ChangeEvent<HTMLInputElement>) => {
-    setSurveyData((data) => ({
-      ...data,
+    setSurveyData({
+      ...surveyData,
       weight: (parseFloat(e.target.value) || 0) * 1000,
-    }))
+    })
     setErrorDisplay('')
   }
 

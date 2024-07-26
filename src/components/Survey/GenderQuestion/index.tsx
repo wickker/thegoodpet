@@ -14,7 +14,7 @@ export default function GenderQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetGender = (gender: Gender) => {
-    setSurveyData((data) => ({ ...data, gender }))
+    setSurveyData({ ...surveyData, gender })
     setErrorDisplay('')
   }
 
