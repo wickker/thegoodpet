@@ -8,7 +8,7 @@ import { sql } from '@/database'
 const bulkCreate = async (input: Array<[string, number]>) => {
   try {
     const data = await sql(
-      format('INSERT INTO pets (name, customer_id) VALUES %L', input),
+      format('INSERT INTO pets (name, customer_id) VALUES %L;', input),
     )
     return { data, error: null }
   } catch (err) {
@@ -17,7 +17,7 @@ const bulkCreate = async (input: Array<[string, number]>) => {
 }
 
 const Pets = {
-    bulkCreate
+  bulkCreate,
 }
 
 export default Pets

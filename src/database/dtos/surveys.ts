@@ -1,4 +1,5 @@
 import { NeonDbError } from '@neondatabase/serverless'
+import format from 'pg-format'
 import { sql } from '@/database'
 
 // TODO: Add logging
@@ -7,13 +8,15 @@ import { sql } from '@/database'
 const findAllSurveysWithNoPet = async (shopifyProductIds: Array<string>) => {
   try {
     const data = await sql(
-      `SELECT id, name 
+      format(
+        `SELECT id, name 
         FROM surveys 
-        WHERE shopify_product_id = ANY($1::string[])
+        WHERE shopify_product_id IN (%L)
         AND pet_id is NULL
-        AND deleted_at is NULL
+        AND deleted_at is NULL;
         `,
-      shopifyProductIds,
+        shopifyProductIds,
+      ),
     )
     return { data, error: null }
   } catch (err) {
