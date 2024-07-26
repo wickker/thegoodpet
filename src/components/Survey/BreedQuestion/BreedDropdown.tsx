@@ -1,13 +1,13 @@
 import Cats from '@/data/catBreeds.json'
 import Dogs from '@/data/dogBreeds.json'
-import { PetType } from '@/utils/constants/db'
+import { Species } from '@/utils/constants/db'
 
 type BreedDropdownProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
-  petType?: PetType
+  species?: Species
 }
 
 export default function BreedDropdown({
-  petType,
+  species,
   ...rest
 }: BreedDropdownProps) {
   return (
@@ -18,7 +18,7 @@ export default function BreedDropdown({
       >
         <option value=""></option>
         <>
-          {petType === PetType.CAT
+          {species === Species.CAT
             ? Cats.map((cat) => (
                 <option value={cat.name} key={cat.name}>
                   {cat.name}

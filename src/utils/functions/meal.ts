@@ -1,4 +1,4 @@
-import { PetType } from '@/utils/constants/db'
+import { Species } from '@/utils/constants/db'
 
 // Define activity ratios for dogs based on age, neutered status, and activity
 export const getDogActivityRatio = (
@@ -50,7 +50,7 @@ export const getCatActivityRatio = (
 
 export const getMealMetrics = (
   weightGram: number,
-  petType: PetType,
+  species: Species,
   ageMonth: number,
   isNeutered: boolean,
   weightGoal: number,
@@ -60,7 +60,7 @@ export const getMealMetrics = (
   const RER = 70 * Math.pow(weightGram / 1000, 0.75)
 
   // Get the appropriate ratio
-  const isDog = petType === PetType.DOG
+  const isDog = species === Species.DOG
   const ratio = isDog
     ? getDogActivityRatio(ageMonth, isNeutered, weightGoal, activityLevel)
     : getCatActivityRatio(ageMonth, isNeutered, weightGoal, activityLevel)

@@ -50,7 +50,7 @@ export default function BreedQuestion() {
 
       <div className="mx-auto w-full max-w-[360px]">
         <BreedDropdown
-          petType={surveyData.petType}
+          species={surveyData.species}
           onChange={handleSetBreed}
           disabled={isUnknownBreed}
           value={surveyData.breed}

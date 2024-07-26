@@ -16,7 +16,6 @@ import {
   AllergicIngredientsQuestion,
   BreedQuestion,
   BuildYourBoxQuestion,
-  EmailQuestion,
   // FoodGoalDetails,   TODO: skip question for now
   // FoodGoalQuestion,  TODO: skip question for now
   GenderQuestion,
@@ -24,7 +23,7 @@ import {
   NameQuestion,
   NeuteredQuestion,
   OmitIngredientsQuestion,
-  PetTypeQuestion,
+  SpeciesQuestion,
   WeightGoalQuestion,
   WeightQuestion,
 } from '@/components/Survey'
@@ -63,7 +62,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     activityLevel: 3,
   })
   const surveyComponents = [
-    PetTypeQuestion,
+    SpeciesQuestion,
     GenderQuestion,
     NameQuestion,
     AgeQuestion,
@@ -78,7 +77,6 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     OmitIngredientsQuestion,
     MealDonenessQuestion,
     BuildYourBoxQuestion,
-    EmailQuestion,
   ]
 
   // Derived state

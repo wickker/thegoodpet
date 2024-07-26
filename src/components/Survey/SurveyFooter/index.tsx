@@ -5,6 +5,7 @@ type SurveyFooterProps = {
   customNextButton?: JSX.Element
   hideBackButton?: boolean
   hideNextButton?: boolean
+  nextLabel?: string
   onNext?: () => void
   onBack?: () => void
 }
@@ -13,6 +14,7 @@ export default function SurveyFooter({
   customNextButton,
   hideBackButton = false,
   hideNextButton = false,
+  nextLabel = 'Next',
   onNext = () => {},
   onBack = () => {},
 }: SurveyFooterProps) {
@@ -27,12 +29,17 @@ export default function SurveyFooter({
       )}
 
       {!hideNextButton && (
-        <div className={mc('flex justify-end', hideBackButton && 'col-span-2')}>
+        <div
+          className={mc(
+            'flex w-full justify-end',
+            hideBackButton && 'col-span-2',
+          )}
+        >
           {customNextButton ? (
             customNextButton
           ) : (
-            <Button width="w-full md:w-32" onClick={onNext}>
-              Next
+            <Button className="w-full md:w-32" onClick={onNext}>
+              {nextLabel}
             </Button>
           )}
         </div>
