@@ -1,9 +1,7 @@
 import { CartBase } from '@shopify/hydrogen-react/cart-types'
 import type {
   Product,
-  CustomerCreatePayload,
   CustomerAccessTokenCreateInput,
-  CustomerAccessTokenCreatePayload,
   CustomerCreateInput,
   QueryRootProductsArgs,
   CustomerOrdersArgs,
@@ -11,6 +9,7 @@ import type {
   CartInput,
   MutationCartLinesAddArgs,
   MutationCartLinesUpdateArgs,
+  MutationCartBuyerIdentityUpdateArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import {
   ClientResponse,
@@ -65,27 +64,24 @@ const createCart = (request: CartInput): Promise<CartBase> =>
     })
     .then((res) => res.data)
 
+// Automatically triggers a 'Customer account confimation' email sent from Shopify
 const createCustomer = (
   request: CustomerCreateInput,
-): Promise<CustomerCreatePayload> =>
-  client
-    .request(Customers.Create, {
-      variables: {
-        input: request,
-      },
-    })
-    .then((res) => res.data.customerCreate)
+): Promise<ClientResponse> =>
+  client.request(Customers.Create, {
+    variables: {
+      input: request,
+    },
+  })
 
 const createCustomerAccessToken = (
   request: CustomerAccessTokenCreateInput,
-): Promise<CustomerAccessTokenCreatePayload> =>
-  client
-    .request(Customers.CreateAccessToken, {
-      variables: {
-        input: request,
-      },
-    })
-    .then((res) => res.data)
+): Promise<ClientResponse> =>
+  client.request(Customers.CreateAccessToken, {
+    variables: {
+      input: request,
+    },
+  })
 
 // PUT
 const addItemToCart = (
@@ -102,6 +98,13 @@ const updateCartItemQuantity = (
     variables: request,
   })
 
+const updateCartBuyerEmail = (
+  request: MutationCartBuyerIdentityUpdateArgs,
+): Promise<ClientResponse> =>
+  client.request(Carts.UpdateBuyerEmail, {
+    variables: request,
+  })
+
 export default {
   addItemToCart,
   createCart,
@@ -110,5 +113,6 @@ export default {
   getAllProducts,
   getCart,
   getCustomerOrders,
+  updateCartBuyerEmail,
   updateCartItemQuantity,
 }

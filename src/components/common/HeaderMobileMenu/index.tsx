@@ -5,11 +5,13 @@ import { mc } from '@/utils/functions/common'
 type HeaderMobileMenuProps = {
   isMenuOpen: boolean
   links: Array<{ path: Route; label: string }>
+  onClickLink: () => void
 }
 
 export default function HeaderMobileMenu({
   isMenuOpen,
   links,
+  onClickLink,
 }: HeaderMobileMenuProps) {
   return (
     <div
@@ -21,13 +23,13 @@ export default function HeaderMobileMenu({
       <ul className="pb-4 text-lg font-medium text-secondary">
         {links.map(({ label, path }, index) => (
           <li className="border-b border-black px-[15px] py-1.5" key={index}>
-            <Link href={path} className="flex">
+            <Link href={path} className="flex" onClick={onClickLink}>
               {label}
             </Link>
           </li>
         ))}
         <li className="border-b border-black px-[15px] py-1.5">
-          <Link href="/" className="flex">
+          <Link href="/" className="flex" onClick={onClickLink}>
             Account
           </Link>
         </li>

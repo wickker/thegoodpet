@@ -31,6 +31,7 @@ CREATE TABLE customers (
     shopify_access_token VARCHAR(191) DEFAULT NULL,
     shopify_access_token_expires_at TIMESTAMP DEFAULT NULL,
     accepts_marketing BOOLEAN,
+    shopify_cart_id TEXT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT NULL,
     deleted_at TIMESTAMP DEFAULT NULL

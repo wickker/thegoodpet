@@ -1,12 +1,12 @@
 'use client'
 
-import Link from 'next/link'
+import { Suspense } from 'react'
 import { useFormState } from 'react-dom'
 import { login } from './actions'
 import { ServerActionError } from '@/@types/common'
 import { LoginForm } from '@/@types/customer'
-import { Button, FormErrorMessage } from '@/components/common'
-import { Route } from '@/utils/constants/routes'
+import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
+import { SignUpLink } from '@/components/Login'
 
 export default function LoginPage() {
   const [state, formAction] = useFormState<
@@ -46,16 +46,23 @@ export default function LoginPage() {
             className="mb-3 mt-2 text-left"
           />
 
-          <p className="mb-16 text-sm text-neutral-900">
-            Don't have an account? {/* TODO: Link this to account setup page */}
-            <Link href={Route.LEARN} className="text-primary underline">
-              Sign up
-            </Link>
+          <p className="mb-8 text-sm text-neutral-900">
+            Don't have an account?{' '}
+            <Suspense>
+              <SignUpLink />
+            </Suspense>
           </p>
 
-          <Button width="w-full" type="submit">
+          <FormErrorMessage
+            message={
+              state.error && `${state.error.title}: ${state.error.message}`
+            }
+            className="mb-8 mt-0"
+          />
+
+          <ButtonSubmitFormAction className="w-full">
             Login
-          </Button>
+          </ButtonSubmitFormAction>
         </form>
       </div>
     </div>

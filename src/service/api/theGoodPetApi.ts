@@ -5,6 +5,7 @@ import {
   MutationCartLinesUpdateArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
 
+// TODO: Modify this to handle errors within the data key e.g. customerUserErrors / userErrors
 const handleResponse = async (res: Response) => {
   const json = await res.json()
   if (!res.ok) {

@@ -20,7 +20,7 @@ export default function SurveyFooter({
     <div className="fixed bottom-0 left-0 right-0 grid grid-cols-2 gap-3 bg-white p-[15px] md:relative md:mt-5 md:bg-transparent md:px-0">
       {!hideBackButton && (
         <div className={mc(hideNextButton && 'col-span-2')}>
-          <Button width="w-full md:w-32" onClick={onBack}>
+          <Button className="w-full md:w-32" onClick={onBack}>
             Back
           </Button>
         </div>
