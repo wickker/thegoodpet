@@ -1,23 +1,23 @@
 CREATE TABLE pets (
     id SERIAL PRIMARY KEY,
     name VARCHAR(191),
-    customer_id INTEGER DEFAULT NULL,
+    customer_id INTEGER,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT NULL,
-    deleted_at TIMESTAMP DEFAULT NULL ∏
+    deleted_at TIMESTAMP DEFAULT NULL
 );
 
 CREATE INDEX pets_customer_id_idx ON pets (customer_id);
 
 CREATE TABLE surveys (
     id SERIAL PRIMARY KEY,
-    species VARCHAR(191) DEFAULT NULL,
+    species VARCHAR(191),
     gender VARCHAR(15),
     name VARCHAR(191),
-    ageYear INTEGER,
-    ageMonth INTEGER,
+    age_year INTEGER,
+    age_month INTEGER,
     is_neutered BOOLEAN,
-    breed VARCHAR(191) DEFAULT NULL,
+    breed VARCHAR(191),
     weight_gram INTEGER,
     weight_goal INTEGER,
     activity_level INTEGER,
@@ -25,7 +25,7 @@ CREATE TABLE surveys (
     allergic_ingredients JSONB DEFAULT NULL,
     omit_ingredients JSONB DEFAULT NULL,
     meal_doneness VARCHAR(191),
-    meal_type_to_quantity JSONB DEFAULT NULL,
+    meal_type_to_quantity JSONB,
     pet_id INTEGER DEFAULT NULL,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT NULL,
