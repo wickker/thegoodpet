@@ -38,8 +38,8 @@ export default function BuildYourBoxQuestion() {
     const data = {} as Record<Ingredient, number>
 
     Object.values(Ingredient).forEach((i) => {
-      const initialValue = surveyData.meatSelection
-        ? surveyData.meatSelection[i] || 0
+      const initialValue = surveyData.mealTypeToQuantity
+        ? surveyData.mealTypeToQuantity[i] || 0
         : 0
       data[i] = initialValue
     })

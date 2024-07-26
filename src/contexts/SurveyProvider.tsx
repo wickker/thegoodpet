@@ -16,7 +16,6 @@ import {
   AllergicIngredientsQuestion,
   BreedQuestion,
   BuildYourBoxQuestion,
-  EmailQuestion,
   // FoodGoalDetails,   TODO: skip question for now
   // FoodGoalQuestion,  TODO: skip question for now
   GenderQuestion,
@@ -78,7 +77,6 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     OmitIngredientsQuestion,
     MealDonenessQuestion,
     BuildYourBoxQuestion,
-    EmailQuestion,
   ]
 
   // Derived state

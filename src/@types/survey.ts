@@ -53,7 +53,7 @@ export const SurveyMealDoneness = z.nativeEnum(MealDoneness, {
 
 export const SurveyEmail = z.string({ message: 'Email is Required' }).email()
 
-export const SurveyMeatSelection = z.record(
+export const SurveyMeatTypeToQuantity = z.record(
   z.nativeEnum(Ingredient),
   z.number(),
 )
@@ -64,7 +64,6 @@ export const SurveyDataSchema = z.object({
   name: SurveyPetName,
   ageYear: SurveyAgeYear,
   ageMonth: SurveyAgeMonth,
-  dob: SurveyDOB,
   isNeutered: SurveyNeutered,
   breed: SurveyBreed,
   weight: SurveyWeightGrams,
@@ -74,8 +73,7 @@ export const SurveyDataSchema = z.object({
   allergicIngredients: SurveyAllergicOmitIngredients,
   omitIngredients: SurveyAllergicOmitIngredients,
   mealDoneness: SurveyMealDoneness,
-  email: SurveyEmail,
-  meatSelection: SurveyMeatSelection,
+  mealTypeToQuantity: SurveyMeatTypeToQuantity,
 })
 
 export type SurveyData = z.infer<typeof SurveyDataSchema>
