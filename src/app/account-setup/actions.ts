@@ -194,6 +194,9 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       }
     }
 
+    // TODO: 
+
+
     // redirect to shopify checkout link if customer has clicked checkout
     if (data.origin === 'checkout') {
       redirect(cart.cart.checkoutUrl)

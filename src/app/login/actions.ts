@@ -141,6 +141,12 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     }
   }
 
+  const cartId = cartIdCookie
+    ? cartIdCookie.value
+    : dbCustomer.shopify_cart_id || ''
+
+  // TODO:
+
   // set auth and cart cookies
   const expiryDate = new Date(token.customerAccessToken.expiresAt)
   setCookie(
