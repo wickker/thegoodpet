@@ -9,13 +9,17 @@ export const getDogActivityRatio = (
 ): number => {
   if (ageMonth < 4) {
     return 3.0
-  } else if (ageMonth < 18) {
+  }
+
+  if (ageMonth < 18) {
     return 2.0
   }
 
   if (activityLevel < 3 || weightGoal < 3) {
     return 1.2
-  } else if (weightGoal > 3) {
+  }
+
+  if (weightGoal > 3) {
     return 1.8
   }
 
@@ -35,7 +39,9 @@ export const getCatActivityRatio = (
 
   if (activityLevel < 3 || weightGoal < 3) {
     return 1.0
-  } else if (weightGoal > 3) {
+  }
+
+  if (weightGoal > 3) {
     return 1.6
   }
 
