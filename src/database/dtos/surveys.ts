@@ -24,8 +24,22 @@ const findAllSurveysWithNoPet = async (shopifyProductIds: Array<string>) => {
   }
 }
 
+const updateSurveyWithPetId = async (petId: number, surveyId: number) => {
+  try {
+    const data = await sql`
+    UPDATE surveys
+    SET pet_id = ${petId}
+    WHERE id = ${surveyId};
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
 const Surveys = {
   findAllSurveysWithNoPet,
+  updateSurveyWithPetId,
 }
 
 export default Surveys

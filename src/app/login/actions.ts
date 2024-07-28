@@ -6,6 +6,7 @@ import {
 } from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { createPetsFromCart } from '../account-setup/createPetsFromCart'
 import { ServerActionError } from '@/@types/common'
 import { LoginForm, LoginFormSchema } from '@/@types/customer'
 import Customers from '@/database/dtos/customers'
@@ -141,11 +142,22 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     }
   }
 
-  //   const cartId = cartIdCookie
-  //     ? cartIdCookie.value
-  //     : dbCustomer.shopify_cart_id || ''
-
-  // TODO:
+  // create pets from unlinked surveys
+  const cartId = cartIdCookie
+    ? cartIdCookie.value
+    : dbCustomer.shopify_cart_id || ''
+  if (cartId) {
+    const err = await createPetsFromCart(dbCustomer.id, cartId)
+    if (err) {
+      return {
+        zodError: null,
+        error: {
+          title: 'Failed to create pets from cart products',
+          message: err,
+        },
+      }
+    }
+  }
 
   // set auth and cart cookies
   const expiryDate = new Date(token.customerAccessToken.expiresAt)

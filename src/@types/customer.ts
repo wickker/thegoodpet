@@ -40,6 +40,7 @@ export const SignUpFormSchema = z
       .refine((v) => v[0] === '+', {
         message: `Country code must begin with a '+'`,
       }),
+    acceptsMarketing: z.string({ message: 'Field is required' }),
   })
   .merge(LoginFormSchema)
   .refine((values) => values.password === values.verifyPassword, {
