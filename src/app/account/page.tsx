@@ -4,7 +4,7 @@ import { OrderHistoryTile } from '@/components/Account'
 import storefrontApi from '@/service/api/storefrontApi'
 import { SHOPIFY_CUSTOMER_TOKEN_COOKIE } from '@/utils/constants/cookies'
 
-export default async function Account() {
+export default async function AccountPage() {
   const tokenCookie = cookies().get(SHOPIFY_CUSTOMER_TOKEN_COOKIE)
   if (!tokenCookie) {
     return (

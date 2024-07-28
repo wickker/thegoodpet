@@ -20,6 +20,7 @@ export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
   )
 
   useEffect(() => {
+    // to prevent text content mismatch during hydration
     if (order.processedAt) {
       setOrderTimestamp(
         DateTime.fromISO(order.processedAt).toLocaleString(
