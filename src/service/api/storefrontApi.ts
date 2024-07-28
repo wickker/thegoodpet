@@ -9,6 +9,7 @@ import type {
   MutationCartLinesAddArgs,
   MutationCartLinesUpdateArgs,
   MutationCartBuyerIdentityUpdateArgs,
+  MutationCartLinesRemoveArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import {
   ClientResponse,
@@ -88,6 +89,13 @@ const addItemToCart = (
     variables: request,
   })
 
+const deleteItemFromCart = (
+  request: MutationCartLinesRemoveArgs,
+): Promise<ClientResponse> =>
+  client.request(Carts.DeleteItem, {
+    variables: request,
+  })
+
 const updateCartItemQuantity = (
   request: MutationCartLinesUpdateArgs,
 ): Promise<ClientResponse> =>
@@ -107,6 +115,7 @@ export default {
   createCart,
   createCustomer,
   createCustomerAccessToken,
+  deleteItemFromCart,
   getAllProducts,
   getCart,
   getCustomer,

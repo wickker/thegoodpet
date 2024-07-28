@@ -1,15 +1,27 @@
 'use client'
 
 import { useState } from 'react'
+import { Order } from '@shopify/hydrogen-react/storefront-api-types'
 import { BsChevronDown } from 'react-icons/bs'
 import { mc } from '@/utils/functions/common'
 
-export default function OrderHistoryTile() {
+type OrderHistoryTileProps = {
+  order: Order
+}
+
+export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  //   const getTotalPrice = () => {
+  //     if (order.lineItems.nodes)
+  //   }
 
   return (
     <>
       <div className="h-[100px] w-full bg-purple-400">
+        <p>{order.processedAt}</p>
+        <p>{order.orderNumber}</p>
+        <br />
         <button onClick={() => setIsDropdownOpen((prev) => !prev)}>
           <BsChevronDown
             className={mc(
