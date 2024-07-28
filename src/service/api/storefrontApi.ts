@@ -5,7 +5,6 @@ import type {
   CustomerCreateInput,
   QueryRootProductsArgs,
   CustomerOrdersArgs,
-  Customer,
   CartInput,
   MutationCartLinesAddArgs,
   MutationCartLinesUpdateArgs,
@@ -41,18 +40,16 @@ const getCart = (cartId?: string): Promise<ClientResponse> =>
     variables: { cartId },
   })
 
-const getCustomerOrders = (
+const getCustomer = (
   accessToken: string,
   request: CustomerOrdersArgs,
-): Promise<Customer> =>
-  client
-    .request(Customers.GetOrders, {
-      variables: {
-        customerAccessToken: accessToken,
-        ...request,
-      },
-    })
-    .then((res) => res.data)
+): Promise<ClientResponse> =>
+  client.request(Customers.Get, {
+    variables: {
+      customerAccessToken: accessToken,
+      ...request,
+    },
+  })
 
 // POST
 const createCart = (request: CartInput): Promise<CartBase> =>
@@ -112,7 +109,7 @@ export default {
   createCustomerAccessToken,
   getAllProducts,
   getCart,
-  getCustomerOrders,
+  getCustomer,
   updateCartBuyerEmail,
   updateCartItemQuantity,
 }

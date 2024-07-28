@@ -14,8 +14,8 @@ import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
   SHOPIFY_CART_ID_COOKIE,
-  SHOPIFY_CUSTOMER_TOKEN,
-  SHOPIFY_CUSTOMER_EMAIL,
+  SHOPIFY_CUSTOMER_TOKEN_COOKIE,
+  SHOPIFY_CUSTOMER_EMAIL_COOKIE,
 } from '@/utils/constants/cookies'
 import { Route } from '@/utils/constants/routes'
 import {
@@ -168,11 +168,11 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   const expiryDate = new Date(token.customerAccessToken.expiresAt)
   setCookie(
     cookieStore,
-    SHOPIFY_CUSTOMER_TOKEN,
+    SHOPIFY_CUSTOMER_TOKEN_COOKIE,
     token.customerAccessToken.accessToken,
     expiryDate,
   )
-  setCookie(cookieStore, SHOPIFY_CUSTOMER_EMAIL, data.email, expiryDate)
+  setCookie(cookieStore, SHOPIFY_CUSTOMER_EMAIL_COOKIE, data.email, expiryDate)
 
   // update cart with buyer identity if cart exists
   if (cartId) {
