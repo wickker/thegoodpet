@@ -1,4 +1,7 @@
-import { CartLinesRemovePayload } from '@shopify/hydrogen-react/storefront-api-types'
+import {
+  CartLinesAddPayload,
+  CartLinesRemovePayload,
+} from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
 import storefrontApi from '@/service/api/storefrontApi'
 import { SHOPIFY_CART_ID_COOKIE } from '@/utils/constants/cookies'
@@ -18,18 +21,22 @@ export async function PUT(request: Request) {
     cartId: cartIdCookie.value,
     lines: req.lines,
   })
+  const { data, error } = handleStorefrontGqlResponse<CartLinesAddPayload>(
+    res,
+    StorefrontDataKey.CART_LINES_ADD,
+  )
 
-  if (res.errors) {
+  if (error) {
     return Response.json(
       {
         title: 'Failed to add item to cart',
-        message: JSON.stringify(res.errors),
+        message: error,
       },
       { status: 500 },
     )
   }
 
-  return Response.json(res.data)
+  return Response.json(data)
 }
 
 // Delete item from cart

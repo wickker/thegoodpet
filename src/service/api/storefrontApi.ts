@@ -89,13 +89,6 @@ const addItemToCart = (
     variables: request,
   })
 
-const deleteItemFromCart = (
-  request: MutationCartLinesRemoveArgs,
-): Promise<ClientResponse> =>
-  client.request(Carts.DeleteItem, {
-    variables: request,
-  })
-
 const updateCartItemQuantity = (
   request: MutationCartLinesUpdateArgs,
 ): Promise<ClientResponse> =>
@@ -107,6 +100,14 @@ const updateCartBuyerEmail = (
   request: MutationCartBuyerIdentityUpdateArgs,
 ): Promise<ClientResponse> =>
   client.request(Carts.UpdateBuyerEmail, {
+    variables: request,
+  })
+
+// DELETE
+const deleteItemFromCart = (
+  request: MutationCartLinesRemoveArgs,
+): Promise<ClientResponse> =>
+  client.request(Carts.DeleteItem, {
     variables: request,
   })
 

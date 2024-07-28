@@ -64,6 +64,11 @@ mutation ($cartInput: CartInput) {
         }
       }
     }
+    userErrors {
+      code
+      field
+      message
+    }
   }
 }
 `

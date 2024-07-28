@@ -35,6 +35,7 @@ mutation ($cartId: ID!, $lines: [CartLineInput!]!) {
       }
     }
     userErrors {
+      code
       field
       message
     }

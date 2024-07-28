@@ -42,9 +42,12 @@ export default async function Account() {
           Order History
         </h1>
 
-        <OrderHistoryTile order={customer.orders.edges[0].node} />
+        {customer.orders.edges.map((order) => (
+          <OrderHistoryTile order={order.node} key={order.node.id} />
+        ))}
 
-        <div>{JSON.stringify(customer)}</div>
+        {/* TODO: Remove this later */}
+        {/* <div>{JSON.stringify(customer)}</div> */}
       </div>
     </div>
   )
