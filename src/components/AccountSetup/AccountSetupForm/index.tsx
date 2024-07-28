@@ -123,6 +123,7 @@ export default function AccountSetupForm() {
 
       <input name="origin" value={origin} hidden readOnly />
 
+      {/* TODO: Change this to notification */}
       <FormErrorMessage
         message={state.error && `${state.error.title}: ${state.error.message}`}
         className="mb-2 mt-1"
