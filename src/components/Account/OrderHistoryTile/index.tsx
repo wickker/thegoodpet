@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Order } from '@shopify/hydrogen-react/storefront-api-types'
 import { DateTime } from 'luxon'
 import { BsChevronDown } from 'react-icons/bs'
+import { OrderHistorySubTile } from '@/components/Account'
 import { formatPriceString, mc } from '@/utils/functions/common'
 
 type OrderHistoryTileProps = {
@@ -40,8 +41,8 @@ export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
               {totalItems} {totalItems > 1 ? 'items' : 'item'}
             </p>
           </div>
-          <div className="flex items-center justify-between space-x-2">
-            <p>{orderTimestamp}</p>
+          <div className="grid grid-cols-[1fr_auto] gap-x-2">
+            <p className="truncate">{orderTimestamp}</p>
             <p>${formatPriceString(order.totalPrice.amount)}</p>
           </div>
         </div>
@@ -59,13 +60,16 @@ export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
         </button>
       </div>
 
-      {/* TODO: TBC in next ticket */}
       <div
         className={mc(
-          'h-[100px] max-h-0 bg-yellow-400 transition-[max_height]',
-          isDropdownOpen && 'max-h-[100px]',
+          'max-h-0 overflow-hidden bg-background transition-[max_height]',
+          isDropdownOpen && 'max-h-[calc(20*81px)]',
         )}
-      ></div>
+      >
+        {order.lineItems.nodes.map((item, idx) => (
+          <OrderHistorySubTile item={item} key={idx} />
+        ))}
+      </div>
     </div>
   )
 }
