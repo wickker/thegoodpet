@@ -5,10 +5,11 @@ import storefrontApi from '@/service/api/storefrontApi'
 
 export async function createPetsFromCart(customerId: number, cartId: string) {
   const cartRes = await storefrontApi.getCart(cartId)
-  if (cartRes.errors || !cartRes.data) {
+  if (cartRes.errors) {
     return cartRes.errors?.message
   }
-  const productIds = (cartRes.data as Cart).lines.edges.map(
+  if (!cartRes.data?.cart) return // case where cart is no longer valid
+  const productIds = (cartRes.data.cart as Cart).lines.edges.map(
     (v) => v.node.merchandise.product.id,
   )
 

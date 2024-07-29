@@ -63,8 +63,13 @@ export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
       <div
         className={mc(
           'max-h-0 overflow-hidden bg-background transition-[max_height]',
-          isDropdownOpen && 'max-h-[calc(20*81px)]',
+          isDropdownOpen && `max-h-[calc(81px)]`,
         )}
+        style={{
+          maxHeight: isDropdownOpen
+            ? `calc(${order.lineItems.nodes.length}*81px)`
+            : 0,
+        }}
       >
         {order.lineItems.nodes.map((item, idx) => (
           <OrderHistorySubTile item={item} key={idx} />

@@ -14,7 +14,7 @@ export async function logout() {
   const cookieStore = cookies()
   const emailCookie = cookieStore.get(SHOPIFY_CUSTOMER_EMAIL_COOKIE)
   if (!emailCookie) {
-    return { error: 'Failed to get cusotmer email cookie' }
+    return { error: 'Failed to get customer email cookie' }
   }
 
   const { error } = await Customers.updateShopifyAccessTokenExpiry(
