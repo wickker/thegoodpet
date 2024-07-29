@@ -1,4 +1,5 @@
 export const Route = {
+  ACCOUNT: '/account',
   ACCOUNT_SETUP: '/account-setup',
   HOME: '/',
   LEARN: '/',

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { handleClickUserAccount } from '@/components/common/Header/actions'
 import { type Route } from '@/utils/constants/routes'
 import { mc } from '@/utils/functions/common'
 
@@ -29,9 +30,15 @@ export default function HeaderMobileMenu({
           </li>
         ))}
         <li className="border-b border-black px-[15px] py-1.5">
-          <Link href="/" className="flex" onClick={onClickLink}>
+          <button
+            className="flex"
+            onClick={() => {
+              onClickLink()
+              handleClickUserAccount()
+            }}
+          >
             Account
-          </Link>
+          </button>
         </li>
       </ul>
     </div>
