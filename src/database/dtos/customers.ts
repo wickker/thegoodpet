@@ -54,6 +54,20 @@ const findByEmail = async (email: string) => {
   }
 }
 
+const updateShopifyAccessTokenExpiry = async (email: string) => {
+  try {
+    const data = await sql`
+    UPDATE customers
+    SET shopify_access_token_expires_at = NOW(),
+    updated_at = NOW()
+    WHERE email = ${email};
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
 const updateShopifyAccessToken = async (
   accessToken: string,
   expiresAt: string,
@@ -103,6 +117,7 @@ const Customers = {
   findByEmailOrPhone,
   updateShopifyAccessToken,
   updateShopifyAccessTokenAndCartId,
+  updateShopifyAccessTokenExpiry,
 }
 
 export default Customers

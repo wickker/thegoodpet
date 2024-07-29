@@ -27,10 +27,7 @@ export const formatPriceString = (
   quantity: number = 1,
 ) => {
   if (!price) return ''
-  const splits = price.split('.')
-  if (splits.length < 2) return ''
-  const newPrice = `${splits[0]}${splits[1]}`
-  return ((parseInt(newPrice) * quantity) / 10).toFixed(2)
+  return (parseFloat(price) * quantity).toFixed(2)
 }
 
 export const setCookie = (

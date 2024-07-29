@@ -1,6 +1,6 @@
 import { Customer } from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
-import { OrderHistoryTile } from '@/components/Account'
+import { OrderHistoryTile, LogoutForm } from '@/components/Account'
 import storefrontApi from '@/service/api/storefrontApi'
 import { SHOPIFY_CUSTOMER_TOKEN_COOKIE } from '@/utils/constants/cookies'
 
@@ -28,12 +28,12 @@ export default async function AccountPage() {
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
-      <div className="w-full">
+      <div className="w-full pb-5">
         <div className="mb-5 flex items-center justify-between">
           <h1 className="font-fredoka text-4xl font-medium text-secondary">
             Account
           </h1>
-          <button className="text-primary underline">Logout</button>
+          <LogoutForm />
         </div>
 
         <div className="mb-10">{customer.email}</div>
@@ -45,9 +45,6 @@ export default async function AccountPage() {
         {customer.orders.edges.map((order) => (
           <OrderHistoryTile order={order.node} key={order.node.id} />
         ))}
-
-        {/* TODO: Remove this later */}
-        {/* <div>{JSON.stringify(customer)}</div> */}
       </div>
     </div>
   )
