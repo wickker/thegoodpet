@@ -13,8 +13,8 @@ type CartTileProps = {
 
 export default function CartTile({ item }: CartTileProps) {
   const { getCart } = useContext(CartContext)
-  const { useUpdateCartQuantityMutation } = useCart()
-  const updateCartQuantity = useUpdateCartQuantityMutation(() =>
+  const { useDeleteItemFromCartMutation } = useCart()
+  const deleteItemFromCart = useDeleteItemFromCartMutation(() =>
     getCart?.refetch(),
   )
 
@@ -54,13 +54,8 @@ export default function CartTile({ item }: CartTileProps) {
   const { discountedPrice, originalPrice } = getOriginalAndDiscountedPrice(item)
 
   const handleDeleteItem = (cartLineId: string) =>
-    updateCartQuantity.mutate({
-      lines: [
-        {
-          id: cartLineId,
-          quantity: 0,
-        },
-      ],
+    deleteItemFromCart.mutate({
+      lineIds: [cartLineId],
     })
 
   return (
@@ -104,9 +99,9 @@ export default function CartTile({ item }: CartTileProps) {
             <button
               className="text-[18px]"
               onClick={() => handleDeleteItem(item.node.id)}
-              disabled={updateCartQuantity.isPending}
+              disabled={deleteItemFromCart.isPending}
             >
-              {updateCartQuantity.isPending ? (
+              {deleteItemFromCart.isPending ? (
                 <Loader size="sm" />
               ) : (
                 <BsTrash />

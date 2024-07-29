@@ -53,6 +53,7 @@ export default function LoginPage() {
             </Suspense>
           </p>
 
+          {/* TODO: Change this to notification */}
           <FormErrorMessage
             message={
               state.error && `${state.error.title}: ${state.error.message}`

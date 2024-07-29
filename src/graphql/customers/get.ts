@@ -32,9 +32,6 @@ query ($customerAccessToken: String!, $first: Int) {
               title
               quantity
               variant {
-                image {
-                  url
-                }
                 id
                 sellingPlanAllocations(first: 10) {
                   nodes {
@@ -55,12 +52,41 @@ query ($customerAccessToken: String!, $first: Int) {
                     }
                   }
                 }
+                image {
+                  url
+                }
+                compareAtPrice {
+                  currencyCode
+                  amount
+                }
+                price {
+                  amount
+                  currencyCode
+                }
+                barcode
+                title
+                unitPrice {
+                  amount
+                  currencyCode
+                }
               }
             }
           }
         }
       }
       totalCount
+    }
+    numberOfOrders
+    email
+    addresses(first: 10) {
+      nodes {
+        address1
+        address2
+        country
+        firstName
+        lastName
+        zip
+      }
     }
   }
 }

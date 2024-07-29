@@ -1,11 +1,11 @@
 import Create from './create'
 import CreateAccessToken from './createAccessToken'
-import GetOrders from './getOrders'
+import Get from './get'
 
 const Customers = {
   Create,
   CreateAccessToken,
-  GetOrders,
+  Get,
 }
 
 export default Customers

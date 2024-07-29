@@ -1,7 +1,10 @@
-import { CartBase } from '@shopify/hydrogen-react/cart-types'
 import {
   Cart,
+  CartLinesAddPayload,
+  CartLinesRemovePayload,
+  CartLinesUpdatePayload,
   MutationCartLinesAddArgs,
+  MutationCartLinesRemoveArgs,
   MutationCartLinesUpdateArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
 
@@ -23,7 +26,7 @@ const getCart = async (): Promise<Cart> => {
 // PUT
 const addItemToCart = async (
   request: Partial<MutationCartLinesAddArgs>,
-): Promise<CartBase | null> => {
+): Promise<CartLinesAddPayload | null> => {
   const res = await fetch('/api/carts/items', {
     method: 'PUT',
     body: JSON.stringify(request),
@@ -33,7 +36,7 @@ const addItemToCart = async (
 
 const updateCartItemQuantity = async (
   request: Partial<MutationCartLinesUpdateArgs>,
-): Promise<CartBase | null> => {
+): Promise<CartLinesUpdatePayload | null> => {
   const res = await fetch('/api/carts/items/quantity', {
     method: 'PUT',
     body: JSON.stringify(request),
@@ -41,8 +44,20 @@ const updateCartItemQuantity = async (
   return handleResponse(res)
 }
 
+// DELETE
+const deleteItemFromCart = async (
+  request: Partial<MutationCartLinesRemoveArgs>,
+): Promise<CartLinesRemovePayload | null> => {
+  const res = await fetch('/api/carts/items', {
+    method: 'DELETE',
+    body: JSON.stringify(request),
+  })
+  return handleResponse(res)
+}
+
 export default {
   addItemToCart,
+  deleteItemFromCart,
   getCart,
   updateCartItemQuantity,
 }
