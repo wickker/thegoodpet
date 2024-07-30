@@ -3,17 +3,12 @@
 import { Suspense } from 'react'
 import { useFormState } from 'react-dom'
 import { login } from './actions'
-import { ServerActionError } from '@/@types/common'
-import { LoginForm } from '@/@types/customer'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { SignUpLink } from '@/components/Login'
 import useCart from '@/hooks/query/useCart'
 
 export default function LoginPage() {
-  const [state, formAction] = useFormState<
-    ServerActionError<LoginForm>,
-    FormData
-  >(login, { zodError: null })
+  const [state, formAction] = useFormState(login, undefined)
   const { useCreateCartMutation } = useCart()
   const createCart = useCreateCartMutation((d) => console.log(d))
 
@@ -50,7 +45,7 @@ export default function LoginPage() {
             className="block w-full rounded-lg border px-3 py-2 outline-secondary"
           />
           <FormErrorMessage
-            message={state.zodError?.email && state.zodError.email._errors[0]}
+            message={state?.zodError?.email && state.zodError.email._errors[0]}
             className="mb-3 mt-2 text-left"
           />
 
@@ -62,7 +57,7 @@ export default function LoginPage() {
           />
           <FormErrorMessage
             message={
-              state.zodError?.password && state.zodError.password._errors[0]
+              state?.zodError?.password && state.zodError.password._errors[0]
             }
             className="mb-3 mt-2 text-left"
           />
@@ -77,7 +72,7 @@ export default function LoginPage() {
           {/* TODO: Change this to notification */}
           <FormErrorMessage
             message={
-              state.error && `${state.error.title}: ${state.error.message}`
+              state?.error && `${state.error.title}: ${state.error.message}`
             }
             className="mb-8 mt-0"
           />

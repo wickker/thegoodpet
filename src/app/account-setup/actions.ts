@@ -29,7 +29,10 @@ import {
 } from '@/utils/functions/common'
 import { getPasswordHash } from '@/utils/functions/password'
 
-export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
+export async function signUp(
+  _: ServerActionError<SignUpForm> | undefined,
+  form: FormData,
+): Promise<undefined | ServerActionError<SignUpForm>> {
   const data = {
     email: form.get('email')?.toString() || '',
     password: form.get('password')?.toString() || '',
@@ -62,7 +65,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     await Customers.findByEmailOrPhone(data.email, phone)
   if (selectErr || !existingCustomers) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to find db customers',
         message: selectErr,
@@ -93,7 +95,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   )
   if (createErr || !newCustomer || newCustomer.length === 0) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to create db customer',
         message: createErr || '',
@@ -119,7 +120,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     )
   if (customerErr || !shopifyCustomer?.customer) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to create Shopify customer',
         message: customerErr || '',
@@ -140,7 +140,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     )
   if (tokenErr || !token || !token.customerAccessToken) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to create Shopify customer token',
         message: tokenErr || '',
@@ -156,7 +155,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
   )
   if (updateErr) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to update db customer',
         message: updateErr,
@@ -189,7 +187,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
       )
     if (cartErr || !cart?.cart) {
       return {
-        zodError: null,
         error: {
           title: 'Failed to update cart buyer email',
           message: cartErr || '',
@@ -201,7 +198,6 @@ export async function signUp(_: ServerActionError<SignUpForm>, form: FormData) {
     const err = await createPetsFromCart(customerId, cartId)
     if (err) {
       return {
-        zodError: null,
         error: {
           title: 'Failed to create pets from cart products',
           message: err,
