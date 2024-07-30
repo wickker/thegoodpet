@@ -2,17 +2,12 @@
 
 import { useSearchParams } from 'next/navigation'
 import { useFormState } from 'react-dom'
-import { ServerActionError } from '@/@types/common'
-import { SignUpForm } from '@/@types/customer'
 import { signUp } from '@/app/account-setup/actions'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { Colors } from '@/utils/constants/common'
 
 export default function AccountSetupForm() {
-  const [state, formAction] = useFormState<
-    ServerActionError<SignUpForm>,
-    FormData
-  >(signUp, { zodError: null })
+  const [state, formAction] = useFormState(signUp, undefined)
   const searchParams = useSearchParams()
   const origin = searchParams.get('origin') || ''
 
@@ -26,7 +21,7 @@ export default function AccountSetupForm() {
         className="block w-full rounded-lg border px-3 py-2 outline-secondary"
       />
       <FormErrorMessage
-        message={state.zodError?.email && state.zodError.email._errors[0]}
+        message={state?.zodError?.email && state?.zodError.email._errors[0]}
         className="my-1 text-left"
       />
 
@@ -38,7 +33,7 @@ export default function AccountSetupForm() {
       />
       <FormErrorMessage
         message={
-          state.zodError?.firstName && state.zodError.firstName._errors[0]
+          state?.zodError?.firstName && state?.zodError.firstName._errors[0]
         }
         className="my-1 text-left"
       />
@@ -50,7 +45,9 @@ export default function AccountSetupForm() {
         className="block w-full rounded-lg border px-3 py-2 outline-secondary"
       />
       <FormErrorMessage
-        message={state.zodError?.lastName && state.zodError.lastName._errors[0]}
+        message={
+          state?.zodError?.lastName && state?.zodError.lastName._errors[0]
+        }
         className="my-1 text-left"
       />
 
@@ -61,7 +58,9 @@ export default function AccountSetupForm() {
         className="block w-full rounded-lg border px-3 py-2 outline-secondary"
       />
       <FormErrorMessage
-        message={state.zodError?.password && state.zodError.password._errors[0]}
+        message={
+          state?.zodError?.password && state?.zodError.password._errors[0]
+        }
         className="my-1 text-left"
       />
 
@@ -73,8 +72,8 @@ export default function AccountSetupForm() {
       />
       <FormErrorMessage
         message={
-          state.zodError?.verifyPassword &&
-          state.zodError.verifyPassword._errors[0]
+          state?.zodError?.verifyPassword &&
+          state?.zodError.verifyPassword._errors[0]
         }
         className="my-1 text-left"
       />
@@ -95,9 +94,10 @@ export default function AccountSetupForm() {
       </div>
       <FormErrorMessage
         message={
-          (state.zodError?.mobileNumber &&
-            state.zodError.mobileNumber._errors[0]) ||
-          (state.zodError?.countryCode && state.zodError.countryCode._errors[0])
+          (state?.zodError?.mobileNumber &&
+            state?.zodError.mobileNumber._errors[0]) ||
+          (state?.zodError?.countryCode &&
+            state?.zodError.countryCode._errors[0])
         }
         className="my-1 text-left"
       />
@@ -121,8 +121,8 @@ export default function AccountSetupForm() {
       </div>
       <FormErrorMessage
         message={
-          state.zodError?.acceptsMarketing &&
-          state.zodError.acceptsMarketing._errors[0]
+          state?.zodError?.acceptsMarketing &&
+          state?.zodError.acceptsMarketing._errors[0]
         }
         className="my-1 text-left"
       />
@@ -131,7 +131,9 @@ export default function AccountSetupForm() {
 
       {/* TODO: Change this to notification */}
       <FormErrorMessage
-        message={state.error && `${state.error.title}: ${state.error.message}`}
+        message={
+          state?.error && `${state?.error.title}: ${state?.error.message}`
+        }
         className="mb-2 mt-1"
       />
 
