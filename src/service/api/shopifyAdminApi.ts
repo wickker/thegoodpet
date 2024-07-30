@@ -12,6 +12,15 @@ const client = createAdminApiClient({
   accessToken: Config.SHOPIFY_ADMIN_ACCESS_TOKEN,
 })
 
+// TODO: Debug this
+const addProductToSellingPlan = (id: string) =>
+  client.request(Products.AddToSellingPlan, {
+    variables: {
+      id,
+      sellingPlanGroupIds: ['gid://shopify/SellingPlanGroup/1543929913'],
+    },
+  })
+
 const createProduct = (
   title: string,
   descriptionHtml: string,
@@ -22,7 +31,7 @@ const createProduct = (
         title,
         descriptionHtml,
         customProductType: 'Tailor-made meal',
-        // requiresSellingPlan: true,
+        requiresSellingPlan: true,
       },
     },
   })
@@ -34,26 +43,30 @@ const createProductVariant = (
   client.request(Products.CreateVariant, {
     variables: {
       productId,
-      productIds: [productId],
       variants: [
         {
           price,
         },
       ],
-      channel1: {
-        publicationId: 'gid://shopify/Publication/133671125049',
+      productPublishInput: {
+        id: productId,
+        productPublications: [
+          {
+            publicationId: 'gid://shopify/Publication/133671125049',
+          },
+          {
+            publicationId: 'gid://shopify/Publication/134429769785',
+          },
+          {
+            publicationId: 'gid://shopify/Publication/135087751225',
+          },
+        ],
       },
-      channel2: {
-        publicationId: 'gid://shopify/Publication/134429769785',
-      },
-      channel3: {
-        publicationId: 'gid://shopify/Publication/135087751225',
-      },
-      sellingPlanId: 'gid://shopify/SellingPlan/5732368441',
     },
   })
 
 export default {
+  addProductToSellingPlan,
   createProduct,
   createProductVariant,
 }

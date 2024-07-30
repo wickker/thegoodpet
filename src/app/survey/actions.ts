@@ -57,13 +57,27 @@ export async function createSurveyAndCustomProduct(
 
   const shopifyProductVariantId =
     shopifyProductVariant?.productVariantsBulkCreate?.productVariants[0]?.id
-  console.log(JSON.stringify(createProductVariantErr?.graphQLErrors))
   if (createProductVariantErr || !shopifyProductVariantId) {
     return {
       zodError: null,
       error: {
         title: 'Failed to create custom product variant',
         message: createProductVariantErr?.message || '',
+      },
+    }
+  }
+
+  // TODO: Debug this
+  const { data, errors: addToSellingPlanErr } =
+    await shopifyAdminApi.addProductToSellingPlan(shopifyProductId)
+  console.log(JSON.stringify(addToSellingPlanErr))
+  console.log(JSON.stringify(data))
+  if (addToSellingPlanErr) {
+    return {
+      zodError: null,
+      error: {
+        title: 'Failed to create subscription product',
+        message: addToSellingPlanErr?.message || '',
       },
     }
   }
