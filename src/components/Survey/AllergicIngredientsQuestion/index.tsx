@@ -33,10 +33,10 @@ export default function AllergicIngredientsQuestion() {
   const handleNext = () => {
     try {
       SurveyAllergicOmitIngredients.parse(selectedIngredients)
-      setSurveyData((data) => ({
-        ...data,
+      setSurveyData({
+        ...surveyData,
         allergicIngredients: selectedIngredients,
-      }))
+      })
       nextStep()
     } catch (e) {
       if (!isZodError(e)) return

@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, SetStateAction, useContext, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import { DateTime } from 'luxon'
 import { SurveyDOB } from '@/@types/survey'
 import { FormErrorMessage } from '@/components/common'
@@ -13,24 +13,19 @@ export default function AgeQuestion() {
     useContext(SurveyContext)
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
-  const handleSetAge = (
-    value: SetStateAction<{
-      ageYear?: number
-      ageMonth?: number
-    }>,
-  ) => {
+  const handleSetAge = (value: { ageYear?: number; ageMonth?: number }) => {
     setSurveyData(value)
     setErrorDisplay('')
   }
 
   const setYear = (e: ChangeEvent<HTMLInputElement>) =>
-    handleSetAge((a) => ({ ...a, ageYear: parseInt(e.target.value) || 0 }))
+    handleSetAge({ ...surveyData, ageYear: parseInt(e.target.value) || 0 })
 
   const setMonth = (e: ChangeEvent<HTMLInputElement>) =>
-    handleSetAge((a) => ({
-      ...a,
+    handleSetAge({
+      ...surveyData,
       ageMonth: Math.min(parseInt(e.target.value) | 0, 12),
-    }))
+    })
 
   const handleNext = () => {
     try {
@@ -39,7 +34,6 @@ export default function AgeQuestion() {
         years: surveyData.ageYear,
       })
       SurveyDOB.parse(dob.toJSDate())
-      setSurveyData((survey) => ({ ...survey, dob: dob.toJSDate() }))
       nextStep()
     } catch (e) {
       if (!isZodError(e)) return

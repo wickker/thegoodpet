@@ -1,6 +1,7 @@
 'use client'
 
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { useFormState } from 'react-dom'
 import { BsDash, BsPlus } from 'react-icons/bs'
 import { SurveyData } from '@/@types/survey'
 import { createSurveyAndCustomProduct } from '@/app/survey/actions'
@@ -21,6 +22,10 @@ export default function BuildYourBoxQuestion() {
   const createSurveyAndProductWithData = createSurveyAndCustomProduct.bind(
     null,
     surveyData as SurveyData,
+  )
+  const [state, formAction] = useFormState(
+    createSurveyAndProductWithData,
+    undefined,
   )
 
   const { DER } = useMemo(
@@ -43,13 +48,13 @@ export default function BuildYourBoxQuestion() {
     const packsLeft = 14 - (totalPacks - currentQuantity)
     const newQuantity = Math.min(packsLeft, currentQuantity + 1)
 
-    setSurveyData((current) => ({
-      ...current,
+    setSurveyData({
+      ...surveyData,
       mealTypeToQuantity: {
-        ...current.mealTypeToQuantity,
+        ...surveyData.mealTypeToQuantity,
         [i]: newQuantity,
       },
-    }))
+    })
 
     setErrorDisplay('')
   }
@@ -60,13 +65,13 @@ export default function BuildYourBoxQuestion() {
       : 0
     const newQuantity = Math.max(0, currentQuantity - 1)
 
-    setSurveyData((current) => ({
-      ...current,
+    setSurveyData({
+      ...surveyData,
       mealTypeToQuantity: {
-        ...current.mealTypeToQuantity,
+        ...surveyData.mealTypeToQuantity,
         [i]: newQuantity,
       },
-    }))
+    })
     setErrorDisplay('')
   }
 
@@ -79,15 +84,19 @@ export default function BuildYourBoxQuestion() {
 
   const submitFormButton =
     totalPacks === 14 ? (
-      <form
-        action={createSurveyAndProductWithData}
-        className="w-full transition-[width] md:w-32"
-      >
+      <form action={formAction} className="w-full transition-[width] md:w-32">
         <ButtonSubmitFormAction className="w-full">
           Submit
         </ButtonSubmitFormAction>
       </form>
     ) : undefined
+
+  useEffect(() => {
+    if (state?.error) {
+      // TODO: add toast library
+      alert(`${state.error.title}\n${state.error.message}`)
+    }
+  }, [state])
 
   return (
     <>

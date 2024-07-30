@@ -29,10 +29,10 @@ export default function FoodGoalQuestion() {
     try {
       if (foodGoal === FOOD_GOALS[FOOD_GOALS.length - 1]) {
         SurveyFoodGoal.parse(otherOption)
-        setSurveyData((data) => ({ ...data, foodGoal: otherOption }))
+        setSurveyData({ ...surveyData, foodGoal: otherOption })
       } else {
         SurveyFoodGoal.parse(foodGoal)
-        setSurveyData((data) => ({ ...data, foodGoal }))
+        setSurveyData({ ...surveyData, foodGoal })
       }
       nextStep()
     } catch (e) {

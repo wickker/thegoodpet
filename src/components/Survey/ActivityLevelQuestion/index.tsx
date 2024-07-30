@@ -13,10 +13,10 @@ export default function ActivityLevelQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const setActivityLevel = (e: ChangeEvent<HTMLInputElement>) => {
-    setSurveyData((data) => ({
-      ...data,
+    setSurveyData({
+      ...surveyData,
       activityLevel: parseInt(e.target.value),
-    }))
+    })
     setErrorDisplay('')
   }
 

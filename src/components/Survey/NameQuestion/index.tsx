@@ -16,7 +16,7 @@ export default function NameQuestion() {
   const isFemale = surveyData.gender === Gender.FEMALE
 
   const handleSetName = (e: ChangeEvent<HTMLInputElement>) => {
-    setSurveyData((data) => ({ ...data, name: e.target.value }))
+    setSurveyData({ ...surveyData, name: e.target.value })
     setErrorDisplay('')
   }
 

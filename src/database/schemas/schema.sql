@@ -27,7 +27,7 @@ CREATE TABLE surveys (
     meal_doneness VARCHAR(191),
     meal_type_to_quantity JSONB,
     pet_id INTEGER DEFAULT NULL,
-    shopify_product_id VARCHAR(191),
+    shopify_product_id VARCHAR(191) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT NULL,
     deleted_at TIMESTAMP DEFAULT NULL

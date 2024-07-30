@@ -14,7 +14,7 @@ export default function SpeciesQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetSpecies = (species: Species) => {
-    setSurveyData((data) => ({ ...data, species }))
+    setSurveyData({ ...surveyData, species })
     setErrorDisplay('')
   }
 
