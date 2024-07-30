@@ -16,7 +16,6 @@ export async function createSurveyAndCustomProduct(
 
   if (createSurveyErr !== null) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to submit survey',
         message: createSurveyErr,
@@ -40,7 +39,6 @@ export async function createSurveyAndCustomProduct(
 
   if (createProductErr || !shopifyProductId) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to create custom product',
         message: createProductErr?.message || '',
@@ -59,7 +57,6 @@ export async function createSurveyAndCustomProduct(
     shopifyProductVariant?.productVariantsBulkCreate?.productVariants[0]?.id
   if (createProductVariantErr || !shopifyProductVariantId) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to create custom product variant',
         message: createProductVariantErr?.message || '',
@@ -74,7 +71,6 @@ export async function createSurveyAndCustomProduct(
   console.log(JSON.stringify(data))
   if (addToSellingPlanErr) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to create subscription product',
         message: addToSellingPlanErr?.message || '',
@@ -90,7 +86,6 @@ export async function createSurveyAndCustomProduct(
 
   if (updateSurveyErr) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to update survey product',
         message: updateSurveyErr,
