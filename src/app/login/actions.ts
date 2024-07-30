@@ -8,12 +8,13 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { ServerActionError } from '@/@types/common'
 import { LoginForm, LoginFormSchema } from '@/@types/customer'
+import { createPetsFromCart } from '@/app/account-setup/createPetsFromCart'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
   SHOPIFY_CART_ID_COOKIE,
-  SHOPIFY_CUSTOMER_EMAIL,
-  SHOPIFY_CUSTOMER_TOKEN,
+  SHOPIFY_CUSTOMER_EMAIL_COOKIE,
+  SHOPIFY_CUSTOMER_TOKEN_COOKIE,
 } from '@/utils/constants/cookies'
 import { Route } from '@/utils/constants/routes'
 import {
@@ -141,21 +142,32 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     }
   }
 
-  //   const cartId = cartIdCookie
-  //     ? cartIdCookie.value
-  //     : dbCustomer.shopify_cart_id || ''
-
-  // TODO:
+  // create pets from unlinked surveys
+  const cartId = cartIdCookie
+    ? cartIdCookie.value
+    : dbCustomer.shopify_cart_id || ''
+  if (cartId) {
+    const err = await createPetsFromCart(dbCustomer.id, cartId)
+    if (err) {
+      return {
+        zodError: null,
+        error: {
+          title: 'Failed to create pets from cart products',
+          message: err,
+        },
+      }
+    }
+  }
 
   // set auth and cart cookies
   const expiryDate = new Date(token.customerAccessToken.expiresAt)
   setCookie(
     cookieStore,
-    SHOPIFY_CUSTOMER_TOKEN,
+    SHOPIFY_CUSTOMER_TOKEN_COOKIE,
     token.customerAccessToken.accessToken,
     expiryDate,
   )
-  setCookie(cookieStore, SHOPIFY_CUSTOMER_EMAIL, data.email, expiryDate)
+  setCookie(cookieStore, SHOPIFY_CUSTOMER_EMAIL_COOKIE, data.email, expiryDate)
   if (!cartIdCookie && dbCustomer.shopify_cart_id) {
     setCookie(cookieStore, SHOPIFY_CART_ID_COOKIE, dbCustomer.shopify_cart_id) // no expiry for cart cookie
   }

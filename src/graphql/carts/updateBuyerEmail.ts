@@ -9,6 +9,7 @@ mutation ($buyerIdentity: CartBuyerIdentityInput!, $cartId: ID!) {
       }
     }
     userErrors {
+      code
       field
       message
     }

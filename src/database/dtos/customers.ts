@@ -11,12 +11,13 @@ const create = async (
   passwordHash: string,
   mobileNumber: string,
   cartId: string,
+  acceptsMarketing: boolean,
 ) => {
   try {
     const data = await sql`
     INSERT INTO customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
     VALUES
-        (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, true)
+        (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, ${acceptsMarketing})
     RETURNING id;  
     `
     return { data, error: null }
@@ -46,6 +47,20 @@ const findByEmail = async (email: string) => {
     FROM customers
     WHERE email = ${email}
     AND deleted_at IS NULL;
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
+const updateShopifyAccessTokenExpiry = async (email: string) => {
+  try {
+    const data = await sql`
+    UPDATE customers
+    SET shopify_access_token_expires_at = NOW(),
+    updated_at = NOW()
+    WHERE email = ${email};
     `
     return { data, error: null }
   } catch (err) {
@@ -102,6 +117,7 @@ const Customers = {
   findByEmailOrPhone,
   updateShopifyAccessToken,
   updateShopifyAccessTokenAndCartId,
+  updateShopifyAccessTokenExpiry,
 }
 
 export default Customers

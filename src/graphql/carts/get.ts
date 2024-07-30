@@ -53,6 +53,7 @@ query ($cartId: ID!) {
                 product {
                   description
                   title
+                  id
                 }
               }
             }

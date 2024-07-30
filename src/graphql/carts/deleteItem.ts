@@ -1,14 +1,14 @@
 export default `
-mutation ($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
-  cartLinesUpdate(cartId: $cartId, lines: $lines) {
+mutation removeCartLines($cartId: ID!, $lineIds: [ID!]!) {
+  cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
     cart {
       id
-      lines(first: 50) {
-        edges {
-          node {
-            id
+      lines(first: 10){
+        edges
+        {
+          node{
             quantity
-            merchandise {
+            merchandise{
               ... on ProductVariant {
                 id
               }

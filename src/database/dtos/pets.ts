@@ -5,10 +5,13 @@ import { sql } from '@/database'
 // TODO: Add logging
 // TODO: Add typing
 
-const bulkCreate = async (input: Array<[string, number]>) => {
+const bulkCreate = async (input: (string | number)[][]) => {
   try {
     const data = await sql(
-      format('INSERT INTO pets (name, customer_id) VALUES %L;', input),
+      format(
+        'INSERT INTO pets (name, customer_id) VALUES %L RETURNING id;',
+        input,
+      ),
     )
     return { data, error: null }
   } catch (err) {

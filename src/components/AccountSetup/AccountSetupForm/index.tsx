@@ -6,6 +6,7 @@ import { ServerActionError } from '@/@types/common'
 import { SignUpForm } from '@/@types/customer'
 import { signUp } from '@/app/account-setup/actions'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
+import { Colors } from '@/utils/constants/common'
 
 export default function AccountSetupForm() {
   const [state, formAction] = useFormState<
@@ -101,8 +102,34 @@ export default function AccountSetupForm() {
         className="my-1 text-left"
       />
 
+      <p className="text-justify text-sm">
+        We'd love to send you free samples, new product updates and news from us
+        and our partners. Sounds good?
+      </p>
+      <div className="mt-3 flex justify-around">
+        {[true, false].map((v) => (
+          <label className="flex gap-2" key={v.toString()}>
+            <input
+              type="radio"
+              name="acceptsMarketing"
+              value={String(v)}
+              style={{ accentColor: Colors.primary }}
+            />
+            {v ? 'Yes' : 'No'}
+          </label>
+        ))}
+      </div>
+      <FormErrorMessage
+        message={
+          state.zodError?.acceptsMarketing &&
+          state.zodError.acceptsMarketing._errors[0]
+        }
+        className="my-1 text-left"
+      />
+
       <input name="origin" value={origin} hidden readOnly />
 
+      {/* TODO: Change this to notification */}
       <FormErrorMessage
         message={state.error && `${state.error.title}: ${state.error.message}`}
         className="mb-2 mt-1"

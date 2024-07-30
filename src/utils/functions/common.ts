@@ -26,8 +26,8 @@ export const formatPriceString = (
   price?: string | null,
   quantity: number = 1,
 ) => {
-  if (!price) return null
-  return (parseInt(price, 10) * quantity).toFixed(2)
+  if (!price) return ''
+  return (parseFloat(price) * quantity).toFixed(2)
 }
 
 export const setCookie = (
