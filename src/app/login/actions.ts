@@ -28,7 +28,10 @@ import {
 } from '@/utils/functions/common'
 import { doesPasswordMatch } from '@/utils/functions/password'
 
-export async function login(_: ServerActionError<LoginForm>, form: FormData) {
+export async function login(
+  _: undefined | ServerActionError<LoginForm>,
+  form: FormData,
+): Promise<undefined | ServerActionError<LoginForm>> {
   const data = {
     email: form.get('email')?.toString() || '',
     password: form.get('password')?.toString() || '',
@@ -46,7 +49,6 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     await Customers.findByEmail(data.email)
   if (selectErr || !existingCustomers) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to find db customers',
         message: selectErr,
@@ -84,7 +86,6 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     )
   if (tokenErr || !token || !token.customerAccessToken) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to create Shopify customer token',
         message: tokenErr || '',
@@ -114,7 +115,6 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
       )
     if (cartErr || !cart?.cart) {
       return {
-        zodError: null,
         error: {
           title: 'Failed to update cart buyer email',
           message: cartErr || '',
@@ -134,7 +134,6 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     )
   if (updateErr) {
     return {
-      zodError: null,
       error: {
         title: 'Failed to update db customer',
         message: updateErr,
@@ -150,7 +149,6 @@ export async function login(_: ServerActionError<LoginForm>, form: FormData) {
     const err = await createPetsFromCart(dbCustomer.id, cartId)
     if (err) {
       return {
-        zodError: null,
         error: {
           title: 'Failed to create pets from cart products',
           message: err,

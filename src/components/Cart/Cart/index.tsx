@@ -2,8 +2,9 @@
 
 import { useContext } from 'react'
 import { BsXLg } from 'react-icons/bs'
+import { handleClickCheckout } from './actions'
 import { CartTile } from '@/components/Cart'
-import { Button, Loader } from '@/components/common'
+import { ButtonSubmitFormAction, Loader } from '@/components/common'
 import { CartContext } from '@/contexts/CartProvider'
 import { formatPriceString, mc } from '@/utils/functions/common'
 
@@ -67,7 +68,11 @@ export default function Cart() {
                 </span>
               </p>
             </div>
-            <Button className="w-full">Checkout</Button>
+            <form action={() => handleClickCheckout(getCart.data.checkoutUrl)}>
+              <ButtonSubmitFormAction className="w-full">
+                Checkout
+              </ButtonSubmitFormAction>
+            </form>
           </div>
         )}
       </div>

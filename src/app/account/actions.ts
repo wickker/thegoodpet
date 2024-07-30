@@ -10,7 +10,7 @@ import {
 } from '@/utils/constants/cookies'
 import { Route } from '@/utils/constants/routes'
 
-export async function logout() {
+export async function logout(): Promise<undefined | { error: string }> {
   const cookieStore = cookies()
   const emailCookie = cookieStore.get(SHOPIFY_CUSTOMER_EMAIL_COOKIE)
   if (!emailCookie) {
