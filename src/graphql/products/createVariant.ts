@@ -7,6 +7,10 @@ mutation ($productId: ID!, $variants: [ProductVariantsBulkInput!]!, $productPubl
     productVariants {
       id
     }
+    userErrors {
+      field
+      message
+    }
   }
   productPublish(input: $productPublishInput) {
     product {
@@ -17,6 +21,10 @@ mutation ($productId: ID!, $variants: [ProductVariantsBulkInput!]!, $productPubl
         id
         name
       }
+    }
+    userErrors {
+      field
+      message
     }
   }
 }

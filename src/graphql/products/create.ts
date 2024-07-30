@@ -4,6 +4,10 @@ mutation ($input: ProductInput!) {
     product {
       id
     }
+    userErrors {
+      field
+      message
+    }
   }
 }
 `
