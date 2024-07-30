@@ -7,18 +7,39 @@ import { ServerActionError } from '@/@types/common'
 import { LoginForm } from '@/@types/customer'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { SignUpLink } from '@/components/Login'
+import useCart from '@/hooks/query/useCart'
 
 export default function LoginPage() {
   const [state, formAction] = useFormState<
     ServerActionError<LoginForm>,
     FormData
   >(login, { zodError: null })
+  const { useCreateCartMutation } = useCart()
+  const createCart = useCreateCartMutation((d) => console.log(d))
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
       <h1 className="mb-5 font-fredoka text-4xl font-medium text-secondary">
         Login
       </h1>
+
+      <button
+        onClick={() =>
+          createCart.mutate({
+            lines: [
+              {
+                quantity: 1,
+                merchandiseId: 'gid://shopify/ProductVariant/43447200776249',
+              },
+            ],
+            buyerIdentity: {
+              email: 'dianchun.choy@ninjavan.co',
+            },
+          })
+        }
+      >
+        Create cart
+      </button>
 
       <div className="w-full max-w-[360px]">
         <form action={formAction}>
