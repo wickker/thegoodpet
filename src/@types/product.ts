@@ -5,3 +5,14 @@ export type CreateProductResponse = {
     }
   }
 }
+
+export type CreateProductVariantResponse = {
+  productVariantsBulkCreate: {
+    product: {
+      id: string
+    }
+    productVariants: Array<{
+      id: string
+    }>
+  }
+}
