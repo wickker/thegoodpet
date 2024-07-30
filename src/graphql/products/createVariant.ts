@@ -1,5 +1,5 @@
 export default `
-mutation productVariantsBulkCreate($productId: ID!, $variants: [ProductVariantsBulkInput!]!, $productPublishInput: ProductPublishInput!) {
+mutation ($productId: ID!, $variants: [ProductVariantsBulkInput!]!, $productPublishInput: ProductPublishInput!) {
   productVariantsBulkCreate(productId: $productId, variants: $variants, strategy: REMOVE_STANDALONE_VARIANT) {
     product {
       id
