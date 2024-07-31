@@ -30,6 +30,15 @@ export const formatPriceString = (
   return (parseFloat(price) * quantity).toFixed(2)
 }
 
+export const formatVariantTitle = (productId: string, title: string) => {
+  if (productId !== 'gid://shopify/Product/7660723535929') {
+    return title
+  }
+  const splits = title.split(' / ')
+  splits.shift()
+  return splits.join(' / ')
+}
+
 export const setCookie = (
   cookieStore: ReadonlyRequestCookies,
   name: string,

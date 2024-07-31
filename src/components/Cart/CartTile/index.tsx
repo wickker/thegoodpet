@@ -5,7 +5,7 @@ import { QuantityToggleButton } from '@/components/Cart'
 import { Loader } from '@/components/common'
 import { CartContext } from '@/contexts/CartProvider'
 import useCart from '@/hooks/query/useCart'
-import { formatPriceString } from '@/utils/functions/common'
+import { formatPriceString, formatVariantTitle } from '@/utils/functions/common'
 
 type CartTileProps = {
   item: BaseCartLineEdge
@@ -68,8 +68,8 @@ export default function CartTile({ item }: CartTileProps) {
           }}
         />
 
-        <div className="min-[0px]:max-w-[calc(100dvw-80px-30px-20px)]">
-          <div className="text-md flex justify-between gap-x-2 text-secondary">
+        <div>
+          <div className="text-md grid grid-cols-[1fr_auto] gap-x-2 text-secondary">
             <p className="truncate">{item.node.merchandise.product.title}</p>
             <p>
               {!!discountedPrice && (
@@ -79,9 +79,14 @@ export default function CartTile({ item }: CartTileProps) {
             </p>
           </div>
 
-          <div className="flex items-center justify-between gap-x-2 font-light text-secondary">
+          <div className="grid grid-cols-[1fr_auto] gap-x-2 font-light text-secondary">
             {/* TODO: Link this to product details listing*/}
-            <p className="truncate text-sm">{item.node.merchandise.title}</p>
+            <p className="truncate text-sm">
+              {formatVariantTitle(
+                item.node.merchandise.product.id,
+                item.node.merchandise.title,
+              )}
+            </p>
             <div className="flex space-x-1">
               {computeTags(item).map((tag) => (
                 <div className="min-w-fit rounded-sm bg-[#F5C757] px-3 py-0.5 text-sm">
