@@ -39,6 +39,10 @@ const createProductVariant = (
         price,
         productId: 'gid://shopify/Product/7660723535929',
         options: [DateTime.now().toISO(), petName, variantOption],
+        inventoryQuantities: {
+          availableQuantity: 10,
+          locationId: 'gid://shopify/Location/73449472057',
+        },
       },
     },
   })
