@@ -1,11 +1,12 @@
 'use server'
 
-// import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { ServerActionError } from '@/@types/common'
 import { MeatTypeToQuantity, SurveyData } from '@/@types/survey'
 import Surveys from '@/database/dtos/surveys'
 import shopifyAdminApi from '@/service/api/shopifyAdminApi'
 import { Ingredient } from '@/utils/constants/db'
+import { Route } from '@/utils/constants/routes'
 import { capitalize } from '@/utils/functions/common'
 
 export async function createSurveyAndCustomProduct(
@@ -23,38 +24,21 @@ export async function createSurveyAndCustomProduct(
     }
   }
 
-  const customProductTitle = `${capitalize(surveyData.name)}'s Tailor-made meals`
-  const customProductDescription = generateProductDescription(
+  const petName = surveyData.name
+  const customDescription = generateProductDescription(
     surveyData.mealTypeToQuantity,
     200,
-  )
-  const customProductPrice = 50
+  ) // TODO: get volume from calc
+  const customPrice = 0.1 // TODO: get price from calc
 
-  const { data: shopifyProduct, errors: createProductErr } =
-    await shopifyAdminApi.createProduct(
-      customProductTitle,
-      customProductDescription,
-    )
-  const shopifyProductId = shopifyProduct?.productCreate.product.id
-
-  if (createProductErr || !shopifyProductId) {
-    return {
-      error: {
-        title: 'Failed to create custom product',
-        message: createProductErr?.message || '',
-      },
-    }
-  }
-
-  // create variant
   const { data: shopifyProductVariant, errors: createProductVariantErr } =
     await shopifyAdminApi.createProductVariant(
-      shopifyProductId,
-      customProductPrice,
+      petName,
+      customDescription,
+      customPrice,
     )
-
   const shopifyProductVariantId =
-    shopifyProductVariant?.productVariantsBulkCreate?.productVariants[0]?.id
+    shopifyProductVariant?.productVariantCreate?.productVariant?.id
   if (createProductVariantErr || !shopifyProductVariantId) {
     return {
       error: {
@@ -64,27 +48,10 @@ export async function createSurveyAndCustomProduct(
     }
   }
 
-  // TODO: Debug this
-  const { data, errors: addToSellingPlanErr } =
-    await shopifyAdminApi.addProductToSellingPlan(shopifyProductId)
-  console.log(JSON.stringify(addToSellingPlanErr))
-  console.log(JSON.stringify(data))
-  if (addToSellingPlanErr) {
-    return {
-      error: {
-        title: 'Failed to create subscription product',
-        message: addToSellingPlanErr?.message || '',
-      },
-    }
-  }
+  const { data: updatedSurvey, error: updateSurveyErr } =
+    await Surveys.updateShopifyProductId(survey.id, shopifyProductVariantId)
 
-  // update survey
-  const { error: updateSurveyErr } = await Surveys.updateShopifyProductId(
-    survey.id,
-    shopifyProductVariantId,
-  )
-
-  if (updateSurveyErr) {
+  if (updateSurveyErr || !updatedSurvey) {
     return {
       error: {
         title: 'Failed to update survey product',
@@ -93,21 +60,17 @@ export async function createSurveyAndCustomProduct(
     }
   }
 
-  // redirect to custom-meals
-  // redirect('/custom-meals')
+  redirect(`${Route.CUSTOM_MEALS}/${updatedSurvey.id}`)
 }
 
 function generateProductDescription(
   meatTypeToQuantity: MeatTypeToQuantity,
   foodVolumeGrams: number,
 ) {
-  let description =
-    '<strong>Tailor-made meals with the following meats:</strong>'
-
-  for (const ingredient in meatTypeToQuantity) {
-    const qty = meatTypeToQuantity[ingredient as Ingredient]
-    description += `<br />${foodVolumeGrams} grams of ${capitalize(ingredient)}, ${qty} packs`
-  }
-
-  return description
+  return Object.keys(meatTypeToQuantity)
+    .map((ingredient) => {
+      const qty = meatTypeToQuantity[ingredient as Ingredient]
+      return `${foodVolumeGrams} grams of ${capitalize(ingredient)}, ${qty} packs`
+    })
+    .join('|')
 }
