@@ -9,11 +9,13 @@ import {
   SHOPIFY_CUSTOMER_TOKEN_COOKIE,
 } from '@/utils/constants/cookies'
 import { Route } from '@/utils/constants/routes'
+import { logger } from '@/utils/functions/logger'
 
 export async function logout(): Promise<undefined | { error: string }> {
   const cookieStore = cookies()
   const emailCookie = cookieStore.get(SHOPIFY_CUSTOMER_EMAIL_COOKIE)
   if (!emailCookie) {
+    logger.error('Unable to get customer email cookie.')
     return { error: 'Failed to get customer email cookie' }
   }
 
@@ -21,6 +23,9 @@ export async function logout(): Promise<undefined | { error: string }> {
     emailCookie.value,
   )
   if (error) {
+    logger.error(
+      `Unable to update customer access token expiry [email: ${emailCookie.value}]: ${error}.`,
+    )
     return { error }
   }
 

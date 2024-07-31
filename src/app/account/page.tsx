@@ -1,4 +1,3 @@
-import { Customer } from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
 import { OrderHistoryTile, LogoutForm } from '@/components/Account'
 import storefrontApi from '@/service/api/storefrontApi'
@@ -17,14 +16,14 @@ export default async function AccountPage() {
   const customerRes = await storefrontApi.getCustomer(tokenCookie.value, {
     first: 100,
   })
-  if (customerRes.errors) {
+  if (customerRes.errors || !customerRes.data?.customer) {
     return (
       <div className="flex h-[calc(100dvh-122px)] flex-col items-center justify-center text-neutral-500">
-        {customerRes.errors.message}
+        Failed to get customer: {customerRes.errors?.message}.
       </div>
     )
   }
-  const customer = customerRes.data?.customer as Customer
+  const customer = customerRes.data.customer
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
