@@ -7,5 +7,8 @@ export const getPasswordHash = (password: string) => {
 
 export const doesPasswordMatch = (
   inputPassword: string,
-  passwordHash: string,
-) => bcrypt.compareSync(inputPassword, passwordHash)
+  passwordHash: string | null,
+) => {
+  if (!passwordHash) return false
+  return bcrypt.compareSync(inputPassword, passwordHash)
+}
