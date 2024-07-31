@@ -30,22 +30,14 @@ export async function createPetsFromCart(customerId: number, cartId: string) {
     return selectErr
   }
 
-  const insertArgs = surveys.map((s) => [
-    s.name as string,
-    customerId as number,
-  ])
-  const { data: petIds, error: bulkInsertErr } =
-    await Pets.bulkCreate(insertArgs)
-  if (bulkInsertErr || !petIds) {
-    return bulkInsertErr
-  }
-
-  for (let i = 0; i < petIds.length; i++) {
-    const petId = petIds[i].id
-    const surveyId = surveys[i].id
-    const { error } = await Surveys.updateSurveyWithPetId(petId, surveyId)
-    if (error) {
-      return error
-    }
+  const { error: txnErr } = await Pets.bulkCreateAndUpdateSurveys(
+    surveys,
+    customerId,
+  )
+  if (txnErr) {
+    logger.error(
+      `Unable to bulk create pets and link pet to respective survey [surveys: ${JSON.stringify(surveys)}][customerId: ${customerId}]: ${txnErr}.`,
+    )
+    return txnErr
   }
 }

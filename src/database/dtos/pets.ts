@@ -1,26 +1,53 @@
 import { NeonDbError } from '@neondatabase/serverless'
 import format from 'pg-format'
-import { sql } from '@/database'
+import { Survey } from './surveys'
+import { DbResponse, sql } from '@/database'
 
-// TODO: Add logging
-// TODO: Add typing
+type Pet = {
+  id: number
+  name: string
+  customer_id: number
+  created_at: string
+  updated_at: string | null
+  deleted_at: string | null
+}
 
-const bulkCreate = async (input: (string | number)[][]) => {
+const bulkCreateAndUpdateSurveys = async (
+  surveys: Array<Pick<Survey, 'id' | 'name'>>,
+  customerId: number,
+): Promise<DbResponse> => {
   try {
-    const data = await sql(
+    const insertArgs = surveys.map((s) => [
+      s.name as string,
+      customerId as number,
+    ])
+    await sql`BEGIN;`
+    const pets = (await sql(
       format(
         'INSERT INTO pets (name, customer_id) VALUES %L RETURNING id;',
-        input,
+        insertArgs,
       ),
-    )
-    return { data, error: null }
+    )) as Array<Pick<Pet, 'id'>>
+
+    for (let i = 0; i < pets.length; i++) {
+      const petId = pets[i].id
+      const surveyId = surveys[i].id
+      await sql`
+      UPDATE surveys
+      SET pet_id = ${petId}
+      WHERE id = ${surveyId};
+      `
+    }
+    await sql`COMMIT;`
+    return { data: [], error: null }
   } catch (err) {
+    await sql`ROLLBACK;`
     return { data: null, error: (err as NeonDbError).message }
   }
 }
 
 const Pets = {
-  bulkCreate,
+  bulkCreateAndUpdateSurveys,
 }
 
 export default Pets
