@@ -27,6 +27,7 @@ import {
   isZodError,
   setCookie,
 } from '@/utils/functions/common'
+import { logger } from '@/utils/functions/logger'
 import { getPasswordHash } from '@/utils/functions/password'
 
 export async function signUp(
@@ -64,6 +65,9 @@ export async function signUp(
   const { data: existingCustomers, error: selectErr } =
     await Customers.findByEmailOrPhone(data.email, phone)
   if (selectErr || !existingCustomers) {
+    logger.error(
+      `Unable to find customers by email or phone [email: ${data.email}][phone: ${phone}]: ${selectErr}.`,
+    )
     return {
       error: {
         title: 'Failed to find db customers',
@@ -94,6 +98,9 @@ export async function signUp(
     data.acceptsMarketing,
   )
   if (createErr || !newCustomer || newCustomer.length === 0) {
+    logger.error(
+      `Unable to create new customer [customer: ${JSON.stringify(data)}]: ${createErr}.`,
+    )
     return {
       error: {
         title: 'Failed to create db customer',
@@ -110,7 +117,7 @@ export async function signUp(
     email: data.email,
     phone,
     password: data.password, // original password
-    acceptsMarketing: true,
+    acceptsMarketing: data.acceptsMarketing,
   })
   const { data: shopifyCustomer, error: customerErr } =
     handleStorefrontGqlResponse<CustomerCreatePayload>(
@@ -119,6 +126,9 @@ export async function signUp(
       StorefrontErrorKey.CUSTOMER_USER_ERRORS,
     )
   if (customerErr || !shopifyCustomer?.customer) {
+    logger.error(
+      `Unable to create new shopify customer [customer: ${JSON.stringify(data)}]: ${customerErr}.`,
+    )
     return {
       error: {
         title: 'Failed to create Shopify customer',
@@ -139,6 +149,9 @@ export async function signUp(
       StorefrontErrorKey.CUSTOMER_USER_ERRORS,
     )
   if (tokenErr || !token || !token.customerAccessToken) {
+    logger.error(
+      `Unable to create new shopify customer token [customer: ${JSON.stringify(data)}]: ${tokenErr}.`,
+    )
     return {
       error: {
         title: 'Failed to create Shopify customer token',
@@ -154,6 +167,9 @@ export async function signUp(
     customerId,
   )
   if (updateErr) {
+    logger.error(
+      `Unable to update customer token [token: ${token.customerAccessToken.accessToken}][customerId: ${customerId}][expiry: ${token.customerAccessToken.expiresAt}]: ${updateErr}.`,
+    )
     return {
       error: {
         title: 'Failed to update db customer',
@@ -186,6 +202,9 @@ export async function signUp(
         StorefrontDataKey.CART_BUYER_IDENTITY_UPDATE,
       )
     if (cartErr || !cart?.cart) {
+      logger.error(
+        `Unable to update shopify cart buyer identity [cartId: ${cartId}][email: ${data.email}]: ${cartErr}.`,
+      )
       return {
         error: {
           title: 'Failed to update cart buyer email',

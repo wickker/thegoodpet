@@ -1,11 +1,8 @@
 import { NeonDbError } from '@neondatabase/serverless'
 import format from 'pg-format'
 import { SurveyData } from '@/@types/survey'
-import { sql } from '@/database'
+import { DbResponse, sql } from '@/database'
 import { Gender, Ingredient, Species } from '@/utils/constants/db'
-
-// TODO: Add logging
-// TODO: Add typing
 
 type Survey = {
   id: number
@@ -31,9 +28,9 @@ type Survey = {
   deleted_at: string | null
 }
 
-const create = async (
-  surveyData: SurveyData,
-): Promise<{ data: Survey; error: null } | { data: null; error: string }> => {
+export type ListOfSurveyIdAndName = Array<Pick<Survey, 'id' | 'name'>>
+
+const create = async (surveyData: SurveyData): Promise<DbResponse<Survey>> => {
   try {
     const query = format(
       `INSERT INTO surveys ( species, gender, name, age_year, age_month, is_neutered, breed, weight_gram, weight_goal, activity_level, food_goal, allergic_ingredients, omit_ingredients, meal_doneness, meal_type_to_quantity )
@@ -64,7 +61,9 @@ const create = async (
   }
 }
 
-const findAllSurveysWithNoPet = async (shopifyProductIds: Array<string>) => {
+const findAllSurveysWithNoPet = async (
+  shopifyProductIds: Array<string>,
+): Promise<DbResponse<ListOfSurveyIdAndName>> => {
   try {
     const data = await sql(
       format(
@@ -77,7 +76,7 @@ const findAllSurveysWithNoPet = async (shopifyProductIds: Array<string>) => {
         shopifyProductIds,
       ),
     )
-    return { data, error: null }
+    return { data: data as Array<Pick<Survey, 'id' | 'name'>>, error: null }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }
   }
@@ -86,7 +85,7 @@ const findAllSurveysWithNoPet = async (shopifyProductIds: Array<string>) => {
 const updateShopifyProductId = async (
   surveyId: number,
   shopifyProductId: string,
-): Promise<{ data: Survey; error: null } | { data: null; error: string }> => {
+): Promise<DbResponse<Survey>> => {
   try {
     const data = await sql(
       format(
@@ -105,24 +104,10 @@ const updateShopifyProductId = async (
   }
 }
 
-const updateSurveyWithPetId = async (petId: number, surveyId: number) => {
-  try {
-    const data = await sql`
-    UPDATE surveys
-    SET pet_id = ${petId}
-    WHERE id = ${surveyId};
-    `
-    return { data, error: null }
-  } catch (err) {
-    return { data: null, error: (err as NeonDbError).message }
-  }
-}
-
 const Surveys = {
   create,
   findAllSurveysWithNoPet,
   updateShopifyProductId,
-  updateSurveyWithPetId,
 }
 
 export default Surveys

@@ -26,6 +26,7 @@ import {
   isZodError,
   setCookie,
 } from '@/utils/functions/common'
+import { logger } from '@/utils/functions/logger'
 import { doesPasswordMatch } from '@/utils/functions/password'
 
 export async function login(
@@ -48,6 +49,9 @@ export async function login(
   const { data: existingCustomers, error: selectErr } =
     await Customers.findByEmail(data.email)
   if (selectErr || !existingCustomers) {
+    logger.error(
+      `Unable to find customer by email [email: ${data.email}]: ${selectErr}.`,
+    )
     return {
       error: {
         title: 'Failed to find db customers',
@@ -85,6 +89,9 @@ export async function login(
       StorefrontErrorKey.CUSTOMER_USER_ERRORS,
     )
   if (tokenErr || !token || !token.customerAccessToken) {
+    logger.error(
+      `Unable to create new shopify customer token [customer: ${JSON.stringify(data)}]: ${tokenErr}.`,
+    )
     return {
       error: {
         title: 'Failed to create Shopify customer token',
@@ -114,6 +121,9 @@ export async function login(
         StorefrontDataKey.CART_BUYER_IDENTITY_UPDATE,
       )
     if (cartErr || !cart?.cart) {
+      logger.error(
+        `Unable to update shopify cart buyer identity [cartId: ${cartIdToUpdate}][email: ${data.email}]: ${cartErr}.`,
+      )
       return {
         error: {
           title: 'Failed to update cart buyer email',
@@ -133,6 +143,9 @@ export async function login(
       cartIdToUpdate,
     )
   if (updateErr) {
+    logger.error(
+      `Unable to update customer token [token: ${token.customerAccessToken.accessToken}][customerId: ${dbCustomer.id}][expiry: ${token.customerAccessToken.expiresAt}]: ${updateErr}.`,
+    )
     return {
       error: {
         title: 'Failed to update db customer',

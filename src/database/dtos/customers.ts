@@ -1,8 +1,27 @@
 import { NeonDbError } from '@neondatabase/serverless'
-import { sql } from '@/database'
+import { DbResponse, sql } from '@/database'
 
-// TODO: Add logging
-// TODO: Add typing
+type Customer = {
+  id: number
+  email: string
+  first_name: string | null
+  last_name: string | null
+  password_hash: string | null
+  mobile_number: string | null
+  shopify_access_token: string | null
+  shopify_access_token_expires_at: string | null
+  accepts_marketing: boolean
+  shopify_cart_id: string | null
+  created_at: string
+  updated_at: string | null
+  deleted_at: string | null
+}
+
+type ListOfCustomerIds = Array<Pick<Customer, 'id'>>
+
+type ListOfCustomers = Array<
+  Pick<Customer, 'id' | 'shopify_cart_id' | 'password_hash'>
+>
 
 const create = async (
   email: string,
@@ -12,7 +31,7 @@ const create = async (
   mobileNumber: string,
   cartId: string,
   acceptsMarketing: boolean,
-) => {
+): Promise<DbResponse<ListOfCustomerIds>> => {
   try {
     const data = await sql`
     INSERT INTO customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
@@ -20,13 +39,16 @@ const create = async (
         (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, ${acceptsMarketing})
     RETURNING id;  
     `
-    return { data, error: null }
+    return { data: data as ListOfCustomerIds, error: null }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }
   }
 }
 
-const findByEmailOrPhone = async (email: string, phone: string) => {
+const findByEmailOrPhone = async (
+  email: string,
+  phone: string,
+): Promise<DbResponse<ListOfCustomerIds>> => {
   try {
     const data = await sql`
       SELECT id
@@ -34,13 +56,15 @@ const findByEmailOrPhone = async (email: string, phone: string) => {
       WHERE (email = ${email} OR mobile_number = ${phone})
       AND deleted_at IS NULL;
       `
-    return { data, error: null }
+    return { data: data as ListOfCustomerIds, error: null }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }
   }
 }
 
-const findByEmail = async (email: string) => {
+const findByEmail = async (
+  email: string,
+): Promise<DbResponse<ListOfCustomers>> => {
   try {
     const data = await sql`
     SELECT id, shopify_cart_id, password_hash
@@ -48,13 +72,18 @@ const findByEmail = async (email: string) => {
     WHERE email = ${email}
     AND deleted_at IS NULL;
     `
-    return { data, error: null }
+    return {
+      data: data as ListOfCustomers,
+      error: null,
+    }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }
   }
 }
 
-const updateShopifyAccessTokenExpiry = async (email: string) => {
+const updateShopifyAccessTokenExpiry = async (
+  email: string,
+): Promise<DbResponse> => {
   try {
     const data = await sql`
     UPDATE customers
@@ -72,7 +101,7 @@ const updateShopifyAccessToken = async (
   accessToken: string,
   expiresAt: string,
   customerId: number,
-) => {
+): Promise<DbResponse> => {
   try {
     const data = await sql`
     UPDATE customers
@@ -92,7 +121,7 @@ const updateShopifyAccessTokenAndCartId = async (
   expiresAt: string,
   customerId: number,
   cartId: string,
-) => {
+): Promise<DbResponse> => {
   if (cartId) {
     try {
       const data = await sql`
