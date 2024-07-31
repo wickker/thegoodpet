@@ -4,12 +4,14 @@ import storefrontApi from '@/service/api/storefrontApi'
 import { SHOPIFY_CART_ID_COOKIE } from '@/utils/constants/cookies'
 import { StorefrontDataKey } from '@/utils/constants/storefrontGql'
 import { handleStorefrontGqlResponse } from '@/utils/functions/common'
+import { logger } from '@/utils/functions/logger'
 
 // Update cart item quantity
 export async function PUT(request: Request) {
   const cookieStore = cookies()
   const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
   if (!cartIdCookie) {
+    logger.warn('Cart cookie does not exist.')
     return Response.json(null)
   }
 
@@ -23,6 +25,9 @@ export async function PUT(request: Request) {
     StorefrontDataKey.CART_LINES_UPDATE,
   )
   if (error) {
+    logger.error(
+      `Unable to update cart item quantity [cartId: ${cartIdCookie.value}][lines: ${req.lines}]: ${error}.`,
+    )
     return Response.json(
       {
         title: 'Failed to update cart item quantity',
