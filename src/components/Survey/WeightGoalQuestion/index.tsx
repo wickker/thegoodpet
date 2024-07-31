@@ -14,7 +14,7 @@ export default function WeightGoalQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetWeightGoal = (e: ChangeEvent<HTMLInputElement>) => {
-    setSurveyData((data) => ({ ...data, weightGoal: parseInt(e.target.value) }))
+    setSurveyData({ ...surveyData, weightGoal: parseInt(e.target.value) })
     setErrorDisplay('')
   }
 

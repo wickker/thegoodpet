@@ -13,7 +13,7 @@ export default function NeuteredQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetNeutered = (isNeutered: boolean) => {
-    setSurveyData((data) => ({ ...data, isNeutered }))
+    setSurveyData({ ...surveyData, isNeutered })
     setErrorDisplay('')
   }
 

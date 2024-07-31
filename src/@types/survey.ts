@@ -77,3 +77,4 @@ export const SurveyDataSchema = z.object({
 })
 
 export type SurveyData = z.infer<typeof SurveyDataSchema>
+export type MeatTypeToQuantity = z.infer<typeof SurveyMeatTypeToQuantity>

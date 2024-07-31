@@ -3,6 +3,9 @@ const Config = {
   SHOPIFY_API_VERSION: process.env.NEXT_PUBLIC_SHOPIFY_API_VERSION || '',
   SHOPIFY_PUBLIC_ACCESS_TOKEN:
     process.env.NEXT_PUBLIC_SHOPIFY_PUBLIC_ACCESS_TOKEN || '',
+  SHOPIFY_ADMIN_ACCESS_TOKEN: process.env.SHOPIFY_ADMIN_ACCESS_TOKEN || '',
+  SHOPIFY_API_KEY: process.env.SHOPIFY_API_KEY || '',
+  SHOPIFY_API_SECRET: process.env.SHOPIFY_API_SECRET || '',
   DB_URL: process.env.DB_URL || '',
   ENV: process.env.NEXT_PUBLIC_ENV || '',
 }
