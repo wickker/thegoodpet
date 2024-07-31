@@ -1,6 +1,6 @@
 import { NeonDbError } from '@neondatabase/serverless'
 import format from 'pg-format'
-import { Survey } from './surveys'
+import { ListOfSurveyIdAndName } from './surveys'
 import { DbResponse, sql } from '@/database'
 
 type Pet = {
@@ -13,7 +13,7 @@ type Pet = {
 }
 
 const bulkCreateAndUpdateSurveys = async (
-  surveys: Array<Pick<Survey, 'id' | 'name'>>,
+  surveys: ListOfSurveyIdAndName,
   customerId: number,
 ): Promise<DbResponse> => {
   try {

@@ -4,7 +4,7 @@ import { SurveyData } from '@/@types/survey'
 import { DbResponse, sql } from '@/database'
 import { Gender, Ingredient, Species } from '@/utils/constants/db'
 
-export type Survey = {
+type Survey = {
   id: number
   species: Species
   gender: Gender
@@ -27,6 +27,8 @@ export type Survey = {
   updated_at: string | null
   deleted_at: string | null
 }
+
+export type ListOfSurveyIdAndName = Array<Pick<Survey, 'id' | 'name'>>
 
 const create = async (surveyData: SurveyData): Promise<DbResponse<Survey>> => {
   try {
@@ -61,7 +63,7 @@ const create = async (surveyData: SurveyData): Promise<DbResponse<Survey>> => {
 
 const findAllSurveysWithNoPet = async (
   shopifyProductIds: Array<string>,
-): Promise<DbResponse<Array<Pick<Survey, 'id' | 'name'>>>> => {
+): Promise<DbResponse<ListOfSurveyIdAndName>> => {
   try {
     const data = await sql(
       format(

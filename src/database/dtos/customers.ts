@@ -17,6 +17,12 @@ type Customer = {
   deleted_at: string | null
 }
 
+type ListOfCustomerIds = Array<Pick<Customer, 'id'>>
+
+type ListOfCustomers = Array<
+  Pick<Customer, 'id' | 'shopify_cart_id' | 'password_hash'>
+>
+
 const create = async (
   email: string,
   firstName: string,
@@ -25,7 +31,7 @@ const create = async (
   mobileNumber: string,
   cartId: string,
   acceptsMarketing: boolean,
-): Promise<DbResponse<Array<Pick<Customer, 'id'>>>> => {
+): Promise<DbResponse<ListOfCustomerIds>> => {
   try {
     const data = await sql`
     INSERT INTO customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
@@ -33,7 +39,7 @@ const create = async (
         (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, ${acceptsMarketing})
     RETURNING id;  
     `
-    return { data: data as Array<Pick<Customer, 'id'>>, error: null }
+    return { data: data as ListOfCustomerIds, error: null }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }
   }
@@ -42,7 +48,7 @@ const create = async (
 const findByEmailOrPhone = async (
   email: string,
   phone: string,
-): Promise<DbResponse<Array<Pick<Customer, 'id'>>>> => {
+): Promise<DbResponse<ListOfCustomerIds>> => {
   try {
     const data = await sql`
       SELECT id
@@ -50,7 +56,7 @@ const findByEmailOrPhone = async (
       WHERE (email = ${email} OR mobile_number = ${phone})
       AND deleted_at IS NULL;
       `
-    return { data: data as Array<Pick<Customer, 'id'>>, error: null }
+    return { data: data as ListOfCustomerIds, error: null }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }
   }
@@ -58,9 +64,7 @@ const findByEmailOrPhone = async (
 
 const findByEmail = async (
   email: string,
-): Promise<
-  DbResponse<Array<Pick<Customer, 'id' | 'shopify_cart_id' | 'password_hash'>>>
-> => {
+): Promise<DbResponse<ListOfCustomers>> => {
   try {
     const data = await sql`
     SELECT id, shopify_cart_id, password_hash
@@ -69,9 +73,7 @@ const findByEmail = async (
     AND deleted_at IS NULL;
     `
     return {
-      data: data as Array<
-        Pick<Customer, 'id' | 'shopify_cart_id' | 'password_hash'>
-      >,
+      data: data as ListOfCustomers,
       error: null,
     }
   } catch (err) {
