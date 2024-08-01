@@ -1,26 +1,19 @@
 export default `
-mutation ($productId: ID!, $variants: [ProductVariantsBulkInput!]!, $productPublishInput: ProductPublishInput!) {
-  productVariantsBulkCreate(productId: $productId, variants: $variants, strategy: REMOVE_STANDALONE_VARIANT) {
+mutation ($input: ProductVariantInput!) {
+  productVariantCreate(input: $input) {
     product {
       id
+      title
     }
-    productVariants {
+    productVariant {
+      createdAt
+      displayName
       id
-    }
-    userErrors {
-      field
-      message
-    }
-  }
-  productPublish(input: $productPublishInput) {
-    product {
-      id
-    }
-    productPublications {
-      channel {
+      price
+      product {
         id
-        name
       }
+      title
     }
     userErrors {
       field

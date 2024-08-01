@@ -3,16 +3,31 @@ export type CreateProductResponse = {
     product: {
       id: string
     }
+    userError: {
+      field: string
+      message: string
+    }
   }
 }
 
 export type CreateProductVariantResponse = {
-  productVariantsBulkCreate: {
+  productVariantCreate: {
     product: {
       id: string
     }
-    productVariants: Array<{
+    productVariant: {
+      createdAt: string
+      displayName: string
       id: string
-    }>
+      price: number
+      product: {
+        id: string
+      }
+      title: string
+    }
+    userError: {
+      field: string
+      message: string
+    }
   }
 }

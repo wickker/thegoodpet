@@ -1,4 +1,5 @@
 import { ClientResponse, createAdminApiClient } from '@shopify/admin-api-client'
+import { DateTime } from 'luxon'
 import {
   CreateProductResponse,
   CreateProductVariantResponse,
@@ -11,15 +12,6 @@ const client = createAdminApiClient({
   apiVersion: '2024-10',
   accessToken: Config.SHOPIFY_ADMIN_ACCESS_TOKEN,
 })
-
-// TODO: Debug this
-const addProductToSellingPlan = (id: string) =>
-  client.request(Products.AddToSellingPlan, {
-    variables: {
-      id,
-      sellingPlanGroupIds: ['gid://shopify/SellingPlanGroup/1543929913'],
-    },
-  })
 
 const createProduct = (
   title: string,
@@ -37,36 +29,25 @@ const createProduct = (
   })
 
 const createProductVariant = (
-  productId: string,
+  petName: string,
+  variantOption: string,
   price: number,
 ): Promise<ClientResponse<CreateProductVariantResponse>> =>
   client.request(Products.CreateVariant, {
     variables: {
-      productId,
-      variants: [
-        {
-          price,
+      input: {
+        price,
+        productId: 'gid://shopify/Product/7660723535929',
+        options: [DateTime.now().toISO(), petName, variantOption],
+        inventoryQuantities: {
+          availableQuantity: 10,
+          locationId: 'gid://shopify/Location/73449472057',
         },
-      ],
-      productPublishInput: {
-        id: productId,
-        productPublications: [
-          {
-            publicationId: 'gid://shopify/Publication/133671125049',
-          },
-          {
-            publicationId: 'gid://shopify/Publication/134429769785',
-          },
-          {
-            publicationId: 'gid://shopify/Publication/135087751225',
-          },
-        ],
       },
     },
   })
 
 export default {
-  addProductToSellingPlan,
   createProduct,
   createProductVariant,
 }
