@@ -3,6 +3,7 @@ import { type ClassValue, clsx } from 'clsx'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 import { twMerge } from 'tailwind-merge'
 import { ZodError } from 'zod'
+import { SHOPIFY_CUSTOM_MEAL_PRODUCT_ID } from '../constants/common'
 import Config from '@/configs'
 import {
   StorefrontDataKeys,
@@ -30,8 +31,11 @@ export const formatPriceString = (
   return (parseFloat(price) * quantity).toFixed(2)
 }
 
-export const formatVariantTitle = (productId: string, title: string) => {
-  if (productId !== 'gid://shopify/Product/7660723535929') {
+export const formatVariantTitle = (productId?: string, title?: string) => {
+  if (!productId || !title) {
+    return title || ''
+  }
+  if (productId !== SHOPIFY_CUSTOM_MEAL_PRODUCT_ID) {
     return title
   }
   const splits = title.split(' / ')

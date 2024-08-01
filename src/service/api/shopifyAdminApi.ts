@@ -6,6 +6,7 @@ import {
 } from '@/@types/product'
 import Config from '@/configs'
 import Products from '@/graphql/products'
+import { SHOPIFY_CUSTOM_MEAL_PRODUCT_ID } from '@/utils/constants/common'
 
 const client = createAdminApiClient({
   storeDomain: Config.SHOPIFY_STORE_DOMAIN,
@@ -22,7 +23,7 @@ const createProduct = (
       input: {
         title,
         descriptionHtml,
-        customProductType: 'Tailor-made meal',
+        customProductType: 'Tailor-made Meal',
         requiresSellingPlan: true,
       },
     },
@@ -37,7 +38,7 @@ const createProductVariant = (
     variables: {
       input: {
         price,
-        productId: 'gid://shopify/Product/7660723535929',
+        productId: SHOPIFY_CUSTOM_MEAL_PRODUCT_ID,
         options: [DateTime.now().toISO(), petName, variantOption],
         inventoryQuantities: {
           availableQuantity: 10,
