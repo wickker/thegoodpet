@@ -67,12 +67,12 @@ export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
         )}
         style={{
           maxHeight: isDropdownOpen
-            ? `calc(${order.lineItems.nodes.length}*81px + 55px)`
+            ? `calc(${order.lineItems.nodes.length}*81px + 60px)`
             : 0,
         }}
       >
         {/* Billing details section */}
-        <div className="bg-[#FFFDF7] px-[15px] pb-[15px] text-sm text-neutral-400">
+        <div className="bg-[#FFFDF7] bg-opacity-50 px-[15px] py-[10px] text-sm text-neutral-400">
           <div className="grid grid-cols-[1fr_auto] gap-x-2">
             <p className="truncate">
               {order.billingAddress?.firstName || ''}{' '}

@@ -27,7 +27,7 @@ export default async function AccountPage() {
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
-      <div className="w-full pb-5">
+      <div className="w-full">
         <div className="mb-5 flex items-center justify-between">
           <h1 className="font-fredoka text-4xl font-medium text-secondary">
             Account
@@ -44,6 +44,16 @@ export default async function AccountPage() {
         {customer.orders.edges.map((order) => (
           <OrderHistoryTile order={order.node} key={order.node.id} />
         ))}
+
+        <div className="py-5 text-center">
+          Need to make changes to your order?{' '}
+          <a
+            href="mailto:nicolas@thegoodpet.co"
+            className="block text-primary underline md:inline"
+          >
+            Contact us
+          </a>
+        </div>
       </div>
     </div>
   )
