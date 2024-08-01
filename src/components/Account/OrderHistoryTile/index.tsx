@@ -67,10 +67,26 @@ export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
         )}
         style={{
           maxHeight: isDropdownOpen
-            ? `calc(${order.lineItems.nodes.length}*81px)`
+            ? `calc(${order.lineItems.nodes.length}*81px + 55px)`
             : 0,
         }}
       >
+        {/* Billing details section */}
+        <div className="bg-[#FFFDF7] px-[15px] pb-[15px] text-sm text-neutral-400">
+          <div className="grid grid-cols-[1fr_auto] gap-x-2">
+            <p className="truncate">
+              {order.billingAddress?.firstName || ''}{' '}
+              {order.billingAddress?.lastName || ''}
+            </p>
+            <p>{order.billingAddress?.country || ''}</p>
+          </div>
+          <div className="grid grid-cols-[1fr_auto] gap-x-2">
+            <p className="truncate">{`${order.billingAddress?.address1 || ''} ${order.billingAddress?.address2 || ''}`}</p>
+            <p>{order.billingAddress?.zip || ''}</p>
+          </div>
+        </div>
+
+        {/* Order items section*/}
         {order.lineItems.nodes.map((item, idx) => (
           <OrderHistorySubTile item={item} key={idx} />
         ))}
