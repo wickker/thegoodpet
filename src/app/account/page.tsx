@@ -25,6 +25,8 @@ export default async function AccountPage() {
   }
   const customer = customerRes.data.customer
 
+  const hasOrders = customer.orders.edges.length > 0
+
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
       <div className="w-full">
@@ -41,19 +43,25 @@ export default async function AccountPage() {
           Order History
         </h1>
 
-        {customer.orders.edges.map((order) => (
-          <OrderHistoryTile order={order.node} key={order.node.id} />
-        ))}
+        {hasOrders ? (
+          <>
+            {customer.orders.edges.map((order) => (
+              <OrderHistoryTile order={order.node} key={order.node.id} />
+            ))}
 
-        <div className="py-5 text-center">
-          Need to make changes to your order?{' '}
-          <a
-            href="mailto:nicolas@thegoodpet.co"
-            className="block text-primary underline md:inline"
-          >
-            Contact us
-          </a>
-        </div>
+            <div className="py-5 text-center">
+              Need to make changes to your order?{' '}
+              <a
+                href="mailto:nicolas@thegoodpet.co"
+                className="block text-primary underline md:inline"
+              >
+                Contact us
+              </a>
+            </div>
+          </>
+        ) : (
+          <div className="text-center text-neutral-400">No orders yet</div>
+        )}
       </div>
     </div>
   )
