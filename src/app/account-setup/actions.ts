@@ -45,7 +45,6 @@ export async function signUp(
     acceptsMarketing: form.get('acceptsMarketing') === 'true',
     origin: form.get('origin')?.toString() || '',
   }
-  console.log(data)
 
   try {
     SignUpFormSchema.parse(data)
