@@ -18,12 +18,12 @@ export default function LoginPage() {
       </h1>
 
       <button
-        onClick={() =>
+        onClick={() => {
           notification.error({
             title: 'Error',
             message: 'Do not show me bubble tea pictures',
           })
-        }
+        }}
       >
         Add
       </button>

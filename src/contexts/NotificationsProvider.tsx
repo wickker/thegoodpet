@@ -4,7 +4,7 @@ import { PropsWithChildren, createContext, useState } from 'react'
 import { nanoid } from 'nanoid'
 import { BaseError } from '@/@types/common'
 
-type Notification = BaseError & { id: string; type: string }
+type Notification = BaseError & { id: string; type: NotificationType }
 
 export const NotificationType = {
   error: 'ERROR',
@@ -13,7 +13,8 @@ export const NotificationType = {
   success: 'SUCCESS',
 } as const
 
-type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+export type NotificationType =
+  (typeof NotificationType)[keyof typeof NotificationType]
 
 type NotificationsContextSchema = {
   notification: {
@@ -38,14 +39,7 @@ export const NotificationsContext = createContext<NotificationsContextSchema>({
 })
 
 export default function NotifcationsProvider({ children }: PropsWithChildren) {
-  const [notifications, setNotifications] = useState<Array<Notification>>([
-    {
-      title: 'Title',
-      message: 'Long long long message',
-      type: 'error',
-      id: '1',
-    },
-  ])
+  const [notifications, setNotifications] = useState<Array<Notification>>([])
 
   const add = (content: BaseError, type: NotificationType) => {
     const id = nanoid()
