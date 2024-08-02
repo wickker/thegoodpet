@@ -1,18 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {
   QueryClientProvider,
   QueryClient,
   QueryCache,
   MutationCache,
 } from '@tanstack/react-query'
+import { BaseError } from '@/@types/common'
+import { NotificationsContext } from '@/contexts/NotificationsProvider'
 
 export default function ReactQueryProvider({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const { notification } = useContext(NotificationsContext)
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -22,18 +25,21 @@ export default function ReactQueryProvider({
           },
         },
         queryCache: new QueryCache({
-          // TODO: Show error notification
-          onError: (err) => {
-            console.log(err.message)
-          },
+          onError: (err) => handleError(err),
         }),
         mutationCache: new MutationCache({
-          onError: (err) => {
-            console.log(err.message)
-          },
+          onError: (err) => handleError(err),
         }),
       }),
   )
+
+  function handleError(err: Error) {
+    const { title, message }: BaseError = JSON.parse(err.message)
+    notification.error({
+      title,
+      message,
+    })
+  }
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

@@ -7,12 +7,12 @@ import {
   MutationCartLinesRemoveArgs,
   MutationCartLinesUpdateArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
+import { BaseError } from '@/@types/common'
 
-// TODO: Modify this to handle errors within the data key e.g. customerUserErrors / userErrors
 const handleResponse = async (res: Response) => {
   const json = await res.json()
   if (!res.ok) {
-    throw new Error(JSON.stringify(json)) // react query provider catches this
+    throw new Error(JSON.stringify(json as BaseError)) // react query provider catches this
   }
   return json
 }

@@ -1,15 +1,27 @@
 'use client'
 
+import { useContext, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useFormState } from 'react-dom'
 import { signUp } from '@/app/account-setup/actions'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
+import { NotificationsContext } from '@/contexts/NotificationsProvider'
 import { Colors } from '@/utils/constants/common'
 
 export default function AccountSetupForm() {
   const [state, formAction] = useFormState(signUp, undefined)
   const searchParams = useSearchParams()
   const origin = searchParams.get('origin') || ''
+  const { notification } = useContext(NotificationsContext)
+
+  useEffect(() => {
+    if (state?.error) {
+      notification.error({
+        title: state.error.title,
+        message: state.error.message,
+      })
+    }
+  }, [state?.error])
 
   return (
     <form action={formAction}>
@@ -128,14 +140,6 @@ export default function AccountSetupForm() {
       />
 
       <input name="origin" value={origin} hidden readOnly />
-
-      {/* TODO: Change this to notification */}
-      <FormErrorMessage
-        message={
-          state?.error && `${state?.error.title}: ${state?.error.message}`
-        }
-        className="mb-2 mt-1"
-      />
 
       <ButtonSubmitFormAction className="mb-10 w-full">
         Submit
