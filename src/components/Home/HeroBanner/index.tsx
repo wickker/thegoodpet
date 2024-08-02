@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import { Button } from '@/components/common'
+import { Route } from '@/utils/constants/routes'
 
 export default function HeroBanner() {
   return (
@@ -15,7 +17,9 @@ export default function HeroBanner() {
             Tailored raw meals for your pet
           </h1>
           <p className="text-lg">Human Grade. Nutrient Dense. Well-Balanced.</p>
-          <Button>Customise now!</Button>
+          <Button>
+            <Link href={Route.SURVEY}>Customise now!</Link>
+          </Button>
         </div>
       </div>
     </div>
