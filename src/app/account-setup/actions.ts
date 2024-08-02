@@ -42,9 +42,10 @@ export async function signUp(
     verifyPassword: form.get('verifyPassword')?.toString() || '',
     countryCode: form.get('countryCode')?.toString() || '',
     mobileNumber: form.get('mobileNumber')?.toString() || '',
-    acceptsMarketing: Boolean(form.get('acceptsMarketing') || 'false'),
+    acceptsMarketing: form.get('acceptsMarketing') === 'true',
     origin: form.get('origin')?.toString() || '',
   }
+  console.log(data)
 
   try {
     SignUpFormSchema.parse(data)
