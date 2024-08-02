@@ -1,6 +1,7 @@
 'use client'
 
 import { useContext } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   BsCheckCircleFill,
   BsExclamationCircleFill,
@@ -39,27 +40,32 @@ export default function Notification() {
   }
 
   return (
-    <div className="fixed top-0 z-30 flex max-h-dvh w-full justify-center">
-      <div className="flex w-[800px] flex-col items-center gap-y-2 p-[15px]">
-        {notifications.map(({ id, type, title, message }) => (
-          <div
-            className="grid w-full grid-cols-[auto_1fr_auto] gap-x-3 rounded-md bg-[#4c4c4c] p-[10px]"
-            key={id}
-          >
-            <div className="h-[25px] w-[25px] rounded-full bg-white">
-              {renderIcon(type)}
-            </div>
+    <div className="fixed top-0 z-30 grid w-full place-items-center md:left-[calc((100%-800px)/2)] md:right-[calc((100%-800px)/2)] md:w-auto">
+      <div className="flex w-full flex-col items-center gap-y-2 p-[15px] md:w-[800px]">
+        <AnimatePresence>
+          {notifications.map(({ id, type, title, message }) => (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              key={id}
+              className="grid w-full grid-cols-[auto_1fr_auto] gap-x-3 rounded-md bg-[#4c4c4c] p-[10px]"
+            >
+              <div className="h-[25px] w-[25px] rounded-full bg-white">
+                {renderIcon(type)}
+              </div>
 
-            <div className="flex flex-col text-white">
-              <p>{title}</p>
-              <p className="font-light">{message}</p>
-            </div>
+              <div className="flex flex-col text-white">
+                <p>{title}</p>
+                <p className="font-light">{message}</p>
+              </div>
 
-            <button className="h-fit" onClick={() => notification.close(id)}>
-              <BsXLg className="h-[25px] w-[25px] text-white" />
-            </button>
-          </div>
-        ))}
+              <button className="h-fit" onClick={() => notification.close(id)}>
+                <BsXLg className="h-[25px] w-[25px] text-white" />
+              </button>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   )

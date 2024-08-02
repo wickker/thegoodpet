@@ -1,32 +1,19 @@
 'use client'
 
-import { Suspense, useContext } from 'react'
+import { Suspense } from 'react'
 import { useFormState } from 'react-dom'
 import { login } from './actions'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { SignUpLink } from '@/components/Login'
-import { NotificationsContext } from '@/contexts/NotificationsProvider'
 
 export default function LoginPage() {
   const [state, formAction] = useFormState(login, undefined)
-  const { notification } = useContext(NotificationsContext)
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
       <h1 className="mb-5 font-fredoka text-4xl font-medium text-secondary">
         Login
       </h1>
-
-      <button
-        onClick={() => {
-          notification.error({
-            title: 'Error',
-            message: 'Do not show me bubble tea pictures',
-          })
-        }}
-      >
-        Add
-      </button>
 
       <div className="w-full max-w-[360px]">
         <form action={formAction}>
