@@ -29,7 +29,7 @@ import Products from '@/graphql/products'
 
 const client = createStorefrontApiClient({
   storeDomain: Config.SHOPIFY_STORE_DOMAIN,
-  apiVersion: Config.SHOPIFY_API_VERSION,
+  apiVersion: '2024-04',
   publicAccessToken: Config.SHOPIFY_PUBLIC_ACCESS_TOKEN,
 })
 

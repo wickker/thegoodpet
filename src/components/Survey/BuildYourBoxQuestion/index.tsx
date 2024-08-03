@@ -7,6 +7,7 @@ import { SurveyData } from '@/@types/survey'
 import { createSurveyAndCustomProduct } from '@/app/survey/actions'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { IngredientTile, SurveyFooter } from '@/components/Survey'
+import { NotificationsContext } from '@/contexts/NotificationsProvider'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { Ingredient, Species } from '@/utils/constants/db'
 import { capitalize } from '@/utils/functions/common'
@@ -27,6 +28,7 @@ export default function BuildYourBoxQuestion() {
     createSurveyAndProductWithData,
     undefined,
   )
+  const { notification } = useContext(NotificationsContext)
 
   const { DER } = useMemo(
     () =>
@@ -93,8 +95,10 @@ export default function BuildYourBoxQuestion() {
 
   useEffect(() => {
     if (state?.error) {
-      // TODO: add toast library
-      alert(`${state.error.title}\n${state.error.message}`)
+      notification.error({
+        title: state.error.title,
+        message: state.error.message,
+      })
     }
   }, [state])
 

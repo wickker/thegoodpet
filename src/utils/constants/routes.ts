@@ -7,6 +7,7 @@ export const Route = {
   LOGIN: '/login',
   SHOP: '/',
   SUBSCRIBE: '/',
+  SURVEY: '/survey',
 } as const
 
 export type Route = (typeof Route)[keyof typeof Route]

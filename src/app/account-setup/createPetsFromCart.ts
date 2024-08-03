@@ -30,6 +30,11 @@ export async function createPetsFromCart(customerId: number, cartId: string) {
     return selectErr
   }
 
+  if (surveys.length === 0) {
+    logger.info(`No surveys without pets linked found [cartId: ${cartId}].`)
+    return ''
+  }
+
   const { error: txnErr } = await Pets.bulkCreateAndUpdateSurveys(
     surveys,
     customerId,

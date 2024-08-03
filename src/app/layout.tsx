@@ -1,6 +1,6 @@
 import { Cart } from '@/components/Cart'
-import { Header } from '@/components/common'
-import { CartProvider } from '@/contexts'
+import { Header, Notification } from '@/components/common'
+import { CartProvider, NotificationsProvider } from '@/contexts'
 import ReactQueryProvider from '@/hooks/ReactQueryProvider'
 import './styles.css'
 
@@ -18,15 +18,18 @@ export default function RootLayout({
         <title>The Good Pet</title>
       </head>
       <body>
-        <ReactQueryProvider>
-          <main className="h-dvh overflow-y-auto bg-background font-inter text-neutral-900">
-            <CartProvider>
-              <Cart />
-              <Header />
-              {children}
-            </CartProvider>
-          </main>
-        </ReactQueryProvider>
+        <NotificationsProvider>
+          <ReactQueryProvider>
+            <main className="h-dvh overflow-y-auto bg-background font-inter text-neutral-900">
+              <Notification />
+              <CartProvider>
+                <Cart />
+                <Header />
+                {children}
+              </CartProvider>
+            </main>
+          </ReactQueryProvider>
+        </NotificationsProvider>
       </body>
     </html>
   )

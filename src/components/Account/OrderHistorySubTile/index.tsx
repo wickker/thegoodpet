@@ -1,5 +1,5 @@
 import { OrderLineItem } from '@shopify/hydrogen-react/storefront-api-types'
-import { formatPriceString } from '@/utils/functions/common'
+import { formatPriceString, formatVariantTitle } from '@/utils/functions/common'
 
 type OrderHistorySubTileProps = {
   item: OrderLineItem
@@ -20,7 +20,7 @@ export default function OrderHistorySubTile({
   }
 
   return (
-    <div className="grid grid-cols-[auto_2fr_1fr_auto] items-center gap-x-3 border-b border-neutral-200 p-[15px]">
+    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-3 border-b border-neutral-200 p-[15px] md:grid-cols-[auto_2fr_1fr_auto]">
       <div
         className="aspect-square h-[50px] rounded-full bg-black bg-contain bg-center bg-no-repeat"
         style={{
@@ -30,12 +30,19 @@ export default function OrderHistorySubTile({
 
       <div className="overflow-hidden">
         <p className="truncate">{item.title}</p>
-        <p className="truncate text-neutral-400">{item.variant?.title}</p>
+        <p className="truncate text-neutral-400">
+          {formatVariantTitle(item.variant?.product.id, item.variant?.title)}
+        </p>
       </div>
 
-      <p>x{item.quantity}</p>
+      <p className="hidden md:block">x{item.quantity}</p>
 
-      <p className="text-secondary">${formatPriceString(getDisplayPrice())}</p>
+      <div className="text-right">
+        <p className="md:hidden">x{item.quantity}</p>
+        <p className="text-secondary">
+          ${formatPriceString(getDisplayPrice())}
+        </p>
+      </div>
     </div>
   )
 }

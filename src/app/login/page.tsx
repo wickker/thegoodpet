@@ -1,13 +1,24 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Suspense, useContext, useEffect } from 'react'
 import { useFormState } from 'react-dom'
 import { login } from './actions'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { SignUpLink } from '@/components/Login'
+import { NotificationsContext } from '@/contexts/NotificationsProvider'
 
 export default function LoginPage() {
+  const { notification } = useContext(NotificationsContext)
   const [state, formAction] = useFormState(login, undefined)
+
+  useEffect(() => {
+    if (state?.error) {
+      notification.error({
+        title: state.error.title,
+        message: state.error.message,
+      })
+    }
+  }, [state?.error])
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
@@ -41,20 +52,12 @@ export default function LoginPage() {
             className="mb-3 mt-2 text-left"
           />
 
-          <p className="mb-8 text-sm text-neutral-900">
+          <p className="mb-16 text-sm text-neutral-900">
             Don't have an account?{' '}
             <Suspense>
               <SignUpLink />
             </Suspense>
           </p>
-
-          {/* TODO: Change this to notification */}
-          <FormErrorMessage
-            message={
-              state?.error && `${state.error.title}: ${state.error.message}`
-            }
-            className="mb-8 mt-0"
-          />
 
           <ButtonSubmitFormAction className="w-full">
             Login

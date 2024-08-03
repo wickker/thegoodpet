@@ -1,15 +1,3 @@
-export type CreateProductResponse = {
-  productCreate: {
-    product: {
-      id: string
-    }
-    userError: {
-      field: string
-      message: string
-    }
-  }
-}
-
 export type CreateProductVariantResponse = {
   productVariantCreate: {
     product: {

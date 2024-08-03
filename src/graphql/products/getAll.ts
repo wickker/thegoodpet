@@ -8,7 +8,7 @@ query ($first: Int) {
       featuredImage {
         url
       }
-      variants(first: 5) {
+      variants(first: 100) {
         edges {
           node {
             id
@@ -21,6 +21,10 @@ query ($first: Int) {
             compareAtPrice {
               amount
               currencyCode
+            }
+            selectedOptions {
+              name
+              value
             }
             sellingPlanAllocations(first: 10) {
               nodes {
