@@ -1,5 +1,58 @@
 import { Species } from '@/utils/constants/db'
 
+type Meat = {
+  weight: number
+  cost: number
+}
+
+type MeatDictionary = {
+  [key: string]: Meat
+}
+
+// Calculates the weight and cost of each meat type based on the given DER (Daily Energy Requirement).
+const calculateMealsGrams = (
+  DER: number,
+  meats: { [key: string]: { calPerGram: number; centPerGram: number } },
+): MeatDictionary => {
+  const meals: MeatDictionary = {}
+
+  for (const [meat, values] of Object.entries(meats)) {
+    const weight = Math.round(DER / values.calPerGram)
+    const cost = parseFloat(((weight * values.centPerGram) / 100).toFixed(2))
+    meals[meat] = { weight, cost }
+  }
+
+  return meals
+}
+
+// Gets the meal grams and cost for a given species (dog or cat) based on the DER.
+export const getMealsGrams = (
+  DER: number,
+  species: Species,
+): MeatDictionary => {
+  const isDog = species === Species.DOG
+
+  const dogMeats = {
+    chicken: { calPerGram: 1.16, centPerGram: 2.37 },
+    beef: { calPerGram: 1.19, centPerGram: 2.63 },
+    duck: { calPerGram: 1.2, centPerGram: 2.81 },
+    lamb: { calPerGram: 1.2, centPerGram: 2.81 },
+  }
+
+  const catMeats = {
+    chicken: { calPerGram: 1.24, centPerGram: 2.37 },
+    beef: { calPerGram: 1.27, centPerGram: 2.63 },
+    duck: { calPerGram: 1.2, centPerGram: 2.81 },
+    lamb: { calPerGram: 1.2, centPerGram: 2.81 },
+  }
+
+  const meals = isDog
+    ? calculateMealsGrams(DER, dogMeats)
+    : calculateMealsGrams(DER, catMeats)
+
+  return meals
+}
+
 // Define activity ratios for dogs based on age, neutered status, and activity
 export const getDogActivityRatio = (
   ageMonth: number,
@@ -68,14 +121,8 @@ export const getMealMetrics = (
   // Calculate Daily Energy Requirements (DER)
   const DER = RER * ratio
 
-  // Calculate Conversion Variable and Daily Food Volume Estimate
-  const conversionVariable = DER / 1000
-  const dailyFoodVolumeEstimate = conversionVariable * 538
-
   return {
     RER,
     DER,
-    conversionVariable,
-    dailyFoodVolumeEstimate,
   }
 }
