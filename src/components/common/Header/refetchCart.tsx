@@ -16,8 +16,8 @@ export default function RefetchCart({ getCart }: RefetchCartProps) {
   // refetch cart when redirected from login and cart cookie is freshly set
   useEffect(() => {
     const refetchCart = searchParams.get('refetchCart')
-    if (refetchCart && pathname === Route.HOME) {
-      getCart?.refetch()
+    if (refetchCart && pathname === Route.HOME && getCart) {
+      getCart.refetch()
     }
   }, [searchParams])
 

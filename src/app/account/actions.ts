@@ -37,5 +37,5 @@ export async function logout(): Promise<undefined | BaseError> {
   cookieStore.delete(SHOPIFY_CUSTOMER_TOKEN_COOKIE)
   cookieStore.delete(SHOPIFY_CUSTOMER_EMAIL_COOKIE)
 
-  redirect(Route.HOME)
+  redirect(`${Route.HOME}?refetchCart=true`)
 }

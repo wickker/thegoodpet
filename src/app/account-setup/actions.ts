@@ -37,8 +37,6 @@ export async function signUp(
   const data = {
     email: form.get('email')?.toString() || '',
     password: form.get('password')?.toString() || '',
-    firstName: form.get('firstName')?.toString() || '',
-    lastName: form.get('lastName')?.toString() || '',
     verifyPassword: form.get('verifyPassword')?.toString() || '',
     countryCode: form.get('countryCode')?.toString() || '',
     mobileNumber: form.get('mobileNumber')?.toString() || '',
@@ -59,7 +57,9 @@ export async function signUp(
     cartId = cartIdCookie.value
   }
   const passwordHash = getPasswordHash(data.password)
-  const phone = `${data.countryCode}${data.mobileNumber}`
+  const phone = data.mobileNumber
+    ? `${data.countryCode}${data.mobileNumber}`
+    : ''
 
   // create customer in db if mobile number and email does not exist
   const { data: existingCustomers, error: selectErr } =
@@ -90,8 +90,6 @@ export async function signUp(
   }
   const { data: newCustomer, error: createErr } = await Customers.create(
     data.email,
-    data.firstName,
-    data.lastName,
     passwordHash,
     phone,
     cartId,
@@ -112,8 +110,6 @@ export async function signUp(
 
   // create shopify customer
   const customerRes = await storefrontApi.createCustomer({
-    firstName: data.firstName,
-    lastName: data.lastName,
     email: data.email,
     phone,
     password: data.password, // original password

@@ -35,7 +35,7 @@ export default function Header() {
   return (
     <>
       <Suspense>
-        <RefetchCart />
+        <RefetchCart getCart={getCart} />
       </Suspense>
 
       <div className="sticky top-0 z-10">
