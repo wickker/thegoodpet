@@ -2,13 +2,12 @@
 
 import { redirect } from 'next/navigation'
 import { ServerActionError } from '@/@types/common'
-import { MeatTypeToQuantity, SurveyData } from '@/@types/survey'
+import { SurveyData } from '@/@types/survey'
 import Surveys from '@/database/dtos/surveys'
 import shopifyAdminApi from '@/service/api/shopifyAdminApi'
-import { Ingredient } from '@/utils/constants/db'
 import { Route } from '@/utils/constants/routes'
-import { capitalize } from '@/utils/functions/common'
 import { logger } from '@/utils/functions/logger'
+import { generateMealProduct, getMealMetrics } from '@/utils/functions/meal'
 
 export async function createSurveyAndCustomProduct(
   surveyData: SurveyData,
@@ -29,11 +28,16 @@ export async function createSurveyAndCustomProduct(
   }
 
   const petName = surveyData.name
-  const customDescription = generateProductDescription(
-    surveyData.mealTypeToQuantity,
-    200,
-  ) // TODO: get volume from calc
-  const customPrice = 0.1 // TODO: get price from calc
+  const { DER } = getMealMetrics(
+    surveyData.weight,
+    surveyData.species,
+    surveyData.ageMonth + surveyData.ageYear * 12,
+    surveyData.isNeutered,
+    surveyData.weightGoal,
+    surveyData.activityLevel,
+  )
+  const { description: customDescription, price: customPrice } =
+    generateMealProduct(surveyData.species, DER, surveyData.mealTypeToQuantity)
 
   const { data: shopifyProductVariant, errors: createProductVariantErr } =
     await shopifyAdminApi.createProductVariant(
@@ -71,16 +75,4 @@ export async function createSurveyAndCustomProduct(
   }
 
   redirect(`${Route.CUSTOM_MEALS}/${updatedSurvey.id}`)
-}
-
-function generateProductDescription(
-  meatTypeToQuantity: MeatTypeToQuantity,
-  foodVolumeGrams: number,
-) {
-  return Object.keys(meatTypeToQuantity)
-    .map((ingredient) => {
-      const qty = meatTypeToQuantity[ingredient as Ingredient]
-      return `${foodVolumeGrams} grams of ${capitalize(ingredient)}, ${qty} packs`
-    })
-    .join('|')
 }
