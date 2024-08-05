@@ -30,7 +30,7 @@ export default function Cart() {
       <div
         className={mc(
           'transition-bg-opacity fixed inset-0 -z-10 bg-black bg-opacity-0',
-          isCartOpen && 'z-10 bg-opacity-70',
+          isCartOpen && 'z-20 bg-opacity-70',
         )}
         onClick={closeCart}
       />

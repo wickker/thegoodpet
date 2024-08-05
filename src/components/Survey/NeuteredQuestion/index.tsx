@@ -30,7 +30,7 @@ export default function NeuteredQuestion() {
   return (
     <>
       <p className="my-5 text-center font-inter">
-        Is {capitalize(surveyData.name || '')} Neutered?
+        Is {capitalize(surveyData.name || '')} neutered?
       </p>
 
       <div className="mx-auto grid w-full max-w-[360px] grid-cols-2">

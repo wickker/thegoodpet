@@ -37,32 +37,6 @@ export default function AccountSetupForm() {
         className="my-1 text-left"
       />
 
-      <p className="mb-2.5 text-neutral-900">First Name</p>
-      <input
-        type="text"
-        name="firstName"
-        className="block w-full rounded-lg border px-3 py-2 outline-secondary"
-      />
-      <FormErrorMessage
-        message={
-          state?.zodError?.firstName && state?.zodError.firstName._errors[0]
-        }
-        className="my-1 text-left"
-      />
-
-      <p className="mb-2.5 text-neutral-900">Last Name</p>
-      <input
-        type="text"
-        name="lastName"
-        className="block w-full rounded-lg border px-3 py-2 outline-secondary"
-      />
-      <FormErrorMessage
-        message={
-          state?.zodError?.lastName && state?.zodError.lastName._errors[0]
-        }
-        className="my-1 text-left"
-      />
-
       <p className="mb-2.5 text-neutral-900">Password</p>
       <input
         type="password"
@@ -90,7 +64,10 @@ export default function AccountSetupForm() {
         className="my-1 text-left"
       />
 
-      <p className="mb-2.5 text-neutral-900">Mobile Number</p>
+      <div className="flex justify-between">
+        <p className="mb-2.5 text-neutral-900">Mobile Number</p>
+        <p className="text-neutral-400">optional</p>
+      </div>
       <div className="grid w-full grid-cols-[80px_1fr] space-x-2">
         <input
           type="text"
@@ -125,6 +102,7 @@ export default function AccountSetupForm() {
               type="radio"
               name="acceptsMarketing"
               value={String(v)}
+              defaultChecked={v}
               style={{ accentColor: Colors.primary }}
             />
             {v ? 'Yes' : 'No'}

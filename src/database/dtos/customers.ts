@@ -25,8 +25,6 @@ type ListOfCustomers = Array<
 
 const create = async (
   email: string,
-  firstName: string,
-  lastName: string,
   passwordHash: string,
   mobileNumber: string,
   cartId: string,
@@ -34,9 +32,9 @@ const create = async (
 ): Promise<DbResponse<ListOfCustomerIds>> => {
   try {
     const data = await sql`
-    INSERT INTO customers (shopify_cart_id, email, first_name, last_name, password_hash, mobile_number, accepts_marketing)
+    INSERT INTO customers (shopify_cart_id, email, password_hash, mobile_number, accepts_marketing)
     VALUES
-        (${cartId}, ${email}, ${firstName}, ${lastName}, ${passwordHash}, ${mobileNumber}, ${acceptsMarketing})
+        (${cartId}, ${email}, ${passwordHash}, ${mobileNumber || 'NULL'}, ${acceptsMarketing})
     RETURNING id;  
     `
     return { data: data as ListOfCustomerIds, error: null }
@@ -48,18 +46,21 @@ const create = async (
 const findByEmailOrPhone = async (
   email: string,
   phone: string,
-): Promise<DbResponse<ListOfCustomerIds>> => {
-  try {
-    const data = await sql`
-      SELECT id
-      FROM customers
-      WHERE (email = ${email} OR mobile_number = ${phone})
-      AND deleted_at IS NULL;
-      `
-    return { data: data as ListOfCustomerIds, error: null }
-  } catch (err) {
-    return { data: null, error: (err as NeonDbError).message }
+): Promise<DbResponse<ListOfCustomerIds | ListOfCustomers>> => {
+  if (phone) {
+    try {
+      const data = await sql`
+        SELECT id
+        FROM customers
+        WHERE (email = ${email} OR mobile_number = ${phone})
+        AND deleted_at IS NULL;
+        `
+      return { data: data as ListOfCustomerIds, error: null }
+    } catch (err) {
+      return { data: null, error: (err as NeonDbError).message }
+    }
   }
+  return findByEmail(email)
 }
 
 const findByEmail = async (

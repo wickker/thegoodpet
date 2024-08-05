@@ -11,16 +11,17 @@ import { CartContext } from '@/contexts/CartProvider'
 import { Route } from '@/utils/constants/routes'
 
 const links = [
+  // TODO: Enable later
+  // {
+  //   path: Route.SHOP,
+  //   label: 'Shop',
+  // },
+  // {
+  //   path: Route.LEARN,
+  //   label: 'Learn',
+  // },
   {
-    path: Route.SHOP,
-    label: 'Shop',
-  },
-  {
-    path: Route.LEARN,
-    label: 'Learn',
-  },
-  {
-    path: Route.SUBSCRIBE,
+    path: Route.SURVEY,
     label: 'Subscribe',
   },
 ]
@@ -34,19 +35,19 @@ export default function Header() {
   return (
     <>
       <Suspense>
-        <RefetchCart />
+        <RefetchCart getCart={getCart} />
       </Suspense>
 
-      <div className="sticky top-0">
+      <div className="sticky top-0 z-10">
         <div className="relative h-[122px] bg-background pt-[40px]">
           <div className="absolute inset-0 flex h-[40px] items-center justify-center bg-secondary px-[15px] text-white">
             <p className="truncate">
-              Get 50% off your first delivery | Enjoy 100% tailored meals and
-              adjust anytime
+              Subscribe and get your first 2 weeks of meals FREE! | Enjoy 100%
+              tailored meals and adjust anytime
             </p>
           </div>
 
-          <div className="mx-auto grid h-[80px] w-full max-w-[1200px] grid-cols-3 px-[15px] text-secondary">
+          <div className="mx-auto grid h-[80px] w-full max-w-[1200px] grid-cols-3 items-center px-[15px] text-secondary">
             <button
               className="w-min self-center text-[25px] md:hidden"
               onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -63,13 +64,15 @@ export default function Header() {
               ))}
             </ul>
 
-            <Image
-              src="/logo.png"
-              alt="The Good Pet logo"
-              height={56}
-              width={135}
-              className="mx-auto self-center"
-            />
+            <Link href={Route.HOME}>
+              <Image
+                src="/logo.png"
+                alt="The Good Pet logo"
+                height={56}
+                width={135}
+                className="mx-auto self-center"
+              />
+            </Link>
 
             <div className="flex items-center justify-end gap-10">
               <button
