@@ -1,17 +1,15 @@
 'use server'
 
-import { redirect } from 'next/navigation'
 import { ServerActionError } from '@/@types/common'
 import { SurveyData } from '@/@types/survey'
 import Surveys from '@/database/dtos/surveys'
 import shopifyAdminApi from '@/service/api/shopifyAdminApi'
-import { Route } from '@/utils/constants/routes'
 import { logger } from '@/utils/functions/logger'
 import { generateMealProduct, getMealMetrics } from '@/utils/functions/meal'
 
 export async function createSurveyAndCustomProduct(
   surveyData: SurveyData,
-): Promise<ServerActionError<undefined> | undefined> {
+): Promise<(ServerActionError<undefined> & { surveyId?: number }) | undefined> {
   const { data: survey, error: createSurveyErr } =
     await Surveys.create(surveyData)
 
@@ -74,5 +72,7 @@ export async function createSurveyAndCustomProduct(
     }
   }
 
-  redirect(`${Route.CUSTOM_MEALS}/${updatedSurvey.id}`)
+  return {
+    surveyId: updatedSurvey.id,
+  }
 }

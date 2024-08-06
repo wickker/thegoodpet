@@ -23,6 +23,7 @@ import {
 
 type SurveyContextSchema = {
   currentStep: number
+  clearLocalStorageSurveyData: () => void
   isFirstQuestion: boolean
   isLastQuestion: boolean
   nextStep: () => void
@@ -34,6 +35,7 @@ type SurveyContextSchema = {
 
 export const SurveyContext = createContext<SurveyContextSchema>({
   currentStep: 0,
+  clearLocalStorageSurveyData: () => {},
   isFirstQuestion: true,
   isLastQuestion: false,
   nextStep: () => {},
@@ -88,6 +90,10 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     localStorage.setItem('the-good-pet-survey', JSON.stringify(data))
   }
 
+  const clearLocalStorageSurveyData = () => {
+    localStorage.removeItem('the-good-pet-survey')
+  }
+
   function getInitialSurveyData(): Partial<SurveyData> {
     const defaultValue: Partial<SurveyData> = {
       ageYear: 0,
@@ -121,6 +127,7 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     <SurveyContext.Provider
       value={{
         currentStep,
+        clearLocalStorageSurveyData,
         isFirstQuestion,
         isLastQuestion,
         nextStep,

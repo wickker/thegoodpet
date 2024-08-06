@@ -1,6 +1,7 @@
 'use client'
 
 import { useContext, useEffect, useMemo, useState } from 'react'
+import { redirect } from 'next/navigation'
 import { useFormState } from 'react-dom'
 import { BsDash, BsPlus } from 'react-icons/bs'
 import { SurveyData } from '@/@types/survey'
@@ -10,11 +11,13 @@ import { IngredientTile, SurveyFooter } from '@/components/Survey'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
 import { SurveyContext } from '@/contexts/SurveyProvider'
 import { Ingredient, Species } from '@/utils/constants/db'
+import { Route } from '@/utils/constants/routes'
 import { capitalize } from '@/utils/functions/common'
 import { getMealMetrics } from '@/utils/functions/meal'
 
 export default function BuildYourBoxQuestion() {
-  const { prevStep, surveyData, setSurveyData } = useContext(SurveyContext)
+  const { clearLocalStorageSurveyData, prevStep, surveyData, setSurveyData } =
+    useContext(SurveyContext)
   const totalPacks = Object.values(surveyData.mealTypeToQuantity || {}).reduce(
     (total, curr) => total + curr,
     0,
@@ -100,6 +103,11 @@ export default function BuildYourBoxQuestion() {
         message: state.error.message,
       })
     }
+
+    if (state?.surveyId) {
+      clearLocalStorageSurveyData()
+      redirect(`${Route.CUSTOM_MEALS}/${state?.surveyId}`)
+    }
   }, [state])
 
   return (
@@ -107,8 +115,11 @@ export default function BuildYourBoxQuestion() {
       <div className="mx-auto w-full max-w-[460px]">
         <p className="my-5 text-justify">
           Based on our calculations, {capitalize(surveyData.name || '')} will
-          need {DER.toFixed(2)} calories daily. Our food packs will be adjusted
-          accordingly.
+          need{' '}
+          <span className="text-lg font-bold text-secondary">
+            {DER.toFixed(2)}
+          </span>{' '}
+          calories daily. Our food packs will be adjusted accordingly.
           <br />
           <br />A subscription meal accounts for 2 weeks worth of food. Please
           select your 14 day combination.
