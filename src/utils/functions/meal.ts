@@ -1,56 +1,20 @@
-import { Species } from '@/utils/constants/db'
+import { MeatTypeToQuantity } from '@/@types/survey'
+import { Ingredient, Species } from '@/utils/constants/db'
+import { capitalize } from '@/utils/functions/common'
 
-type Meat = {
-  weight: number
-  cost: number
-}
-
-type MeatDictionary = {
-  [key: string]: Meat
-}
-
-// Calculates the weight and cost of each meat type based on the given DER (Daily Energy Requirement).
-const calculateMealsGrams = (
-  DER: number,
-  meats: { [key: string]: { calPerGram: number; centPerGram: number } },
-): MeatDictionary => {
-  const meals: MeatDictionary = {}
-
-  for (const [meat, values] of Object.entries(meats)) {
-    const weight = Math.round(DER / values.calPerGram)
-    const cost = parseFloat(((weight * values.centPerGram) / 100).toFixed(2))
-    meals[meat] = { weight, cost }
-  }
-
-  return meals
-}
-
-// Gets the meal grams and cost for a given species (dog or cat) based on the DER.
-export const getMealsGrams = (
-  DER: number,
-  species: Species,
-): MeatDictionary => {
-  const isDog = species === Species.DOG
-
-  const dogMeats = {
-    chicken: { calPerGram: 1.16, centPerGram: 2.37 },
-    beef: { calPerGram: 1.19, centPerGram: 2.63 },
-    duck: { calPerGram: 1.2, centPerGram: 2.81 },
-    lamb: { calPerGram: 1.2, centPerGram: 2.81 },
-  }
-
-  const catMeats = {
-    chicken: { calPerGram: 1.24, centPerGram: 2.37 },
-    beef: { calPerGram: 1.27, centPerGram: 2.63 },
-    duck: { calPerGram: 1.2, centPerGram: 2.81 },
-    lamb: { calPerGram: 1.2, centPerGram: 2.81 },
-  }
-
-  const meals = isDog
-    ? calculateMealsGrams(DER, dogMeats)
-    : calculateMealsGrams(DER, catMeats)
-
-  return meals
+const SPECIES_TO_INGREDIENT_DETAILS = {
+  [Species.DOG]: {
+    [Ingredient.CHICKEN]: { calPerGram: 1.16, centPerGram: 2.37 },
+    [Ingredient.BEEF]: { calPerGram: 1.19, centPerGram: 2.63 },
+    [Ingredient.DUCK]: { calPerGram: 1.2, centPerGram: 2.81 },
+    [Ingredient.LAMB]: { calPerGram: 1.2, centPerGram: 2.81 },
+  },
+  [Species.CAT]: {
+    [Ingredient.CHICKEN]: { calPerGram: 1.24, centPerGram: 2.37 },
+    [Ingredient.BEEF]: { calPerGram: 1.27, centPerGram: 2.63 },
+    [Ingredient.DUCK]: { calPerGram: 1.2, centPerGram: 2.81 },
+    [Ingredient.LAMB]: { calPerGram: 1.2, centPerGram: 2.81 },
+  },
 }
 
 // Define activity ratios for dogs based on age, neutered status, and activity
@@ -125,4 +89,56 @@ export const getMealMetrics = (
     RER,
     DER,
   }
+}
+
+// Calculate the volume of a single meal based on a pet's species, DER and the meal's ingredient
+export const getMealVolume = (
+  species: Species,
+  DER: number,
+  ingredient: Ingredient,
+) => {
+  const ingredientDetail = SPECIES_TO_INGREDIENT_DETAILS[species][ingredient]
+  return Math.round(DER / ingredientDetail.calPerGram)
+}
+
+// Calculate the price of a single meal based on a pet's species, meal's ingredient and volume
+export const getMealPrice = (
+  species: Species,
+  foodVolumeGrams: number,
+  ingredient: Ingredient,
+) => {
+  const ingredientDetail = SPECIES_TO_INGREDIENT_DETAILS[species][ingredient]
+  return parseFloat(
+    ((foodVolumeGrams * ingredientDetail.centPerGram) / 100).toFixed(2),
+  )
+}
+
+export const generateMealProduct = (
+  species: Species,
+  DER: number,
+  meatTypeToQuantity: MeatTypeToQuantity,
+): { description: string; price: number } => {
+  const mealDescriptions = []
+  let price = 0
+
+  for (const ingredient in meatTypeToQuantity) {
+    const qty = meatTypeToQuantity[ingredient as Ingredient] || 0
+    const foodVolumeGrams = getMealVolume(
+      species,
+      DER,
+      ingredient as Ingredient,
+    )
+    const ingredientMealPrice = getMealPrice(
+      species,
+      foodVolumeGrams,
+      ingredient as Ingredient,
+    )
+
+    mealDescriptions.push(
+      `${foodVolumeGrams} grams of ${capitalize(ingredient)}, ${qty} packs`,
+    )
+    price += ingredientMealPrice * qty
+  }
+
+  return { description: mealDescriptions.join(' | '), price }
 }
