@@ -5,6 +5,14 @@ query ($id: ID!) {
     displayName
     id
     price
+    selectedOptions {
+      name
+      optionValue {
+        id
+        name
+      }
+      value
+    }
     product {
       id
       title
