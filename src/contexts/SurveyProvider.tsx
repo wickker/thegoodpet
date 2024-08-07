@@ -90,9 +90,8 @@ export default function SurveyProvider({ children }: PropsWithChildren) {
     localStorage.setItem('the-good-pet-survey', JSON.stringify(data))
   }
 
-  const clearLocalStorageSurveyData = () => {
+  const clearLocalStorageSurveyData = () =>
     localStorage.removeItem('the-good-pet-survey')
-  }
 
   function getInitialSurveyData(): Partial<SurveyData> {
     const defaultValue: Partial<SurveyData> = {
