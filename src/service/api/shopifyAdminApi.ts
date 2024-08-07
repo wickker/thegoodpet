@@ -30,6 +30,14 @@ const createProductVariant = (
     },
   })
 
+const getProductVariant = (id: string): Promise<ClientResponse> =>
+  client.request(Products.GetVariant, {
+    variables: {
+      id,
+    },
+  })
+
 export default {
   createProductVariant,
+  getProductVariant,
 }
