@@ -61,6 +61,22 @@ const create = async (surveyData: SurveyData): Promise<DbResponse<Survey>> => {
   }
 }
 
+const findById = async (id: number): Promise<DbResponse<Survey>> => {
+  try {
+    const data = await sql(
+      format(
+        `SELECT *
+        FROM surveys 
+        WHERE id = (%L)`,
+        id,
+      ),
+    )
+    return { data: data[0] as Survey, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
 const findAllSurveysWithNoPet = async (
   shopifyProductIds: Array<string>,
 ): Promise<DbResponse<ListOfSurveyIdAndName>> => {
@@ -106,6 +122,7 @@ const updateShopifyProductId = async (
 
 const Surveys = {
   create,
+  findById,
   findAllSurveysWithNoPet,
   updateShopifyProductId,
 }
