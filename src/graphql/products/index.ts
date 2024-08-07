@@ -1,11 +1,11 @@
-import Create from './create'
 import CreateVariant from './createVariant'
 import GetAll from './getAll'
+import GetVariant from './getVariant'
 
 const Products = {
-  Create,
   CreateVariant,
   GetAll,
+  GetVariant,
 }
 
 export default Products
