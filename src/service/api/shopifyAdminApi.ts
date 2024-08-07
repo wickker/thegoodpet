@@ -1,6 +1,9 @@
 import { ClientResponse, createAdminApiClient } from '@shopify/admin-api-client'
 import { DateTime } from 'luxon'
-import { CreateProductVariantResponse } from '@/@types/product'
+import {
+  CreateProductVariantResponse,
+  GetProductVariantResponse,
+} from '@/@types/product'
 import Config from '@/configs'
 import Products from '@/graphql/products'
 import { SHOPIFY_CUSTOM_MEAL_PRODUCT_ID } from '@/utils/constants/common'
@@ -30,7 +33,9 @@ const createProductVariant = (
     },
   })
 
-const getProductVariant = (id: string): Promise<ClientResponse> =>
+const getProductVariant = (
+  id: string,
+): Promise<ClientResponse<GetProductVariantResponse>> =>
   client.request(Products.GetVariant, {
     variables: {
       id,

@@ -19,3 +19,26 @@ export type CreateProductVariantResponse = {
     }
   }
 }
+
+export type GetProductVariantResponse = {
+  productVariant: {
+    createdAt: string
+    displayName: string
+    id: string
+    price: string
+    selectedOptions: Array<{
+      name: string
+      optionValue: {
+        id: string
+        name: string
+      }
+      value: string
+    }>
+    product: {
+      id: string
+      title: string
+      description: string
+    }
+    title: string
+  }
+}
