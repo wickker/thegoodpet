@@ -38,6 +38,7 @@ export default function OmitIngredientsQuestion() {
       setSurveyData({
         ...surveyData,
         omitIngredients: selectedIngredients,
+        mealTypeToQuantity: undefined,
       })
       nextStep()
     } catch (e) {
