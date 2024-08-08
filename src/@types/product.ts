@@ -1,3 +1,5 @@
+import { SurveyData } from '@/@types/survey'
+
 export type CreateProductVariantResponse = {
   productVariantCreate: {
     product: {
@@ -41,4 +43,9 @@ export type GetProductVariantResponse = {
     }
     title: string
   }
+}
+
+export type GetCustomMealResponse = {
+  survey: SurveyData
+  product: GetProductVariantResponse
 }

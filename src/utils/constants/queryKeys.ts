@@ -12,6 +12,7 @@ export const QUERY_KEYS = {
     { first },
   ],
   GET_CART: [THE_GOOD_PET, 'carts'],
+  GET_CUSTOM_MEAL: (id: string) => [THE_GOOD_PET, 'custom-meal', id],
   GET_CUSTOMER_ORDERS: ({ first }: CustomerOrdersArgs) => [
     THE_GOOD_PET,
     'customer-orders',
