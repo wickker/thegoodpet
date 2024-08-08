@@ -9,7 +9,7 @@ export async function GET(_: Request, options: GetOptions) {
   const surveyId = parseInt(surveyIdStr)
 
   if (surveyId < 1 || isNaN(surveyId)) {
-    logger.error(`Invalid id provided`)
+    logger.error('Invalid id provided.')
     return Response.json(
       {
         title: 'Failed to get custom meal',
@@ -23,7 +23,7 @@ export async function GET(_: Request, options: GetOptions) {
     await Surveys.findById(surveyId)
   if (SelectSurveyErr || !survey) {
     logger.error(
-      `Unable to get survey [surveyId: ${surveyId}]: ${SelectSurveyErr}`,
+      `Unable to get survey [surveyId: ${surveyId}]: ${SelectSurveyErr}.`,
     )
     return Response.json(
       {
@@ -37,7 +37,7 @@ export async function GET(_: Request, options: GetOptions) {
   const shopifyProductVariantId = survey.shopify_product_id
   if (!shopifyProductVariantId) {
     logger.error(
-      `Unable to get shopify product variant id [shopifyProductVariantId: ${shopifyProductVariantId}]`,
+      `Unable to get shopify product variant id [shopifyProductVariantId: ${shopifyProductVariantId}].`,
     )
     return Response.json(
       {
