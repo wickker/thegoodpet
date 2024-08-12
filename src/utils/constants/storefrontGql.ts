@@ -1,5 +1,6 @@
 export const StorefrontDataKey = {
   CART_BUYER_IDENTITY_UPDATE: 'cartBuyerIdentityUpdate',
+  CART_CREATE: 'cartCreate',
   CART_LINES_ADD: 'cartLinesAdd',
   CART_LINES_REMOVE: 'cartLinesRemove',
   CART_LINES_UPDATE: 'cartLinesUpdate',

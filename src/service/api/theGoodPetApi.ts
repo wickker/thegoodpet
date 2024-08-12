@@ -8,6 +8,7 @@ import {
   MutationCartLinesUpdateArgs,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import { BaseError } from '@/@types/common'
+import { GetCustomMealResponse } from '@/@types/product'
 
 const handleResponse = async (res: Response) => {
   const json = await res.json()
@@ -20,6 +21,11 @@ const handleResponse = async (res: Response) => {
 // GET
 const getCart = async (): Promise<Cart> => {
   const res = await fetch('/api/carts')
+  return handleResponse(res)
+}
+
+const getCustomMeal = async (id: string): Promise<GetCustomMealResponse> => {
+  const res = await fetch(`/api/custom-meals/${id}`)
   return handleResponse(res)
 }
 
@@ -59,5 +65,6 @@ export default {
   addItemToCart,
   deleteItemFromCart,
   getCart,
+  getCustomMeal,
   updateCartItemQuantity,
 }
