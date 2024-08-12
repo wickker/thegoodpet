@@ -48,10 +48,14 @@ export async function addToCart(
 
   // Add item to existing cart
   if (cartIdCookie) {
-    const addItemToCartResponse = await storefrontApi.addItemToCart({
+    const addItemToCartRequestBody = {
       cartId: cartIdCookie.value,
       lines: [parsedData.data],
-    })
+    }
+
+    const addItemToCartResponse = await storefrontApi.addItemToCart(
+      addItemToCartRequestBody,
+    )
 
     const { error: addItemToCartError } =
       handleStorefrontGqlResponse<CartLinesAddPayload>(
@@ -61,7 +65,7 @@ export async function addToCart(
 
     if (addItemToCartError) {
       logger.error(
-        `Unable to add items to cart [cartId: ${cartIdCookie.value}][merchandiseId: ${parsedData.data.merchandiseId}][sellingPlanId: ${parsedData.data.sellingPlanId}]: ${addItemToCartError}.`,
+        `Unable to add items to cart [addItemToCartRequestBody: ${JSON.stringify(addItemToCartRequestBody)}]: ${addItemToCartError}.`,
       )
       return {
         error: {
@@ -78,13 +82,16 @@ export async function addToCart(
 
   // Create new cart with item
   const emailCookie = cookieStore.get(SHOPIFY_CUSTOMER_EMAIL_COOKIE)
-
-  const createCartResponse = await storefrontApi.createCart({
+  const createCartRequestBody = {
     buyerIdentity: {
       email: emailCookie ? emailCookie.value : undefined,
     },
     lines: [parsedData.data],
-  })
+  }
+
+  const createCartResponse = await storefrontApi.createCart(
+    createCartRequestBody,
+  )
 
   const { data: createCartData, error: createCartError } =
     handleStorefrontGqlResponse<CartLinesAddPayload>(
@@ -94,7 +101,7 @@ export async function addToCart(
 
   if (createCartError) {
     logger.error(
-      `Unable to create cart [email: ${emailCookie?.value}][merchandiseId: ${parsedData.data.merchandiseId}][sellingPlanId: ${parsedData.data.sellingPlanId}]: ${createCartError}.`,
+      `Unable to create cart [createCartRequestBody: ${createCartRequestBody}]: ${createCartError}.`,
     )
     return {
       error: {

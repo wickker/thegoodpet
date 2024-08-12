@@ -7,19 +7,19 @@ import useCustomMeal from '@/hooks/query/useCustomMeal'
 export default function CustomMealsPage() {
   const params = useParams<{ id: string }>()
   const { useGetCustomMealQuery } = useCustomMeal()
-  const customMeal = useGetCustomMealQuery(params.id)
+  const getCustomMeal = useGetCustomMealQuery(params.id)
 
   return (
     <div className="min-h-[calc(100dvh-122px)]">
       <div className="mx-auto max-w-[1200px] px-[15px]">
         {/* TODO: clean up loading state */}
         {/* TODO: clean up error state */}
-        {customMeal.isFetching ? (
+        {getCustomMeal.isFetching ? (
           <div>Loading</div>
-        ) : customMeal.data ? (
+        ) : getCustomMeal.data ? (
           <MealDetails
-            survey={customMeal.data.survey}
-            product={customMeal.data.product}
+            survey={getCustomMeal.data.survey}
+            product={getCustomMeal.data.product}
           />
         ) : (
           <div>error</div>
