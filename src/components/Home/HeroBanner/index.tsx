@@ -4,7 +4,7 @@ import { Route } from '@/utils/constants/routes'
 
 export default function HeroBanner() {
   return (
-    <div className="relative isolate min-h-lvh">
+    <div className="bg-background">
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center px-[15px] md:grid-cols-2 md:gap-x-8">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
