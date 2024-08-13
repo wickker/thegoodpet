@@ -1,10 +1,10 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
 import { GetProductVariantResponse } from '@/@types/product'
 import { SurveyData } from '@/@types/survey'
 import { addToCart } from '@/app/custom-meals/[id]/actions'
 import { ButtonSubmitFormAction } from '@/components/common'
-import { SubscriptionOption } from '@/components/CustomMeals'
+import { AddToCartModal, SubscriptionOption } from '@/components/CustomMeals'
 import { CartContext } from '@/contexts/CartProvider'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
 import { SHOPIFY_CUSTOM_MEAL_SELLING_PLANS } from '@/utils/constants/common'
@@ -18,12 +18,12 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
   const { notification } = useContext(NotificationsContext)
   const { getCart, openCart } = useContext(CartContext)
   const [state, formAction] = useFormState(addToCart, undefined)
+  const [isAddToCartModalVisible, setIsAddToCartModalVisible] =
+    useState<boolean>(false)
   const petName = survey.name
   const pronoun = survey.gender === 'MALE' ? 'he' : 'she'
 
-  const handleToggleOptionsModal = () => {
-    // TODO:
-  }
+  const handleToggleOptionsModal = () => setIsAddToCartModalVisible((c) => !c)
 
   useEffect(() => {
     if (state?.error) {
@@ -34,6 +34,7 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
     }
 
     if (state?.success) {
+      setIsAddToCartModalVisible(false)
       getCart?.refetch().then(() => openCart())
     }
   }, [state])
@@ -116,7 +117,7 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
 
           {/* Desktop Button */}
           <div className="min-h-[45px]">
-            <ButtonSubmitFormAction className="mt-6 hidden w-full md:block">
+            <ButtonSubmitFormAction className="mt-6 hidden w-full md:flex">
               Add to cart
             </ButtonSubmitFormAction>
           </div>
@@ -130,6 +131,13 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
             Add to cart
           </button>
         </form>
+
+        <AddToCartModal
+          isVisible={isAddToCartModalVisible}
+          onClose={handleToggleOptionsModal}
+          productId={product.productVariant.id}
+          submitAction={formAction}
+        />
       </div>
     </div>
   )
