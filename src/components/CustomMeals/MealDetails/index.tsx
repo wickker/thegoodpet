@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { useFormState } from 'react-dom'
 import { GetProductVariantResponse } from '@/@types/product'
 import { SurveyData } from '@/@types/survey'
@@ -40,7 +41,12 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
   }, [state])
 
   return (
-    <div className="grid gap-x-8 gap-y-3 md:mt-8 md:grid-cols-[auto_450px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="grid gap-x-8 gap-y-3 md:mt-8 md:grid-cols-[auto_450px]"
+    >
       {/* TODO: create image slider component */}
       <div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -139,6 +145,6 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
           submitAction={formAction}
         />
       </div>
-    </div>
+    </motion.div>
   )
 }
