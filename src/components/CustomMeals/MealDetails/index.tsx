@@ -1,12 +1,15 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { useFormState } from 'react-dom'
 import { GetProductVariantResponse } from '@/@types/product'
 import { SurveyData } from '@/@types/survey'
 import { addToCart } from '@/app/custom-meals/[id]/actions'
-import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
+import { ButtonSubmitFormAction } from '@/components/common'
+import { AddToCartModal, SubscriptionOption } from '@/components/CustomMeals'
 import { CartContext } from '@/contexts/CartProvider'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
 import { SHOPIFY_CUSTOM_MEAL_SELLING_PLANS } from '@/utils/constants/common'
+import { Gender } from '@/utils/constants/db'
 
 type MealDetailsProps = {
   survey: SurveyData
@@ -17,7 +20,12 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
   const { notification } = useContext(NotificationsContext)
   const { getCart, openCart } = useContext(CartContext)
   const [state, formAction] = useFormState(addToCart, undefined)
+  const [isAddToCartModalVisible, setIsAddToCartModalVisible] =
+    useState<boolean>(false)
   const petName = survey.name
+  const pronoun = survey.gender === Gender.MALE ? 'he' : 'she'
+
+  const handleToggleOptionsModal = () => setIsAddToCartModalVisible((c) => !c)
 
   useEffect(() => {
     if (state?.error) {
@@ -28,12 +36,18 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
     }
 
     if (state?.success) {
+      setIsAddToCartModalVisible(false)
       getCart?.refetch().then(() => openCart())
     }
   }, [state])
 
   return (
-    <div className="grid gap-x-8 gap-y-3 md:mt-8 md:grid-cols-[auto_450px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="grid gap-x-8 gap-y-3 md:mt-8 md:grid-cols-[auto_450px]"
+    >
       {/* TODO: create image slider component */}
       <div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -49,6 +63,7 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
           <img src="https://placehold.co/60x60/png" />
         </div>
       </div>
+
       <div className="flex flex-col gap-3">
         <h1 className="font-fredoka text-4xl text-secondary">
           ${product.productVariant.price}
@@ -58,14 +73,35 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
           {petName}'s Tailor-made Meal
         </h1>
 
-        {/* TODO: clean up product description */}
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus quasi
-          dolorum vitae eos? Aperiam ab explicabo corporis sed laborum
-          doloremque.
+        <div className="grid gap-4">
+          <p>
+            Give {petName} the nutrition {pronoun} deserves with our
+            Tailored-Made Meal. Our service is designed to provide personalized,
+            high-quality meals that support your pet’s health and happiness.
+          </p>
+
+          <div>
+            This product includes:
+            <br />
+            <ul className="list-inside list-disc">
+              {product.productVariant.displayName
+                .split('/')[2]
+                .split('|')
+                .map((ingredient) => (
+                  <li key={ingredient}>{ingredient}</li>
+                ))}
+            </ul>
+          </div>
+
+          <p>
+            With our Tailored-Made Meal, you're not just feeding your pet;
+            you're investing in their well-being. Our personalized meals are
+            designed to promote optimal health and vitality. Treat your pet to
+            the luxury of custom-crafted meals and see the difference in their
+            life.
+          </p>
         </div>
 
-        {/* TODO: clean up option design */}
         <form action={formAction}>
           <input
             type="hidden"
@@ -73,26 +109,43 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
             name="merchandiseId"
           />
 
-          <label>Subscription Options</label>
-          {SHOPIFY_CUSTOM_MEAL_SELLING_PLANS.map(({ name, value }) => (
-            <label className="flex gap-2" key={value}>
-              <input type="radio" name="sellingPlanId" value={value} />
-              {name}
-            </label>
-          ))}
-          <FormErrorMessage
-            message={
-              state?.zodError?.sellingPlanId &&
-              state.zodError.sellingPlanId._errors[0]
-            }
-            className="mt-0 text-left"
-          />
+          <div className="hidden md:block">
+            <label>Purchase Options</label>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <SubscriptionOption title="One-time purchase" />
+              {SHOPIFY_CUSTOM_MEAL_SELLING_PLANS.map((sellingPlanDetails) => (
+                <SubscriptionOption
+                  key={sellingPlanDetails.value}
+                  {...sellingPlanDetails}
+                />
+              ))}
+            </div>
+          </div>
 
-          <ButtonSubmitFormAction className="w-full">
+          {/* Desktop Button */}
+          <div className="min-h-[45px]">
+            <ButtonSubmitFormAction className="mt-6 hidden w-full md:flex">
+              Add to cart
+            </ButtonSubmitFormAction>
+          </div>
+
+          {/* Mobile Button */}
+          <button
+            onClick={handleToggleOptionsModal}
+            className="fixed bottom-0 left-0 right-0 bg-primary p-[15px] text-center text-lg text-white md:hidden"
+            type="button"
+          >
             Add to cart
-          </ButtonSubmitFormAction>
+          </button>
         </form>
+
+        <AddToCartModal
+          isVisible={isAddToCartModalVisible}
+          onClose={handleToggleOptionsModal}
+          productId={product.productVariant.id}
+          submitAction={formAction}
+        />
       </div>
-    </div>
+    </motion.div>
   )
 }

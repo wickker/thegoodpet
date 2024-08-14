@@ -3,7 +3,9 @@ import { HeroBanner } from '@/components/Home'
 export default function Page() {
   return (
     <>
-      <HeroBanner />
+      <div className="mt-4 md:mt-0">
+        <HeroBanner />
+      </div>
     </>
   )
 }

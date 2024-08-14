@@ -17,9 +17,7 @@ import {
 import { logger } from '@/utils/functions/logger'
 
 const AddToCartFormSchema = z.object({
-  sellingPlanId: z.string({
-    message: 'Please select a subscription option',
-  }),
+  sellingPlanId: z.string().optional(),
   merchandiseId: z.string({
     message: 'Product not found',
   }),
@@ -34,7 +32,7 @@ export async function addToCart(
   undefined | (ServerActionError<AddToCartForm> & { success?: boolean })
 > {
   const data = {
-    sellingPlanId: form.get('sellingPlanId'),
+    sellingPlanId: form.get('sellingPlanId') || undefined,
     merchandiseId: form.get('merchandiseId'),
   }
 
