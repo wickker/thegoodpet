@@ -9,6 +9,7 @@ import { AddToCartModal, SubscriptionOption } from '@/components/CustomMeals'
 import { CartContext } from '@/contexts/CartProvider'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
 import { SHOPIFY_CUSTOM_MEAL_SELLING_PLANS } from '@/utils/constants/common'
+import { Gender } from '@/utils/constants/db'
 
 type MealDetailsProps = {
   survey: SurveyData
@@ -22,7 +23,7 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
   const [isAddToCartModalVisible, setIsAddToCartModalVisible] =
     useState<boolean>(false)
   const petName = survey.name
-  const pronoun = survey.gender === 'MALE' ? 'he' : 'she'
+  const pronoun = survey.gender === Gender.MALE ? 'he' : 'she'
 
   const handleToggleOptionsModal = () => setIsAddToCartModalVisible((c) => !c)
 
