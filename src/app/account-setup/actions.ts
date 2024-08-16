@@ -59,7 +59,7 @@ export async function signUp(
   const passwordHash = getPasswordHash(data.password)
   const phone = data.mobileNumber
     ? `${data.countryCode}${data.mobileNumber}`
-    : ''
+    : undefined
 
   // create customer in db if mobile number and email does not exist
   const { data: existingCustomers, error: selectErr } =
@@ -91,9 +91,9 @@ export async function signUp(
   const { data: newCustomer, error: createErr } = await Customers.create(
     data.email,
     passwordHash,
-    phone,
     cartId,
     data.acceptsMarketing,
+    phone,
   )
   if (createErr || !newCustomer || newCustomer.length === 0) {
     logger.error(

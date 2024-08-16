@@ -1,5 +1,6 @@
 import { createLogger, format, transports } from 'winston'
-const { combine, timestamp, label } = format
+
+const { combine, timestamp, label, json, prettyPrint } = format
 
 const initLogger = () =>
   createLogger({
@@ -7,13 +8,9 @@ const initLogger = () =>
     format: combine(
       label({ label: 'the-good-pet' }),
       timestamp(),
-      format.json(),
+      json(),
+      prettyPrint(),
     ),
   })
 
 export const logger = initLogger()
-
-// Basic usage:
-// logger.info({message: 'info'})
-// logger.error({message: 'error'})
-// logger.warn({message: 'warn'})

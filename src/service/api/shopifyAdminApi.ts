@@ -10,7 +10,7 @@ import { SHOPIFY_CUSTOM_MEAL_PRODUCT_ID } from '@/utils/constants/common'
 
 const client = createAdminApiClient({
   storeDomain: Config.SHOPIFY_STORE_DOMAIN,
-  apiVersion: '2024-10',
+  apiVersion: '2024-07',
   accessToken: Config.SHOPIFY_ADMIN_ACCESS_TOKEN,
 })
 

@@ -26,9 +26,9 @@ type ListOfCustomers = Array<
 const create = async (
   email: string,
   passwordHash: string,
-  mobileNumber: string,
   cartId: string,
   acceptsMarketing: boolean,
+  mobileNumber?: string,
 ): Promise<DbResponse<ListOfCustomerIds>> => {
   try {
     const data = await sql`
@@ -45,7 +45,7 @@ const create = async (
 
 const findByEmailOrPhone = async (
   email: string,
-  phone: string,
+  phone?: string,
 ): Promise<DbResponse<ListOfCustomerIds | ListOfCustomers>> => {
   if (phone) {
     try {

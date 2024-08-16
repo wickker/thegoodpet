@@ -25,7 +25,7 @@ export async function createPetsFromCart(customerId: number, cartId: string) {
     await Surveys.findAllSurveysWithNoPet(productIds)
   if (selectErr || !surveys) {
     logger.error(
-      `Unable to get all surverys with no pet linked [productIds: ${JSON.stringify(productIds)}]: ${selectErr}.`,
+      `Unable to get all surveys with no pet linked [productIds: ${JSON.stringify(productIds)}]: ${selectErr}.`,
     )
     return selectErr
   }
