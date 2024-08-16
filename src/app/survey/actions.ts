@@ -58,7 +58,10 @@ export async function createSurveyAndCustomProduct(
   }
 
   const { data: updatedSurvey, error: updateSurveyErr } =
-    await Surveys.updateShopifyProductId(survey.id, shopifyProductVariantId)
+    await Surveys.updateShopifyProductVariantId(
+      survey.id,
+      shopifyProductVariantId,
+    )
 
   if (updateSurveyErr || !updatedSurvey) {
     logger.error(

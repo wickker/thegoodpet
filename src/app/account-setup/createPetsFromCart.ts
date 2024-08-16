@@ -18,14 +18,14 @@ export async function createPetsFromCart(customerId: number, cartId: string) {
     return ''
   }
 
-  const productIds = (cartRes.data.cart as Cart).lines.edges.map(
-    (v) => v.node.merchandise.product.id,
+  const productVariantIds = (cartRes.data.cart as Cart).lines.edges.map(
+    (v) => v.node.merchandise.id,
   )
   const { data: surveys, error: selectErr } =
-    await Surveys.findAllSurveysWithNoPet(productIds)
+    await Surveys.findAllSurveysWithNoPet(productVariantIds)
   if (selectErr || !surveys) {
     logger.error(
-      `Unable to get all surveys with no pet linked [productIds: ${JSON.stringify(productIds)}]: ${selectErr}.`,
+      `Unable to get all surveys with no pet linked [productVariantIds: ${JSON.stringify(productVariantIds)}]: ${selectErr}.`,
     )
     return selectErr
   }
