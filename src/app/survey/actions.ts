@@ -47,7 +47,7 @@ export async function createSurveyAndCustomProduct(
     shopifyProductVariant?.productVariantCreate?.productVariant?.id
   if (createProductVariantErr || !shopifyProductVariantId) {
     logger.error(
-      `Unable to create new shopify product variant [petName: ${petName}][description: ${customDescription}][price: ${customPrice}]: ${createProductVariantErr}.`,
+      `Unable to create new shopify product variant [petName: ${petName}][description: ${customDescription}][price: ${customPrice}]: ${JSON.stringify(createProductVariantErr)}.`,
     )
     return {
       error: {
@@ -58,7 +58,10 @@ export async function createSurveyAndCustomProduct(
   }
 
   const { data: updatedSurvey, error: updateSurveyErr } =
-    await Surveys.updateShopifyProductId(survey.id, shopifyProductVariantId)
+    await Surveys.updateShopifyProductVariantId(
+      survey.id,
+      shopifyProductVariantId,
+    )
 
   if (updateSurveyErr || !updatedSurvey) {
     logger.error(

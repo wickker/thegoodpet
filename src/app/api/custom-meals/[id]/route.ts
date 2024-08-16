@@ -34,7 +34,7 @@ export async function GET(_: Request, options: GetOptions) {
     )
   }
 
-  const shopifyProductVariantId = survey.shopify_product_id
+  const shopifyProductVariantId = survey.shopify_product_variant_id
   if (!shopifyProductVariantId) {
     logger.error(
       `Unable to get shopify product variant id [shopifyProductVariantId: ${shopifyProductVariantId}].`,

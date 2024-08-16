@@ -22,7 +22,7 @@ type Survey = {
   meal_doneness: string
   meal_type_to_quantity: Record<Ingredient, number>
   pet_id: number | null
-  shopify_product_id: string | null
+  shopify_product_variant_id: string | null
   created_at: string
   updated_at: string | null
   deleted_at: string | null
@@ -78,18 +78,18 @@ const findById = async (id: number): Promise<DbResponse<Survey>> => {
 }
 
 const findAllSurveysWithNoPet = async (
-  shopifyProductIds: Array<string>,
+  shopifyProductVariantIds: Array<string>,
 ): Promise<DbResponse<ListOfSurveyIdAndName>> => {
   try {
     const data = await sql(
       format(
         `SELECT id, name 
         FROM surveys 
-        WHERE shopify_product_id IN (%L)
+        WHERE shopify_product_variant_id IN (%L)
         AND pet_id is NULL
         AND deleted_at is NULL;
         `,
-        shopifyProductIds,
+        shopifyProductVariantIds,
       ),
     )
     return { data: data as Array<Pick<Survey, 'id' | 'name'>>, error: null }
@@ -98,19 +98,19 @@ const findAllSurveysWithNoPet = async (
   }
 }
 
-const updateShopifyProductId = async (
+const updateShopifyProductVariantId = async (
   surveyId: number,
-  shopifyProductId: string,
+  shopifyProductVariantId: string,
 ): Promise<DbResponse<Survey>> => {
   try {
     const data = await sql(
       format(
         `UPDATE surveys
-        SET shopify_product_id = %L
+        SET shopify_product_variant_id = %L
         WHERE id = %L
         RETURNING *;
         `,
-        shopifyProductId,
+        shopifyProductVariantId,
         surveyId,
       ),
     )
@@ -124,7 +124,7 @@ const Surveys = {
   create,
   findById,
   findAllSurveysWithNoPet,
-  updateShopifyProductId,
+  updateShopifyProductVariantId,
 }
 
 export default Surveys
