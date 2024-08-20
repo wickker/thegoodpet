@@ -5,8 +5,8 @@ import { logger } from '@/utils/functions/logger'
 type GetOptions = { params: { id: string } }
 
 export async function GET(_: Request, options: GetOptions) {
-  const surveyIdStr = options.params.id
-  const surveyId = parseInt(surveyIdStr)
+  const customMealId = options.params.id
+  const surveyId = parseInt(atob(customMealId))
 
   if (surveyId < 1 || isNaN(surveyId)) {
     logger.error('Invalid id provided.')
