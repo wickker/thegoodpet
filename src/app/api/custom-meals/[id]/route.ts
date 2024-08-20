@@ -6,6 +6,20 @@ type GetOptions = { params: { id: string } }
 
 export async function GET(_: Request, options: GetOptions) {
   const customMealId = options.params.id
+
+  try {
+    atob(customMealId)
+  } catch (e) {
+    logger.error(`Invalid id provided. ${e}`)
+    return Response.json(
+      {
+        title: 'Failed to get custom meal',
+        message: 'Invalid custom meal id',
+      },
+      { status: 400 },
+    )
+  }
+
   const surveyId = parseInt(atob(customMealId))
 
   if (surveyId < 1 || isNaN(surveyId)) {

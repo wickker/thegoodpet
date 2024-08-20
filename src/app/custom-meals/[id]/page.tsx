@@ -2,6 +2,7 @@
 
 import { AnimatePresence } from 'framer-motion'
 import { useParams } from 'next/navigation'
+import { NotFound } from '@/components/common'
 import { MealDetails, MealDetailsSkeleton } from '@/components/CustomMeals'
 import useCustomMeal from '@/hooks/query/useCustomMeal'
 
@@ -22,8 +23,9 @@ export default function CustomMealsPage() {
               product={getCustomMeal.data.product}
             />
           ) : (
-            // TODO: clean up error state
-            <div>error</div>
+            <div className="mt-3">
+              <NotFound />
+            </div>
           )}
         </AnimatePresence>
       </div>
