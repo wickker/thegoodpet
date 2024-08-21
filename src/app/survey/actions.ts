@@ -9,7 +9,9 @@ import { generateMealProduct, getMealMetrics } from '@/utils/functions/meal'
 
 export async function createSurveyAndCustomProduct(
   surveyData: SurveyData,
-): Promise<(ServerActionError<undefined> & { surveyId?: number }) | undefined> {
+): Promise<
+  (ServerActionError<undefined> & { customMealId?: string }) | undefined
+> {
   const { data: survey, error: createSurveyErr } =
     await Surveys.create(surveyData)
 
@@ -76,6 +78,6 @@ export async function createSurveyAndCustomProduct(
   }
 
   return {
-    surveyId: updatedSurvey.id,
+    customMealId: btoa(updatedSurvey.id.toString()),
   }
 }

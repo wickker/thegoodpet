@@ -104,9 +104,9 @@ export default function BuildYourBoxQuestion() {
       })
     }
 
-    if (state?.surveyId) {
+    if (state?.customMealId) {
       clearLocalStorageSurveyData()
-      redirect(`${Route.CUSTOM_MEALS}/${state?.surveyId}`)
+      redirect(`${Route.CUSTOM_MEALS}/${state?.customMealId}`)
     }
   }, [state])
 

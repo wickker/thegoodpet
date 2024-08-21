@@ -1,11 +1,32 @@
 import Surveys from '@/database/dtos/surveys'
 import shopifyAdminApi from '@/service/api/shopifyAdminApi'
+import { safeAtob } from '@/utils/functions/common'
 import { logger } from '@/utils/functions/logger'
 
 type GetOptions = { params: { id: string } }
 
 export async function GET(_: Request, options: GetOptions) {
-  const surveyIdStr = options.params.id
+  const customMealId = options.params.id
+
+  const {
+    data: surveyIdStr,
+    success: isAtobSuccess,
+    error: atobError,
+  } = safeAtob(customMealId)
+
+  if (!isAtobSuccess) {
+    logger.error(
+      `Invalid id provided [customMealId: ${customMealId}]: ${atobError}.`,
+    )
+    return Response.json(
+      {
+        title: 'Failed to get custom meal',
+        message: 'Invalid custom meal id',
+      },
+      { status: 400 },
+    )
+  }
+
   const surveyId = parseInt(surveyIdStr)
 
   if (surveyId < 1 || isNaN(surveyId)) {

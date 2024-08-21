@@ -72,3 +72,20 @@ export const handleStorefrontGqlResponse = <T>(
   }
   return { data: res.data?.[dataKey] as T, error: null }
 }
+
+export const safeAtob = (
+  str: string,
+):
+  | { success: true; data: string; error: undefined }
+  | { success: false; data: undefined; error: unknown } => {
+  try {
+    const data = atob(str)
+    return { success: true, data, error: undefined }
+  } catch (error) {
+    return {
+      success: false,
+      data: undefined,
+      error,
+    }
+  }
+}
