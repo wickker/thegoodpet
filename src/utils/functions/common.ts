@@ -78,10 +78,9 @@ export const safeAtob = (
 ):
   | { success: true; data: string; error: undefined }
   | { success: false; data: undefined; error: unknown } => {
-  let data = undefined
-
   try {
-    data = atob(str)
+    const data = atob(str)
+    return { success: true, data, error: undefined }
   } catch (error) {
     return {
       success: false,
@@ -89,6 +88,4 @@ export const safeAtob = (
       error,
     }
   }
-
-  return { success: true, data, error: undefined }
 }
