@@ -4,19 +4,19 @@ import { Ingredient } from '@/utils/constants/db'
 export const getDefaultNumberPacksPerMeat = (
   ingredientsToPack: Array<Ingredient>,
 ) => {
-  const numIngredientsToPack = ingredientsToPack.length
-  const defaultNum = Math.floor(14 / numIngredientsToPack)
+  const numIngredients = ingredientsToPack.length
+  const defaultPackNum = Math.floor(14 / numIngredients)
   const defaultPacksPerMeatMap: Partial<MeatTypeToQuantity> = {}
 
-  for (let i = 0; i < numIngredientsToPack; i++) {
+  for (let i = 0; i < numIngredients; i++) {
     const ingredient = ingredientsToPack[i]
 
-    if (i === numIngredientsToPack - 1) {
+    if (i === numIngredients - 1) {
       defaultPacksPerMeatMap[ingredient] =
-        14 - defaultNum * (numIngredientsToPack - 1)
+        14 - defaultPackNum * (numIngredients - 1)
       continue
     }
-    defaultPacksPerMeatMap[ingredient] = defaultNum
+    defaultPacksPerMeatMap[ingredient] = defaultPackNum
   }
 
   return defaultPacksPerMeatMap
