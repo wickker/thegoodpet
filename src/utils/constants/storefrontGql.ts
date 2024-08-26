@@ -6,6 +6,7 @@ export const StorefrontDataKey = {
   CART_LINES_UPDATE: 'cartLinesUpdate',
   CUSTOMER_ACCESS_TOKEN_CREATE: 'customerAccessTokenCreate',
   CUSTOMER_CREATE: 'customerCreate',
+  CUSTOMER_RECOVER: 'customerRecover',
 } as const
 
 export type StorefrontDataKeys =
