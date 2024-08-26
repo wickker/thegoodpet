@@ -157,11 +157,13 @@ export async function signUp(
   }
 
   // update shopify fields in db
-  const { error: updateErr } = await Customers.updateShopifyAccessToken(
-    token.customerAccessToken.accessToken,
-    token.customerAccessToken.expiresAt,
-    customerId,
-  )
+  const { error: updateErr } =
+    await Customers.updateShopifyAccessTokenAndCustomerId(
+      token.customerAccessToken.accessToken,
+      token.customerAccessToken.expiresAt,
+      customerId,
+      shopifyCustomer.customer.id,
+    )
   if (updateErr) {
     logger.error(
       `Unable to update customer token [token: ${token.customerAccessToken.accessToken}][customerId: ${customerId}][expiry: ${token.customerAccessToken.expiresAt}]: ${updateErr}.`,
