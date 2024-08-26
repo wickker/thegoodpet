@@ -30,7 +30,7 @@ type Survey = {
 
 export type ListOfSurveyIdAndName = Array<Pick<Survey, 'id' | 'name'>>
 
-type ListOfSurveyIdAndProductVariantId = Array<
+export type ListOfSurveyIdAndProductVariantId = Array<
   Pick<Survey, 'id' | 'shopify_product_variant_id'>
 >
 

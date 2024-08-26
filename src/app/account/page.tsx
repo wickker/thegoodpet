@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers'
+import { getProductVariantIdToEncodedPathMap } from './utils'
 import { OrderHistoryTile, LogoutForm } from '@/components/Account'
 import Surveys from '@/database/dtos/surveys'
 import storefrontApi from '@/service/api/storefrontApi'
@@ -31,17 +32,19 @@ export default async function AccountPage() {
   const productVariantIds = customer.orders.edges.flatMap((o) =>
     o.node.lineItems.nodes.map((i) => i.variant?.id || ''),
   )
-  const { data, error } =
-    await Surveys.findAllSurveysByProductVariantIds(productVariantIds)
-  if (error) {
-    return (
-      <div className="flex h-[calc(100dvh-122px)] flex-col items-center justify-center text-neutral-500">
-        Failed to custom meal links: {error}.
-      </div>
-    )
+  let pvIdToCustomMealPathMap = {}
+  if (productVariantIds.length > 0) {
+    const { data, error } =
+      await Surveys.findAllSurveysByProductVariantIds(productVariantIds)
+    if (error || !data) {
+      return (
+        <div className="flex h-[calc(100dvh-122px)] flex-col items-center justify-center text-neutral-500">
+          Failed to custom meal links: {error}.
+        </div>
+      )
+    }
+    pvIdToCustomMealPathMap = getProductVariantIdToEncodedPathMap(data)
   }
-
-  console.log(data)
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
@@ -62,7 +65,11 @@ export default async function AccountPage() {
         {hasOrders ? (
           <>
             {customer.orders.edges.map((order) => (
-              <OrderHistoryTile order={order.node} key={order.node.id} />
+              <OrderHistoryTile
+                order={order.node}
+                key={order.node.id}
+                pvIdToCustomMealPathMap={pvIdToCustomMealPathMap}
+              />
             ))}
 
             <div className="py-5 text-center">
