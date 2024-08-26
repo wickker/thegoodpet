@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
 import { OrderHistoryTile, LogoutForm } from '@/components/Account'
+import Surveys from '@/database/dtos/surveys'
 import storefrontApi from '@/service/api/storefrontApi'
 import { SHOPIFY_CUSTOMER_TOKEN_COOKIE } from '@/utils/constants/cookies'
 
@@ -23,9 +24,24 @@ export default async function AccountPage() {
       </div>
     )
   }
-  const customer = customerRes.data.customer
 
+  const customer = customerRes.data.customer
   const hasOrders = customer.orders.edges.length > 0
+
+  const productVariantIds = customer.orders.edges.flatMap((o) =>
+    o.node.lineItems.nodes.map((i) => i.variant?.id || ''),
+  )
+  const { data, error } =
+    await Surveys.findAllSurveysByProductVariantIds(productVariantIds)
+  if (error) {
+    return (
+      <div className="flex h-[calc(100dvh-122px)] flex-col items-center justify-center text-neutral-500">
+        Failed to custom meal links: {error}.
+      </div>
+    )
+  }
+
+  console.log(data)
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">

@@ -30,6 +30,10 @@ type Survey = {
 
 export type ListOfSurveyIdAndName = Array<Pick<Survey, 'id' | 'name'>>
 
+type ListOfSurveyIdAndProductVariantId = Array<
+  Pick<Survey, 'id' | 'shopify_product_variant_id'>
+>
+
 const create = async (surveyData: SurveyData): Promise<DbResponse<Survey>> => {
   try {
     const query = format(
@@ -92,7 +96,27 @@ const findAllSurveysWithNoPet = async (
         shopifyProductVariantIds,
       ),
     )
-    return { data: data as Array<Pick<Survey, 'id' | 'name'>>, error: null }
+    return { data: data as ListOfSurveyIdAndName, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
+const findAllSurveysByProductVariantIds = async (
+  shopifyProductVariantIds: Array<string>,
+): Promise<DbResponse<ListOfSurveyIdAndProductVariantId>> => {
+  try {
+    const data = await sql(
+      format(
+        `SELECT id, shopify_product_variant_id
+        FROM surveys 
+        WHERE shopify_product_variant_id IN (%L)
+        AND deleted_at is NULL;
+        `,
+        shopifyProductVariantIds,
+      ),
+    )
+    return { data: data as ListOfSurveyIdAndProductVariantId, error: null }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }
   }
@@ -123,6 +147,7 @@ const updateShopifyProductVariantId = async (
 const Surveys = {
   create,
   findById,
+  findAllSurveysByProductVariantIds,
   findAllSurveysWithNoPet,
   updateShopifyProductVariantId,
 }
