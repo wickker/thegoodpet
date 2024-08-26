@@ -5,13 +5,18 @@ import { Order } from '@shopify/hydrogen-react/storefront-api-types'
 import { DateTime } from 'luxon'
 import { BsChevronDown } from 'react-icons/bs'
 import { OrderHistorySubTile } from '@/components/Account'
+import { Route } from '@/utils/constants/routes'
 import { formatPriceString, mc } from '@/utils/functions/common'
 
 type OrderHistoryTileProps = {
   order: Order
+  pvIdToMealPathMap: { [key: string]: string }
 }
 
-export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
+export default function OrderHistoryTile({
+  order,
+  pvIdToMealPathMap,
+}: OrderHistoryTileProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [orderTimestamp, setOrderTimestamp] = useState('')
 
@@ -87,9 +92,16 @@ export default function OrderHistoryTile({ order }: OrderHistoryTileProps) {
         </div>
 
         {/* Order items section*/}
-        {order.lineItems.nodes.map((item, idx) => (
-          <OrderHistorySubTile item={item} key={idx} />
-        ))}
+        {order.lineItems.nodes.map((item, idx) => {
+          const path = pvIdToMealPathMap[item.variant?.id || ''] || ''
+          return (
+            <OrderHistorySubTile
+              item={item}
+              key={idx}
+              link={`${Route.CUSTOM_MEALS}/${path}`}
+            />
+          )
+        })}
       </div>
     </div>
   )

@@ -3,9 +3,11 @@ import { formatPriceString, formatVariantTitle } from '@/utils/functions/common'
 
 type OrderHistorySubTileProps = {
   item: OrderLineItem
+  link: string
 }
 
 export default function OrderHistorySubTile({
+  link,
   item,
 }: OrderHistorySubTileProps) {
   const getDisplayPrice = () => {
@@ -29,7 +31,9 @@ export default function OrderHistorySubTile({
       />
 
       <div className="overflow-hidden">
-        <p className="truncate">{item.title}</p>
+        <a className="block truncate text-primary underline" href={link}>
+          {item.title}
+        </a>
         <p className="truncate text-neutral-400">
           {formatVariantTitle(item.variant?.product.id, item.variant?.title)}
         </p>

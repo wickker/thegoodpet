@@ -1,5 +1,7 @@
 import { cookies } from 'next/headers'
+import { getProductVariantIdToEncodedPathMap } from './utils'
 import { OrderHistoryTile, LogoutForm } from '@/components/Account'
+import Surveys from '@/database/dtos/surveys'
 import storefrontApi from '@/service/api/storefrontApi'
 import { SHOPIFY_CUSTOMER_TOKEN_COOKIE } from '@/utils/constants/cookies'
 
@@ -23,9 +25,26 @@ export default async function AccountPage() {
       </div>
     )
   }
-  const customer = customerRes.data.customer
 
+  const customer = customerRes.data.customer
   const hasOrders = customer.orders.edges.length > 0
+
+  const productVariantIds = customer.orders.edges.flatMap((o) =>
+    o.node.lineItems.nodes.map((i) => i.variant?.id || ''),
+  )
+  let pvIdToMealPathMap = {}
+  if (productVariantIds.length > 0) {
+    const { data, error } =
+      await Surveys.findAllSurveysByProductVariantIds(productVariantIds)
+    if (error || !data) {
+      return (
+        <div className="flex h-[calc(100dvh-122px)] flex-col items-center justify-center text-neutral-500">
+          Failed to get custom meal links: {error}.
+        </div>
+      )
+    }
+    pvIdToMealPathMap = getProductVariantIdToEncodedPathMap(data)
+  }
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-122px)] max-w-[800px] flex-col items-center p-[15px]">
@@ -46,7 +65,11 @@ export default async function AccountPage() {
         {hasOrders ? (
           <>
             {customer.orders.edges.map((order) => (
-              <OrderHistoryTile order={order.node} key={order.node.id} />
+              <OrderHistoryTile
+                order={order.node}
+                key={order.node.id}
+                pvIdToMealPathMap={pvIdToMealPathMap}
+              />
             ))}
 
             <div className="py-5 text-center">
