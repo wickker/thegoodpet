@@ -1,6 +1,13 @@
 import { z } from 'zod'
 
 const EmailSchema = z.string().trim().email()
+const PasswordSchema = z
+  .string()
+  .trim()
+  .min(8, { message: 'Password must be a minimum of 8 characters' })
+  .max(191, {
+    message: 'Password must be a maximum of 191 characters',
+  })
 
 export const ForgotPasswordFormSchema = z.object({
   email: EmailSchema,
@@ -8,24 +15,22 @@ export const ForgotPasswordFormSchema = z.object({
 
 export const LoginFormSchema = z.object({
   email: EmailSchema,
-  password: z
-    .string()
-    .trim()
-    .min(8, { message: 'Password must be a minimum of 8 characters' })
-    .max(191, {
-      message: 'Password must be a maximum of 191 characters',
-    }),
+  password: PasswordSchema,
 })
+
+export const ResetPasswordFormSchema = z
+  .object({
+    password: PasswordSchema,
+    verifyPassword: PasswordSchema,
+  })
+  .refine((values) => values.password === values.verifyPassword, {
+    message: 'Password does not match',
+    path: ['verifyPassword'],
+  })
 
 export const SignUpFormSchema = z
   .object({
-    verifyPassword: z
-      .string()
-      .trim()
-      .min(8, { message: 'Password must be a minimum of 8 characters' })
-      .max(191, {
-        message: 'Password must be a maximum of 191 characters',
-      }),
+    verifyPassword: PasswordSchema,
     mobileNumber: z
       .string()
       .trim()
@@ -58,4 +63,5 @@ export const SignUpFormSchema = z
 
 export type ForgotPasswordForm = z.infer<typeof ForgotPasswordFormSchema>
 export type LoginForm = z.infer<typeof LoginFormSchema>
+export type ResetPasswordForm = z.infer<typeof ResetPasswordFormSchema>
 export type SignUpForm = z.infer<typeof SignUpFormSchema>

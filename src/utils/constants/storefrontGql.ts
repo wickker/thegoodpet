@@ -7,6 +7,7 @@ export const StorefrontDataKey = {
   CUSTOMER_ACCESS_TOKEN_CREATE: 'customerAccessTokenCreate',
   CUSTOMER_CREATE: 'customerCreate',
   CUSTOMER_RECOVER: 'customerRecover',
+  CUSTOMER_RESET_BY_URL: 'customerResetByUrl',
 } as const
 
 export type StorefrontDataKeys =

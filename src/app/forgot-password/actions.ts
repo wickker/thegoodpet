@@ -3,6 +3,7 @@
 import { CustomerRecoverPayload } from '@shopify/hydrogen-react/storefront-api-types'
 import { ServerActionError } from '@/@types/common'
 import { ForgotPasswordForm, ForgotPasswordFormSchema } from '@/@types/customer'
+import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
   StorefrontDataKey,
@@ -32,6 +33,23 @@ export async function sendResetPasswordEmail(
     if (isZodError(err)) return { zodError: err.format() }
   }
 
+  // validate that email exists
+  const { data: customers, error: selectErr } = await Customers.findByEmail(
+    data.email,
+  )
+  if (selectErr || !customers || customers.length === 0) {
+    logger.error(
+      `Unable to validate email to send reset password email [email: ${data.email}]: ${selectErr}.`,
+    )
+    return {
+      error: {
+        title: 'Invalid email provided',
+        message: selectErr || '',
+      },
+    }
+  }
+
+  // send reset password email
   const res = await storefrontApi.sendCustomerResetPasswordEmail(data.email)
   const { data: sendEmailRes, error } =
     handleStorefrontGqlResponse<CustomerRecoverPayload>(

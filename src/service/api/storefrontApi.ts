@@ -18,6 +18,7 @@ import type {
   CartLinesUpdatePayload,
   CartBuyerIdentityUpdatePayload,
   CustomerRecoverPayload,
+  CustomerResetByUrlPayload,
 } from '@shopify/hydrogen-react/storefront-api-types'
 import {
   ClientResponse,
@@ -118,6 +119,17 @@ const sendCustomerResetPasswordEmail = (
     },
   })
 
+const resetCustomerPasswordByUrl = (
+  newPassword: string,
+  url: string,
+): Promise<ClientResponse<CustomerResetByUrlPayload>> =>
+  client.request(Customers.ResetPasswordByUrl, {
+    variables: {
+      password: newPassword,
+      resetUrl: url,
+    },
+  })
+
 // DELETE
 const deleteItemFromCart = (
   request: MutationCartLinesRemoveArgs,
@@ -137,5 +149,6 @@ export default {
   getCustomer,
   updateCartBuyerEmail,
   updateCartItemQuantity,
+  resetCustomerPasswordByUrl,
   sendCustomerResetPasswordEmail,
 }
