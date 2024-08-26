@@ -39,7 +39,7 @@ export default async function AccountPage() {
     if (error || !data) {
       return (
         <div className="flex h-[calc(100dvh-122px)] flex-col items-center justify-center text-neutral-500">
-          Failed to custom meal links: {error}.
+          Failed to get custom meal links: {error}.
         </div>
       )
     }
