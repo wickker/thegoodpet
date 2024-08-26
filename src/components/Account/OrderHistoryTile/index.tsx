@@ -10,12 +10,12 @@ import { formatPriceString, mc } from '@/utils/functions/common'
 
 type OrderHistoryTileProps = {
   order: Order
-  pvIdToCustomMealPathMap: { [key: string]: string }
+  pvIdToMealPathMap: { [key: string]: string }
 }
 
 export default function OrderHistoryTile({
   order,
-  pvIdToCustomMealPathMap,
+  pvIdToMealPathMap,
 }: OrderHistoryTileProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [orderTimestamp, setOrderTimestamp] = useState('')
@@ -93,7 +93,7 @@ export default function OrderHistoryTile({
 
         {/* Order items section*/}
         {order.lineItems.nodes.map((item, idx) => {
-          const path = pvIdToCustomMealPathMap[item.variant?.id || ''] || ''
+          const path = pvIdToMealPathMap[item.variant?.id || ''] || ''
           return (
             <OrderHistorySubTile
               item={item}

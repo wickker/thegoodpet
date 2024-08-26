@@ -32,7 +32,7 @@ export default async function AccountPage() {
   const productVariantIds = customer.orders.edges.flatMap((o) =>
     o.node.lineItems.nodes.map((i) => i.variant?.id || ''),
   )
-  let pvIdToCustomMealPathMap = {}
+  let pvIdToMealPathMap = {}
   if (productVariantIds.length > 0) {
     const { data, error } =
       await Surveys.findAllSurveysByProductVariantIds(productVariantIds)
@@ -43,7 +43,7 @@ export default async function AccountPage() {
         </div>
       )
     }
-    pvIdToCustomMealPathMap = getProductVariantIdToEncodedPathMap(data)
+    pvIdToMealPathMap = getProductVariantIdToEncodedPathMap(data)
   }
 
   return (
@@ -68,7 +68,7 @@ export default async function AccountPage() {
               <OrderHistoryTile
                 order={order.node}
                 key={order.node.id}
-                pvIdToCustomMealPathMap={pvIdToCustomMealPathMap}
+                pvIdToMealPathMap={pvIdToMealPathMap}
               />
             ))}
 
