@@ -44,6 +44,23 @@ const create = async (
   }
 }
 
+const updatePasswordHash = async (
+  passwordHash: string,
+  email: string,
+): Promise<DbResponse> => {
+  try {
+    const data = await sql`
+    UPDATE customers
+    SET password_hash = ${passwordHash},
+    updated_at = NOW()
+    WHERE email = ${email};
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
 const findByEmailOrPhone = async (
   email: string,
   phone?: string,
@@ -167,6 +184,7 @@ const Customers = {
   create,
   findByEmail,
   findByEmailOrPhone,
+  updatePasswordHash,
   updateShopifyAccessToken,
   updateShopifyAccessTokenAndCartId,
   updateShopifyAccessTokenAndCustomerId,
