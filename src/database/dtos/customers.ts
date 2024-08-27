@@ -12,6 +12,7 @@ type Customer = {
   shopify_access_token_expires_at: string | null
   accepts_marketing: boolean
   shopify_cart_id: string | null
+  shopify_customer_id: string | null
   created_at: string
   updated_at: string | null
   deleted_at: string | null
@@ -38,6 +39,23 @@ const create = async (
     RETURNING id;  
     `
     return { data: data as ListOfCustomerIds, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
+const updatePasswordHash = async (
+  passwordHash: string,
+  email: string,
+): Promise<DbResponse> => {
+  try {
+    const data = await sql`
+    UPDATE customers
+    SET password_hash = ${passwordHash},
+    updated_at = NOW()
+    WHERE email = ${email};
+    `
+    return { data, error: null }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }
   }
@@ -98,6 +116,27 @@ const updateShopifyAccessTokenExpiry = async (
   }
 }
 
+const updateShopifyAccessTokenAndCustomerId = async (
+  accessToken: string,
+  expiresAt: string,
+  customerId: number,
+  shopifyCustomerId: string,
+): Promise<DbResponse> => {
+  try {
+    const data = await sql`
+    UPDATE customers
+    SET shopify_access_token = ${accessToken},
+    shopify_access_token_expires_at = ${expiresAt},
+    shopify_customer_id = ${shopifyCustomerId},
+    updated_at = NOW()
+    WHERE id = ${customerId};
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
 const updateShopifyAccessToken = async (
   accessToken: string,
   expiresAt: string,
@@ -145,8 +184,10 @@ const Customers = {
   create,
   findByEmail,
   findByEmailOrPhone,
+  updatePasswordHash,
   updateShopifyAccessToken,
   updateShopifyAccessTokenAndCartId,
+  updateShopifyAccessTokenAndCustomerId,
   updateShopifyAccessTokenExpiry,
 }
 

@@ -6,6 +6,7 @@ mutation ($input: CustomerCreateInput!) {
       lastName
       email
       phone
+      id
     }
     customerUserErrors {
       field

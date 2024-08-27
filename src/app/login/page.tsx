@@ -6,6 +6,7 @@ import { login } from './actions'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { SignUpLink } from '@/components/Login'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
+import { Route } from '@/utils/constants/routes'
 
 export default function LoginPage() {
   const { notification } = useContext(NotificationsContext)
@@ -52,11 +53,18 @@ export default function LoginPage() {
             className="mb-3 mt-2 text-left"
           />
 
-          <p className="mb-16 text-sm text-neutral-900">
+          <p className="mb-10 text-sm text-neutral-900">
             Don't have an account?{' '}
             <Suspense>
               <SignUpLink />
             </Suspense>
+          </p>
+
+          <p className="mb-16 text-sm text-neutral-900">
+            Forgot password?{' '}
+            <a className="text-primary underline" href={Route.FORGOT_PASSWORD}>
+              Reset
+            </a>
           </p>
 
           <ButtonSubmitFormAction className="w-full">
