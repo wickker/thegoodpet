@@ -2,14 +2,15 @@
 
 import { PropsWithChildren, useEffect } from 'react'
 import Image from 'next/image'
+import Config from '@/configs'
 
 type ButtonGoogleSSOProps = {
-  callbackUrl: string
+  callbackPath: string
 } & PropsWithChildren
 
 export default function ButtonGoogleSSO({
   children,
-  callbackUrl,
+  callbackPath,
 }: ButtonGoogleSSOProps) {
   useEffect(() => {
     const script = document.createElement('script')
@@ -29,10 +30,10 @@ export default function ButtonGoogleSSO({
     <>
       <div
         id="g_id_onload"
-        data-client_id="354979892170-2iu8jlqqs4j92takqh12r3ojpt1nm7oi.apps.googleusercontent.com"
+        data-client_id={Config.GOOGLE_CLIENT_ID}
         data-context="signin"
         data-ux_mode="popup"
-        data-login_uri={callbackUrl}
+        data-login_uri={`${Config.BASE_URL}/${callbackPath}`}
         data-auto_select="true"
         data-itp_support="true"
       />
