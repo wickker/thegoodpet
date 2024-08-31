@@ -68,9 +68,11 @@ export default function LoginPage() {
           <hr className="border-0 border-t border-t-neutral-300" />
         </div>
 
-        <ButtonGoogleSSO callbackPath="/api/google/login">
-          Login with Google
-        </ButtonGoogleSSO>
+        <Suspense>
+          <ButtonGoogleSSO callbackPath="/api/google/login">
+            Login with Google
+          </ButtonGoogleSSO>
+        </Suspense>
 
         <p className="my-4 text-center text-sm text-neutral-900">
           Don't have an account?{' '}
