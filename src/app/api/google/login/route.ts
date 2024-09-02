@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
+import { validateGooglePayload } from '@/app/api/google/utils'
 import { Route } from '@/utils/constants/routes'
-import { validateGooglePayload } from '@/utils/functions/google'
 
 // Handles login with Google
 export async function POST(request: Request) {

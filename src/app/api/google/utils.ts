@@ -1,9 +1,9 @@
 import { OAuth2Client, TokenPayload } from 'google-auth-library'
 import { cookies } from 'next/headers'
-import { isZodError } from './common'
-import { logger } from './logger'
 import { GoogleReq, GoogleReqSchema } from '@/@types/google'
 import Config from '@/configs'
+import { isZodError } from '@/utils/functions/common'
+import { logger } from '@/utils/functions/logger'
 
 export const validateGooglePayload = async (
   request: Request,
