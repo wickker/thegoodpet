@@ -7,7 +7,7 @@ import {
 } from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { createPetsFromCart } from './createPetsFromCart'
+import { createPetsFromCart } from './utils'
 import { ServerActionError } from '@/@types/common'
 import { SignUpForm, SignUpFormSchema } from '@/@types/customer'
 import Customers from '@/database/dtos/customers'

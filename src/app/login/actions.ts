@@ -8,7 +8,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { ServerActionError } from '@/@types/common'
 import { LoginForm, LoginFormSchema } from '@/@types/customer'
-import { createPetsFromCart } from '@/app/account-setup/createPetsFromCart'
+import { createPetsFromCart } from '@/app/account-setup/utils'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
