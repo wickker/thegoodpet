@@ -1,5 +1,6 @@
 export { default as Button } from './Button'
 export { default as ButtonCart } from './ButtonCart'
+export { default as ButtonGoogleSSO } from './ButtonGoogleSSO'
 export { default as ButtonSubmitFormAction } from './ButtonSubmitFormAction'
 export { default as FormErrorMessage } from './FormErrorMessage'
 export { default as Header } from './Header'
