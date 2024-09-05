@@ -10,10 +10,12 @@ import { mc } from '@/utils/functions/common'
 
 type ButtonGoogleSSOProps = {
   callbackPath: string
+  className?: string
 } & PropsWithChildren
 
 export default function ButtonGoogleSSO({
   children,
+  className,
   callbackPath,
 }: ButtonGoogleSSOProps) {
   const searchParams = useSearchParams()
@@ -47,7 +49,7 @@ export default function ButtonGoogleSSO({
   }, [])
 
   return (
-    <>
+    <div className={className}>
       <div
         id="g_id_onload"
         data-client_id={Config.GOOGLE_CLIENT_ID}
@@ -86,6 +88,6 @@ export default function ButtonGoogleSSO({
           </>
         )}
       </div>
-    </>
+    </div>
   )
 }
