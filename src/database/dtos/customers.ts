@@ -49,6 +49,25 @@ const create = async (
   }
 }
 
+const createGoogle = async (
+  email: string,
+  passwordHash: string,
+  cartId: string,
+  sub: string,
+): Promise<DbResponse<ListOfCustomerIds>> => {
+  try {
+    const data = await sql`
+    INSERT INTO customers (shopify_cart_id, email, password_hash, accepts_marketing, google_sub_id)
+    VALUES
+        (${cartId}, ${email}, ${passwordHash}, true, ${sub})
+    RETURNING id;  
+    `
+    return { data: data as ListOfCustomerIds, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
 const updatePasswordHash = async (
   passwordHash: string,
   email: string,
@@ -206,6 +225,7 @@ const updateShopifyAccessTokenAndCartId = async (
 
 const Customers = {
   create,
+  createGoogle,
   findByEmail,
   findByEmailOrPhone,
   findByGoogleSub,
