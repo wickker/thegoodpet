@@ -20,7 +20,7 @@ export default function ButtonGoogleSSO({
 }: ButtonGoogleSSOProps) {
   const searchParams = useSearchParams()
   const error = searchParams.get('error') || ''
-
+  const origin = searchParams.get('origin') || ''
   const { notification } = useContext(NotificationsContext)
   const [isGoogleScriptLoading, setIsGoogleScriptLoading] = useState(true)
 
@@ -56,7 +56,7 @@ export default function ButtonGoogleSSO({
         data-client_id={Config.GOOGLE_CLIENT_ID}
         data-context="signin"
         data-ux_mode="popup"
-        data-login_uri={`${Config.BASE_URL}${callbackPath}`}
+        data-login_uri={`${Config.BASE_URL}${callbackPath}?origin=${origin}`}
         data-auto_prompt="false"
       />
 
