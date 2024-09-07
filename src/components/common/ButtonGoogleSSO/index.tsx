@@ -20,6 +20,7 @@ export default function ButtonGoogleSSO({
 }: ButtonGoogleSSOProps) {
   const searchParams = useSearchParams()
   const error = searchParams.get('error') || ''
+
   const { notification } = useContext(NotificationsContext)
   const [isGoogleScriptLoading, setIsGoogleScriptLoading] = useState(true)
 

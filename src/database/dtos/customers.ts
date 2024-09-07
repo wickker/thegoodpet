@@ -13,6 +13,7 @@ type Customer = {
   accepts_marketing: boolean
   shopify_cart_id: string | null
   shopify_customer_id: string | null
+  google_sub_id: string | null
   created_at: string
   updated_at: string | null
   deleted_at: string | null
@@ -22,6 +23,10 @@ type ListOfCustomerIds = Array<Pick<Customer, 'id'>>
 
 type ListOfCustomers = Array<
   Pick<Customer, 'id' | 'shopify_cart_id' | 'password_hash'>
+>
+
+type ListOfGoogleCustomers = Array<
+  Pick<Customer, 'id' | 'shopify_cart_id' | 'google_sub_id'>
 >
 
 const create = async (
@@ -93,6 +98,25 @@ const findByEmail = async (
     `
     return {
       data: data as ListOfCustomers,
+      error: null,
+    }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
+const findByGoogleSub = async (
+  googleSub: string,
+): Promise<DbResponse<ListOfGoogleCustomers>> => {
+  try {
+    const data = await sql`
+    SELECT id, shopify_cart_id, google_sub_id
+    FROM customers
+    WHERE google_sub_id = ${googleSub}
+    AND deleted_at IS NULL;
+    `
+    return {
+      data: data as ListOfGoogleCustomers,
       error: null,
     }
   } catch (err) {
@@ -184,6 +208,7 @@ const Customers = {
   create,
   findByEmail,
   findByEmailOrPhone,
+  findByGoogleSub,
   updatePasswordHash,
   updateShopifyAccessToken,
   updateShopifyAccessTokenAndCartId,
