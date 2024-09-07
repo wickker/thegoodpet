@@ -125,13 +125,13 @@ const findByEmail = async (
 }
 
 const findByGoogleSub = async (
-  googleSub: string,
+  sub: string,
 ): Promise<DbResponse<ListOfGoogleCustomers>> => {
   try {
     const data = await sql`
     SELECT id, shopify_cart_id, google_sub_id
     FROM customers
-    WHERE google_sub_id = ${googleSub}
+    WHERE google_sub_id = ${sub}
     AND deleted_at IS NULL;
     `
     return {
