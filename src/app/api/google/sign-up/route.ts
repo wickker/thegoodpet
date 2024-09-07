@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // generate a password and create customer in db
+  // create google customer in db
   const password = Date.now().toString()
   const passwordHash = getPasswordHash(password)
   const { data: newCustomer, error: createErr } = await Customers.createGoogle(
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
   }
   const customerId = newCustomer[0].id
 
-  // create shopify customer
+  // create shopify google customer
   const customerRes = await storefrontApi.createCustomer({
     email,
     password,
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
     redirect(`${Route.ACCOUNT_SETUP}?${generateErrParams(customerErr)}`)
   }
 
-  // create shopify customer access token
+  // create shopify google customer access token
   const tokenRes = await storefrontApi.createCustomerAccessToken({
     email,
     password,
