@@ -10,14 +10,17 @@ import { mc } from '@/utils/functions/common'
 
 type ButtonGoogleSSOProps = {
   callbackPath: string
+  className?: string
 } & PropsWithChildren
 
 export default function ButtonGoogleSSO({
   children,
+  className,
   callbackPath,
 }: ButtonGoogleSSOProps) {
   const searchParams = useSearchParams()
   const error = searchParams.get('error') || ''
+  const origin = searchParams.get('origin') || ''
   const { notification } = useContext(NotificationsContext)
   const [isGoogleScriptLoading, setIsGoogleScriptLoading] = useState(true)
 
@@ -47,13 +50,13 @@ export default function ButtonGoogleSSO({
   }, [])
 
   return (
-    <>
+    <div className={className}>
       <div
         id="g_id_onload"
         data-client_id={Config.GOOGLE_CLIENT_ID}
         data-context="signin"
         data-ux_mode="popup"
-        data-login_uri={`${Config.BASE_URL}${callbackPath}`}
+        data-login_uri={`${Config.BASE_URL}${callbackPath}?origin=${origin}`}
         data-auto_prompt="false"
       />
 
@@ -86,6 +89,6 @@ export default function ButtonGoogleSSO({
           </>
         )}
       </div>
-    </>
+    </div>
   )
 }

@@ -13,6 +13,7 @@ type Customer = {
   accepts_marketing: boolean
   shopify_cart_id: string | null
   shopify_customer_id: string | null
+  google_sub_id: string | null
   created_at: string
   updated_at: string | null
   deleted_at: string | null
@@ -22,6 +23,10 @@ type ListOfCustomerIds = Array<Pick<Customer, 'id'>>
 
 type ListOfCustomers = Array<
   Pick<Customer, 'id' | 'shopify_cart_id' | 'password_hash'>
+>
+
+type ListOfGoogleCustomers = Array<
+  Pick<Customer, 'id' | 'shopify_cart_id' | 'google_sub_id'>
 >
 
 const create = async (
@@ -36,6 +41,25 @@ const create = async (
     INSERT INTO customers (shopify_cart_id, email, password_hash, mobile_number, accepts_marketing)
     VALUES
         (${cartId}, ${email}, ${passwordHash}, ${mobileNumber || 'NULL'}, ${acceptsMarketing})
+    RETURNING id;  
+    `
+    return { data: data as ListOfCustomerIds, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
+const createGoogle = async (
+  email: string,
+  passwordHash: string,
+  cartId: string,
+  sub: string,
+): Promise<DbResponse<ListOfCustomerIds>> => {
+  try {
+    const data = await sql`
+    INSERT INTO customers (shopify_cart_id, email, password_hash, accepts_marketing, google_sub_id)
+    VALUES
+        (${cartId}, ${email}, ${passwordHash}, true, ${sub})
     RETURNING id;  
     `
     return { data: data as ListOfCustomerIds, error: null }
@@ -93,6 +117,25 @@ const findByEmail = async (
     `
     return {
       data: data as ListOfCustomers,
+      error: null,
+    }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
+const findByGoogleSub = async (
+  sub: string,
+): Promise<DbResponse<ListOfGoogleCustomers>> => {
+  try {
+    const data = await sql`
+    SELECT id, shopify_cart_id, google_sub_id
+    FROM customers
+    WHERE google_sub_id = ${sub}
+    AND deleted_at IS NULL;
+    `
+    return {
+      data: data as ListOfGoogleCustomers,
       error: null,
     }
   } catch (err) {
@@ -182,8 +225,10 @@ const updateShopifyAccessTokenAndCartId = async (
 
 const Customers = {
   create,
+  createGoogle,
   findByEmail,
   findByEmailOrPhone,
+  findByGoogleSub,
   updatePasswordHash,
   updateShopifyAccessToken,
   updateShopifyAccessTokenAndCartId,
