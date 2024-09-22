@@ -21,7 +21,8 @@ export default function BindAccountPage() {
       </h1>
 
       <p className="mb-2">
-        We've detected that an account already exists for {emailCookie.value}.
+        We've detected that an account already exists for{' '}
+        <span className="text-primary">{emailCookie.value}</span>.
       </p>
       <p className="mb-5">
         Please enter your password below if you would like to bind your Google
