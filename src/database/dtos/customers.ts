@@ -1,5 +1,5 @@
 import { NeonDbError } from '@neondatabase/serverless'
-import format from 'pg-format'
+import { format } from 'node-pg-format'
 import { DbResponse, sql } from '@/database'
 
 type Customer = {
