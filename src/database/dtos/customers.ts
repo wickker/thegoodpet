@@ -1,5 +1,5 @@
 import { NeonDbError } from '@neondatabase/serverless'
-import { format } from 'node-pg-format'
+import SQL from 'sql-template-strings'
 import { DbResponse, sql } from '@/database'
 
 type Customer = {
@@ -193,16 +193,12 @@ const updateShopifyAccessTokenAndCartId = async (
   cartId: string,
 ): Promise<DbResponse> => {
   try {
-    const data = await sql(
-      format(
-        `UPDATE customers
-        SET shopify_access_token = ${accessToken},
-        shopify_access_token_expires_at = ${expiresAt},`,
-        cartId && `shopify_cart_id = ${cartId},`,
-        `updated_at = NOW()
-        WHERE id = ${customerId};`,
-      ),
-    )
+    const query = SQL`UPDATE customers SET shopify_access_token = ${accessToken}, shopify_access_token_expires_at = ${expiresAt},`
+    if (cartId) {
+      query.append(SQL` shopify_cart_id = ${cartId},`)
+    }
+    query.append(SQL` updated_at = NOW() WHERE id = ${customerId}`)
+    const data = await sql(query.text, query.values)
     return { data, error: null }
   } catch (err) {
     return { data: null, error: (err as NeonDbError).message }

@@ -26,9 +26,9 @@ export async function POST(request: NextRequest) {
 
   const cookieStore = cookies()
   const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
-  let cartId = ''
+  let cookieCartId = ''
   if (cartIdCookie) {
-    cartId = cartIdCookie.value
+    cookieCartId = cartIdCookie.value
   }
 
   // validate google payload
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       token.customerAccessToken.accessToken,
       token.customerAccessToken.expiresAt,
       customer.id,
-      cartId,
+      cookieCartId,
     )
   if (updateErr) {
     logger.error(
@@ -89,10 +89,10 @@ export async function POST(request: NextRequest) {
   }
 
   let checkoutLink = ''
-  if (cartId) {
+  if (cookieCartId) {
     // update cart with buyer identity
     const cartRes = await storefrontApi.updateCartBuyerEmail({
-      cartId: cartId,
+      cartId: cookieCartId,
       buyerIdentity: {
         email: customer.email,
       },
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       )
     if (cartErr || !cart?.cart) {
       logger.error(
-        `Unable to update shopify cart google buyer identity [cartId: ${cartId}][email: ${customer.email}]: ${cartErr}.`,
+        `Unable to update shopify cart google buyer identity [cartId: ${cookieCartId}][email: ${customer.email}]: ${cartErr}.`,
       )
       redirect(`${Route.LOGIN}?${generateErrParams(cartErr)}`)
     }
