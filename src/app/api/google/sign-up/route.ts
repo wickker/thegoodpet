@@ -25,7 +25,6 @@ import {
   setCookie,
 } from '@/utils/functions/common'
 import { logger } from '@/utils/functions/logger'
-import { getPasswordHash } from '@/utils/functions/password'
 
 // Handles sign up with Google
 export async function POST(request: NextRequest) {
@@ -96,16 +95,15 @@ export async function POST(request: NextRequest) {
 
   // create google customer in db
   const password = Date.now().toString()
-  const passwordHash = getPasswordHash(password)
   const { data: newCustomer, error: createErr } = await Customers.createGoogle(
     email,
-    passwordHash,
+    password, // don't hash password for google customers
     cartId,
     payload.sub,
   )
   if (createErr || !newCustomer || newCustomer.length === 0) {
     logger.error(
-      `Unable to create new google customer [email: ${email}][passwordHash: ${passwordHash}]: ${createErr}.`,
+      `Unable to create new google customer [email: ${email}][password: ${password}]: ${createErr}.`,
     )
     redirect(`${Route.ACCOUNT_SETUP}?${generateErrParams(createErr)}`)
   }

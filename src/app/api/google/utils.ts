@@ -1,6 +1,6 @@
 import { OAuth2Client, TokenPayload } from 'google-auth-library'
 import { cookies } from 'next/headers'
-import { GoogleReq, GoogleReqSchema } from '@/@types/google'
+import { GoogleRequest, GoogleRequestSchema } from '@/@types/google'
 import Config from '@/configs'
 import { isZodError } from '@/utils/functions/common'
 import { logger } from '@/utils/functions/logger'
@@ -16,9 +16,9 @@ export const validateGooglePayload = async (
     return { error: 'No csrf token in cookie.', success: false }
   }
 
-  const req = Object.fromEntries(await request.formData()) as GoogleReq
+  const req = Object.fromEntries(await request.formData()) as GoogleRequest
   try {
-    GoogleReqSchema.parse(req)
+    GoogleRequestSchema.parse(req)
   } catch (err) {
     if (isZodError(err)) {
       logger.error(`Unable to parse google req: ${JSON.stringify(err)}.`)

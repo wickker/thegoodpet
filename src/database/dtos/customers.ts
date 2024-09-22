@@ -1,4 +1,5 @@
 import { NeonDbError } from '@neondatabase/serverless'
+import format from 'pg-format'
 import { DbResponse, sql } from '@/database'
 
 type Customer = {
@@ -26,7 +27,10 @@ type ListOfCustomers = Array<
 >
 
 type ListOfGoogleCustomers = Array<
-  Pick<Customer, 'id' | 'shopify_cart_id' | 'google_sub_id'>
+  Pick<
+    Customer,
+    'id' | 'shopify_cart_id' | 'google_sub_id' | 'password_hash' | 'email'
+  >
 >
 
 const create = async (
@@ -129,7 +133,7 @@ const findByGoogleSub = async (
 ): Promise<DbResponse<ListOfGoogleCustomers>> => {
   try {
     const data = await sql`
-    SELECT id, shopify_cart_id, google_sub_id
+    SELECT id, shopify_cart_id, google_sub_id, password_hash, email
     FROM customers
     WHERE google_sub_id = ${sub}
     AND deleted_at IS NULL;
@@ -159,6 +163,7 @@ const updateShopifyAccessTokenExpiry = async (
   }
 }
 
+// For sign up
 const updateShopifyAccessTokenAndCustomerId = async (
   accessToken: string,
   expiresAt: string,
@@ -180,47 +185,28 @@ const updateShopifyAccessTokenAndCustomerId = async (
   }
 }
 
-const updateShopifyAccessToken = async (
-  accessToken: string,
-  expiresAt: string,
-  customerId: number,
-): Promise<DbResponse> => {
-  try {
-    const data = await sql`
-    UPDATE customers
-    SET shopify_access_token = ${accessToken},
-    shopify_access_token_expires_at = ${expiresAt},
-    updated_at = NOW()
-    WHERE id = ${customerId};
-    `
-    return { data, error: null }
-  } catch (err) {
-    return { data: null, error: (err as NeonDbError).message }
-  }
-}
-
+// For login
 const updateShopifyAccessTokenAndCartId = async (
   accessToken: string,
   expiresAt: string,
   customerId: number,
   cartId: string,
 ): Promise<DbResponse> => {
-  if (cartId) {
-    try {
-      const data = await sql`
-        UPDATE customers
+  try {
+    const data = await sql(
+      format(
+        `UPDATE customers
         SET shopify_access_token = ${accessToken},
-        shopify_access_token_expires_at = ${expiresAt},
-        shopify_cart_id = ${cartId},
-        updated_at = NOW()
-        WHERE id = ${customerId};
-        `
-      return { data, error: null }
-    } catch (err) {
-      return { data: null, error: (err as NeonDbError).message }
-    }
+        shopify_access_token_expires_at = ${expiresAt},`,
+        cartId && `shopify_cart_id = ${cartId},`,
+        `updated_at = NOW()
+        WHERE id = ${customerId};`,
+      ),
+    )
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
   }
-  return updateShopifyAccessToken(accessToken, expiresAt, customerId)
 }
 
 const Customers = {
@@ -230,7 +216,6 @@ const Customers = {
   findByEmailOrPhone,
   findByGoogleSub,
   updatePasswordHash,
-  updateShopifyAccessToken,
   updateShopifyAccessTokenAndCartId,
   updateShopifyAccessTokenAndCustomerId,
   updateShopifyAccessTokenExpiry,

@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-export const GoogleReqSchema = z.object({
+export const GoogleRequestSchema = z.object({
   credential: z.string(),
   g_csrf_token: z.string(),
 })
 
-export type GoogleReq = z.infer<typeof GoogleReqSchema>
+export type GoogleRequest = z.infer<typeof GoogleRequestSchema>
