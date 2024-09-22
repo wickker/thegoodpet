@@ -9,7 +9,7 @@ export default function BindAccountPage() {
   if (!emailCookie) {
     return (
       <div className="flex h-[calc(100dvh-122px)] flex-col items-center justify-center text-neutral-500">
-        Unauthorised
+        Bind account session expired
       </div>
     )
   }

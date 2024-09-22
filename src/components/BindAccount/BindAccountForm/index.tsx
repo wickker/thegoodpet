@@ -7,7 +7,7 @@ import { bindAccountAndLogin } from '@/app/bind-account/actions'
 import { ButtonSubmitFormAction, FormErrorMessage } from '@/components/common'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
 
-export default function BindAccountPage() {
+export default function BindAccountForm() {
   const [state, formAction] = useFormState(bindAccountAndLogin, undefined)
   const searchParams = useSearchParams()
   const origin = searchParams.get('origin') || ''

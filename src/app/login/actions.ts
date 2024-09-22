@@ -102,15 +102,16 @@ export async function login(
 
   const cookieStore = cookies()
   const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
-
-  let cartIdToUpdate = ''
-  let checkoutLink = ''
+  let cookieCartId = ''
   if (cartIdCookie) {
-    cartIdToUpdate = cartIdCookie.value // update db cart with cookie value even if another cart is currently linked
+    cookieCartId = cartIdCookie.value
+  }
 
+  let checkoutLink = ''
+  if (cookieCartId) {
     // update cart with buyer identity
     const cartRes = await storefrontApi.updateCartBuyerEmail({
-      cartId: cartIdToUpdate,
+      cartId: cookieCartId,
       buyerIdentity: {
         email: data.email,
       },
@@ -122,7 +123,7 @@ export async function login(
       )
     if (cartErr || !cart?.cart) {
       logger.error(
-        `Unable to update shopify cart buyer identity [cartId: ${cartIdToUpdate}][email: ${data.email}]: ${cartErr}.`,
+        `Unable to update shopify cart buyer identity [cartId: ${cookieCartId}][email: ${data.email}]: ${cartErr}.`,
       )
       return {
         error: {
@@ -140,7 +141,7 @@ export async function login(
       token.customerAccessToken.accessToken,
       token.customerAccessToken.expiresAt,
       dbCustomer.id,
-      cartIdToUpdate,
+      cookieCartId, // update db cart with cookie value even if another cart is currently linked
     )
   if (updateErr) {
     logger.error(
@@ -155,9 +156,7 @@ export async function login(
   }
 
   // create pets from unlinked surveys
-  const cartId = cartIdCookie
-    ? cartIdCookie.value
-    : dbCustomer.shopify_cart_id || ''
+  const cartId = cookieCartId ? cookieCartId : dbCustomer.shopify_cart_id || ''
   if (cartId) {
     const err = await createPetsFromCart(dbCustomer.id, cartId)
     if (err) {
