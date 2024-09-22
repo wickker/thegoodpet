@@ -88,6 +88,7 @@ export async function POST(request: NextRequest) {
     redirect(`${Route.ACCOUNT_SETUP}?${generateErrParams(emailErr)}`)
   }
   if (emailCustomers.length > 0) {
+    
     redirect(
       `${Route.BIND_ACCOUNT}?email=${email}&google_sub=${payload.sub}${originPath}`,
     )
