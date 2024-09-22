@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
   const password = Date.now().toString()
   const { data: newCustomer, error: createErr } = await Customers.createGoogle(
     email,
-    password, // don't hash password for google customers
+    password, // password not hashed for google customers
     cartId,
     payload.sub,
   )
