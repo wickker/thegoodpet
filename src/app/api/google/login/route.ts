@@ -55,11 +55,16 @@ export async function POST(request: NextRequest) {
   const { data: subCustomers, error: subErr } = await Customers.findByGoogleSub(
     payload.sub,
   )
-  if (subErr || !subCustomers || subCustomers.length === 0) {
+  if (subErr || !subCustomers) {
     logger.error(
       `Unable to find customers by google sub [googleSub: ${payload.sub}]: ${subErr}.`,
     )
     redirect(`${Route.LOGIN}?${generateErrParams(subErr)}`)
+  }
+  if (subCustomers.length === 0) {
+    redirect(
+      `${Route.LOGIN}?${generateErrParams('Invalid login credentials.')}`,
+    )
   }
   const customer = subCustomers[0]
 
