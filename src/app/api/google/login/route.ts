@@ -5,16 +5,24 @@ import {
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { NextRequest } from 'next/server'
+import { createPetsFromCart } from '@/app/account-setup/utils'
 import { validateGooglePayload } from '@/app/api/google/utils'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
-import { SHOPIFY_CART_ID_COOKIE } from '@/utils/constants/cookies'
+import {
+  SHOPIFY_CART_ID_COOKIE,
+  SHOPIFY_CUSTOMER_EMAIL_COOKIE,
+  SHOPIFY_CUSTOMER_TOKEN_COOKIE,
+} from '@/utils/constants/cookies'
 import { Route } from '@/utils/constants/routes'
 import {
   StorefrontDataKey,
   StorefrontErrorKey,
 } from '@/utils/constants/storefrontGql'
-import { handleStorefrontGqlResponse } from '@/utils/functions/common'
+import {
+  handleStorefrontGqlResponse,
+  setCookie,
+} from '@/utils/functions/common'
 import { logger } from '@/utils/functions/logger'
 
 // Handles login with Google
@@ -73,7 +81,7 @@ export async function POST(request: NextRequest) {
     redirect(`${Route.LOGIN}?${generateErrParams(tokenErr)}`)
   }
 
-  // update shopify fields in db
+  // update google customer db fields
   const { error: updateErr } =
     await Customers.updateShopifyAccessTokenAndCartId(
       token.customerAccessToken.accessToken,
@@ -109,8 +117,41 @@ export async function POST(request: NextRequest) {
       redirect(`${Route.LOGIN}?${generateErrParams(cartErr)}`)
     }
     checkoutLink = cart.cart.checkoutUrl
-    console.log(checkoutLink)
   }
+
+  // create pets from unlinked surveys
+  const cartId = cookieCartId ? cookieCartId : customer.shopify_cart_id || ''
+  if (cartId) {
+    const err = await createPetsFromCart(customer.id, cartId)
+    if (err) {
+      redirect(
+        `${Route.LOGIN}?${generateErrParams('Failed to create pets from cart products.')}`,
+      )
+    }
+  }
+
+  // set auth and cart cookies
+  const expiryDate = new Date(token.customerAccessToken.expiresAt)
+  setCookie(
+    cookieStore,
+    SHOPIFY_CUSTOMER_TOKEN_COOKIE,
+    token.customerAccessToken.accessToken,
+    expiryDate,
+  )
+  setCookie(
+    cookieStore,
+    SHOPIFY_CUSTOMER_EMAIL_COOKIE,
+    customer.email,
+    expiryDate,
+  )
+  if (!cookieCartId && customer.shopify_cart_id) {
+    setCookie(cookieStore, SHOPIFY_CART_ID_COOKIE, customer.shopify_cart_id) // no expiry for cart cookie
+  }
+
+  if (origin === 'checkout' && checkoutLink) {
+    redirect(checkoutLink)
+  }
+  redirect(`${Route.HOME}?refetchCart=true`)
 }
 
 const generateParams = (originPath: string) => (message: string | null) =>
