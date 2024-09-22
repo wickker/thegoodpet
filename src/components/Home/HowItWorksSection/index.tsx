@@ -20,7 +20,7 @@ const sections = [
 ]
 
 const HowItWorksSection = () => (
-  <div className="mx-auto max-w-[1200px] px-[15px] py-12">
+  <div className="mx-auto max-w-[1200px] px-[15px] py-6 md:py-12">
     <h1 className="mb-6 text-center font-fredoka text-4xl font-black leading-none text-primary md:mb-12 md:text-6xl">
       How does it work?
     </h1>
