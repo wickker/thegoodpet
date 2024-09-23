@@ -1,9 +1,9 @@
 const sections = [
   {
     title: 'Share everything about your pet',
-    content: 'From their name to any health conidtions they may have',
+    content: 'From their name to any health conditions they may have',
     image: './activity/cat_activity_1.png',
-    alt: 'lazy cat',
+    alt: 'Lazy cat',
   },
   {
     title: "We'll design a tailored recipe and feeding plan",
