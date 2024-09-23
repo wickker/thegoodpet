@@ -3,6 +3,7 @@ import {
   CustomerAccessTokenCreatePayload,
   CustomerCreatePayload,
 } from '@shopify/hydrogen-react/storefront-api-types'
+import { DateTime } from 'luxon'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { type NextRequest } from 'next/server'
@@ -11,6 +12,8 @@ import { validateGooglePayload } from '@/app/api/google/utils'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
+  BIND_ACCOUNT_EMAIL_COOKIE,
+  BIND_ACCOUNT_GOOGLE_SUB_COOKIE,
   SHOPIFY_CART_ID_COOKIE,
   SHOPIFY_CUSTOMER_EMAIL_COOKIE,
   SHOPIFY_CUSTOMER_TOKEN_COOKIE,
@@ -88,9 +91,20 @@ export async function POST(request: NextRequest) {
     redirect(`${Route.ACCOUNT_SETUP}?${generateErrParams(emailErr)}`)
   }
   if (emailCustomers.length > 0) {
-    redirect(
-      `${Route.BIND_ACCOUNT}?email=${email}&google_sub=${payload.sub}${originPath}`,
+    const fifteenMinutesLater = DateTime.now().plus({ minutes: 15 }).toJSDate()
+    setCookie(
+      cookieStore,
+      BIND_ACCOUNT_EMAIL_COOKIE,
+      email,
+      fifteenMinutesLater,
     )
+    setCookie(
+      cookieStore,
+      BIND_ACCOUNT_GOOGLE_SUB_COOKIE,
+      payload.sub,
+      fifteenMinutesLater,
+    )
+    redirect(`${Route.BIND_ACCOUNT}?origin=${origin}`)
   }
 
   // create google customer in db

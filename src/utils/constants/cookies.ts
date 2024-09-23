@@ -1,3 +1,5 @@
+export const BIND_ACCOUNT_EMAIL_COOKIE = 'bind_account_email'
+export const BIND_ACCOUNT_GOOGLE_SUB_COOKIE = 'bind_account_google_sub'
 export const SHOPIFY_CART_ID_COOKIE = 'shopify_cart_id'
 export const SHOPIFY_CUSTOMER_TOKEN_COOKIE = 'shopify_customer_token'
 export const SHOPIFY_CUSTOMER_EMAIL_COOKIE = 'shopify_customer_email'
