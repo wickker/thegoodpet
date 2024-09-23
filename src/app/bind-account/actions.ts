@@ -6,12 +6,14 @@ import {
 } from '@shopify/hydrogen-react/storefront-api-types'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { createPetsFromCart } from '../account-setup/utils'
 import { ServerActionError } from '@/@types/common'
-import { LoginForm, LoginFormSchema } from '@/@types/customer'
-import { createPetsFromCart } from '@/app/account-setup/utils'
+import { BindAccountForm, BindAccountFormSchema } from '@/@types/customer'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
+  BIND_ACCOUNT_EMAIL_COOKIE,
+  BIND_ACCOUNT_GOOGLE_SUB_COOKIE,
   SHOPIFY_CART_ID_COOKIE,
   SHOPIFY_CUSTOMER_EMAIL_COOKIE,
   SHOPIFY_CUSTOMER_TOKEN_COOKIE,
@@ -29,28 +31,45 @@ import {
 import { logger } from '@/utils/functions/logger'
 import { doesPasswordMatch } from '@/utils/functions/password'
 
-export async function login(
-  _: undefined | ServerActionError<LoginForm>,
+export async function bindAccountAndLogin(
+  _: undefined | ServerActionError<BindAccountForm>,
   form: FormData,
-): Promise<undefined | ServerActionError<LoginForm>> {
+): Promise<undefined | ServerActionError<BindAccountForm>> {
   const data = {
-    email: form.get('email')?.toString() || '',
     password: form.get('password')?.toString() || '',
     origin: form.get('origin')?.toString() || '',
   }
 
   try {
-    LoginFormSchema.parse(data)
+    BindAccountFormSchema.parse(data)
   } catch (err) {
     if (isZodError(err)) return { zodError: err.format() }
   }
 
+  // get bind account cookies
+  const cookieStore = cookies()
+  const emailCookie = cookieStore.get(BIND_ACCOUNT_EMAIL_COOKIE)
+  const subCookie = cookieStore.get(BIND_ACCOUNT_GOOGLE_SUB_COOKIE)
+  const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
+  let cookieCartId = ''
+  if (cartIdCookie) {
+    cookieCartId = cartIdCookie.value
+  }
+  if (!emailCookie || !subCookie) {
+    return {
+      error: {
+        title: 'Failed to bind account',
+        message: 'Bind account cookies have expired.',
+      },
+    }
+  }
+
   // get customer by email and validate password
   const { data: existingCustomers, error: selectErr } =
-    await Customers.findByEmail(data.email)
+    await Customers.findByEmail(emailCookie.value)
   if (selectErr || !existingCustomers) {
     logger.error(
-      `Unable to find customer by email [email: ${data.email}]: ${selectErr}.`,
+      `Unable to find customer by email [email: ${emailCookie.value}]: ${selectErr}.`,
     )
     return {
       error: {
@@ -66,11 +85,8 @@ export async function login(
     return {
       zodError: {
         _errors: [],
-        email: {
-          _errors: ['Invalid email or password'],
-        },
         password: {
-          _errors: ['Invalid email or password'],
+          _errors: ['Invalid password'],
         },
       },
     }
@@ -79,7 +95,7 @@ export async function login(
 
   // create shopify customer access token
   const tokenRes = await storefrontApi.createCustomerAccessToken({
-    email: data.email,
+    email: emailCookie.value,
     password: data.password,
   })
   const { data: token, error: tokenErr } =
@@ -100,20 +116,13 @@ export async function login(
     }
   }
 
-  const cookieStore = cookies()
-  const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
-  let cookieCartId = ''
-  if (cartIdCookie) {
-    cookieCartId = cartIdCookie.value
-  }
-
   let checkoutLink = ''
   if (cookieCartId) {
     // update cart with buyer identity
     const cartRes = await storefrontApi.updateCartBuyerEmail({
       cartId: cookieCartId,
       buyerIdentity: {
-        email: data.email,
+        email: emailCookie.value,
       },
     })
     const { data: cart, error: cartErr } =
@@ -123,7 +132,7 @@ export async function login(
       )
     if (cartErr || !cart?.cart) {
       logger.error(
-        `Unable to update shopify cart buyer identity [cartId: ${cookieCartId}][email: ${data.email}]: ${cartErr}.`,
+        `Unable to update shopify cart buyer identity [cartId: ${cookieCartId}][email: ${emailCookie.value}]: ${cartErr}.`,
       )
       return {
         error: {
@@ -137,15 +146,17 @@ export async function login(
 
   // update customer db fields
   const { error: updateErr } =
-    await Customers.updateShopifyAccessTokenAndCartId(
+    await Customers.updateGoogleSubShopifyAccessTokenAndCartId(
       token.customerAccessToken.accessToken,
       token.customerAccessToken.expiresAt,
       dbCustomer.id,
       cookieCartId, // update db cart with cookie value even if another cart is currently linked
+      subCookie.value,
+      data.password, // raw password
     )
   if (updateErr) {
     logger.error(
-      `Unable to update customer token [token: ${token.customerAccessToken.accessToken}][customerId: ${dbCustomer.id}][expiry: ${token.customerAccessToken.expiresAt}]: ${updateErr}.`,
+      `Unable to update customer token and sub [token: ${token.customerAccessToken.accessToken}][customerId: ${dbCustomer.id}][expiry: ${token.customerAccessToken.expiresAt}][sub: ${subCookie.value}][password: ${data.password}]: ${updateErr}.`,
     )
     return {
       error: {
@@ -177,10 +188,19 @@ export async function login(
     token.customerAccessToken.accessToken,
     expiryDate,
   )
-  setCookie(cookieStore, SHOPIFY_CUSTOMER_EMAIL_COOKIE, data.email, expiryDate)
+  setCookie(
+    cookieStore,
+    SHOPIFY_CUSTOMER_EMAIL_COOKIE,
+    emailCookie.value,
+    expiryDate,
+  )
   if (!cartIdCookie && dbCustomer.shopify_cart_id) {
     setCookie(cookieStore, SHOPIFY_CART_ID_COOKIE, dbCustomer.shopify_cart_id) // no expiry for cart cookie
   }
+
+  // delete bind account cookies
+  cookieStore.delete(emailCookie.name)
+  cookieStore.delete(subCookie.name)
 
   if (data.origin === 'checkout' && checkoutLink) {
     redirect(checkoutLink)

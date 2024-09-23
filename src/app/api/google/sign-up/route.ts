@@ -3,6 +3,7 @@ import {
   CustomerAccessTokenCreatePayload,
   CustomerCreatePayload,
 } from '@shopify/hydrogen-react/storefront-api-types'
+import { DateTime } from 'luxon'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { type NextRequest } from 'next/server'
@@ -11,6 +12,8 @@ import { validateGooglePayload } from '@/app/api/google/utils'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
+  BIND_ACCOUNT_EMAIL_COOKIE,
+  BIND_ACCOUNT_GOOGLE_SUB_COOKIE,
   SHOPIFY_CART_ID_COOKIE,
   SHOPIFY_CUSTOMER_EMAIL_COOKIE,
   SHOPIFY_CUSTOMER_TOKEN_COOKIE,
@@ -25,7 +28,6 @@ import {
   setCookie,
 } from '@/utils/functions/common'
 import { logger } from '@/utils/functions/logger'
-import { getPasswordHash } from '@/utils/functions/password'
 
 // Handles sign up with Google
 export async function POST(request: NextRequest) {
@@ -89,23 +91,33 @@ export async function POST(request: NextRequest) {
     redirect(`${Route.ACCOUNT_SETUP}?${generateErrParams(emailErr)}`)
   }
   if (emailCustomers.length > 0) {
-    redirect(
-      `${Route.BIND_ACCOUNT}?email=${email}&google_sub=${payload.sub}${originPath}`,
+    const fifteenMinutesLater = DateTime.now().plus({ minutes: 15 }).toJSDate()
+    setCookie(
+      cookieStore,
+      BIND_ACCOUNT_EMAIL_COOKIE,
+      email,
+      fifteenMinutesLater,
     )
+    setCookie(
+      cookieStore,
+      BIND_ACCOUNT_GOOGLE_SUB_COOKIE,
+      payload.sub,
+      fifteenMinutesLater,
+    )
+    redirect(`${Route.BIND_ACCOUNT}?origin=${origin}`)
   }
 
   // create google customer in db
   const password = Date.now().toString()
-  const passwordHash = getPasswordHash(password)
   const { data: newCustomer, error: createErr } = await Customers.createGoogle(
     email,
-    passwordHash,
+    password, // password not hashed for google customers
     cartId,
     payload.sub,
   )
   if (createErr || !newCustomer || newCustomer.length === 0) {
     logger.error(
-      `Unable to create new google customer [email: ${email}][passwordHash: ${passwordHash}]: ${createErr}.`,
+      `Unable to create new google customer [email: ${email}][password: ${password}]: ${createErr}.`,
     )
     redirect(`${Route.ACCOUNT_SETUP}?${generateErrParams(createErr)}`)
   }
