@@ -17,7 +17,7 @@ export default function NotFound() {
         The page you requested cannot be found
       </h2>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="https://placehold.co/400x400/png" className="w-full" />
+      <img src="/404.png" className="w-full" alt="Page not found" />
     </motion.div>
   )
 }
