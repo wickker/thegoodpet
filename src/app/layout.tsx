@@ -20,7 +20,10 @@ export default function RootLayout({
       <body>
         <NotificationsProvider>
           <ReactQueryProvider>
-            <main className="h-dvh overflow-y-auto bg-background font-inter text-neutral-900">
+            <main
+              className="h-dvh overflow-y-auto bg-background font-inter text-neutral-900"
+              id="pets-main"
+            >
               <Notification />
               <CartProvider>
                 <Cart />

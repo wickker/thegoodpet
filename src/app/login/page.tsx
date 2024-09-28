@@ -7,6 +7,7 @@ import {
   ButtonGoogleSSO,
   ButtonSubmitFormAction,
   FormErrorMessage,
+  PrivacyPolicy,
 } from '@/components/common'
 import { SignUpLink } from '@/components/Login'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
@@ -74,19 +75,23 @@ export default function LoginPage() {
           </ButtonGoogleSSO>
         </Suspense>
 
-        <p className="my-4 text-center text-sm text-neutral-900">
-          Don't have an account?{' '}
-          <Suspense>
-            <SignUpLink />
-          </Suspense>
-        </p>
+        <div className="flex flex-col items-center gap-y-4 py-8">
+          <p className="text-sm text-neutral-900">
+            Don't have an account?{' '}
+            <Suspense>
+              <SignUpLink />
+            </Suspense>
+          </p>
 
-        <p className="mb-10 text-center text-sm text-neutral-900">
-          Forgot password?{' '}
-          <a className="text-primary underline" href={Route.FORGOT_PASSWORD}>
-            Reset
-          </a>
-        </p>
+          <p className="text-sm text-neutral-900">
+            Forgot password?{' '}
+            <a className="text-primary underline" href={Route.FORGOT_PASSWORD}>
+              Reset
+            </a>
+          </p>
+
+          <PrivacyPolicy />
+        </div>
       </div>
     </div>
   )
