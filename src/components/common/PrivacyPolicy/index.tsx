@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
 
             <iframe
               src="privacy-policy.html"
-              className="scrollbar flex h-full w-full"
+              className="flex h-full w-full"
               referrerPolicy="no-referrer"
             />
           </Dialog.Content>
