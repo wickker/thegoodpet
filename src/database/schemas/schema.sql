@@ -47,7 +47,11 @@ CREATE TABLE customers (
     accepts_marketing BOOLEAN,
     shopify_cart_id TEXT DEFAULT NULL,
     shopify_customer_id VARCHAR(191) DEFAULT NULL,
+    google_sub_id VARCHAR(191) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT NULL,
     deleted_at TIMESTAMP DEFAULT NULL
 );
+
+CREATE INDEX customers_email_idx ON customers(email);
+CREATE INDEX customers_google_sub_id_idx ON customers(google_sub_id);

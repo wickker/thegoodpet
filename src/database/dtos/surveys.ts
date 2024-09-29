@@ -1,5 +1,5 @@
 import { NeonDbError } from '@neondatabase/serverless'
-import format from 'pg-format'
+import { format } from 'node-pg-format'
 import { SurveyData } from '@/@types/survey'
 import { DbResponse, sql } from '@/database'
 import { Gender, Ingredient, Species } from '@/utils/constants/db'

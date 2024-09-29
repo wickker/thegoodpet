@@ -13,6 +13,10 @@ export const ForgotPasswordFormSchema = z.object({
   email: EmailSchema,
 })
 
+export const BindAccountFormSchema = z.object({
+  password: PasswordSchema
+})
+
 export const LoginFormSchema = z.object({
   email: EmailSchema,
   password: PasswordSchema,
@@ -61,6 +65,7 @@ export const SignUpFormSchema = z
     path: ['verifyPassword'],
   })
 
+export type BindAccountForm = z.infer<typeof BindAccountFormSchema>  
 export type ForgotPasswordForm = z.infer<typeof ForgotPasswordFormSchema>
 export type LoginForm = z.infer<typeof LoginFormSchema>
 export type ResetPasswordForm = z.infer<typeof ResetPasswordFormSchema>

@@ -1,6 +1,7 @@
 export const Route = {
   ACCOUNT: '/account',
   ACCOUNT_SETUP: '/account-setup',
+  BIND_ACCOUNT: '/bind-account',
   CUSTOM_MEALS: '/custom-meals',
   FORGOT_PASSWORD: '/forgot-password',
   HOME: '/',

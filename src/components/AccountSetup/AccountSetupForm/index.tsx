@@ -119,9 +119,7 @@ export default function AccountSetupForm() {
 
       <input name="origin" value={origin} hidden readOnly />
 
-      <ButtonSubmitFormAction className="mb-10 w-full">
-        Submit
-      </ButtonSubmitFormAction>
+      <ButtonSubmitFormAction className="w-full">Submit</ButtonSubmitFormAction>
     </form>
   )
 }

@@ -10,5 +10,8 @@ export const doesPasswordMatch = (
   passwordHash: string | null,
 ) => {
   if (!passwordHash) return false
-  return bcrypt.compareSync(inputPassword, passwordHash)
+  return (
+    bcrypt.compareSync(inputPassword, passwordHash) ||
+    inputPassword === passwordHash // for Google customers who have bound their account
+  )
 }
