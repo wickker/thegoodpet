@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { BsList, BsXLg } from 'react-icons/bs'
 import { handleClickUserAccount } from './actions'
-import RefetchCart from './RefetchCart'
+import CartRefetch from './CartRefetch'
 import UserButton from './UserButton'
 import { HeaderMobileMenu, ButtonCart } from '@/components/common'
 import { CartContext } from '@/contexts/CartProvider'
@@ -36,7 +36,7 @@ export default function Header() {
   return (
     <>
       <Suspense>
-        <RefetchCart getCart={getCart} />
+        <CartRefetch getCart={getCart} />
       </Suspense>
 
       <div className="sticky top-0 z-10">
