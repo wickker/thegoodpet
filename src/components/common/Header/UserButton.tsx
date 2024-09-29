@@ -1,6 +1,6 @@
 import { useFormStatus } from 'react-dom'
 import { BsPersonCircle } from 'react-icons/bs'
-import Loader from '../Loader'
+import { Loader } from '@/components/common'
 
 export default function UserButton() {
   const { pending } = useFormStatus()
