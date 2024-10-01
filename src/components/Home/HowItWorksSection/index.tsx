@@ -25,8 +25,11 @@ const HowItWorksSection = () => (
       How does it work?
     </h1>
     <div className="i grid place-items-center items-start gap-x-12 gap-y-12 md:grid-cols-3">
-      {sections.map((s) => (
-        <div className="grid h-full justify-items-center text-center md:max-w-[300px]">
+      {sections.map((s, index) => (
+        <div
+          className="grid h-full justify-items-center text-center md:max-w-[300px]"
+          key={index}
+        >
           <h2 className="font-fredoka text-2xl font-black leading-none text-primary">
             {s.title}
           </h2>
