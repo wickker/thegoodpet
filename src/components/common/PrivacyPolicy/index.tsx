@@ -3,8 +3,13 @@
 import { useEffect, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { BsXLg } from 'react-icons/bs'
+import { mc } from '@/utils/functions/common'
 
-export default function PrivacyPolicy() {
+type PrivacyPolicyProps = {
+  className?: string
+}
+
+export default function PrivacyPolicy({ className }: PrivacyPolicyProps) {
   const [_document, _setDocument] = useState<Document | null>(null)
 
   useEffect(() => {
@@ -16,7 +21,12 @@ export default function PrivacyPolicy() {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button className="w-full text-sm text-primary underline">
+        <button
+          className={mc(
+            'w-full text-sm text-primary underline',
+            className && className,
+          )}
+        >
           Privacy policy
         </button>
       </Dialog.Trigger>

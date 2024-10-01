@@ -5,11 +5,11 @@ import { UseQueryResult } from '@tanstack/react-query'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { Route } from '@/utils/constants/routes'
 
-type RefetchCartProps = {
+type CartRefetchProps = {
   getCart?: UseQueryResult
 }
 
-export default function RefetchCart({ getCart }: RefetchCartProps) {
+export default function CartRefetch({ getCart }: CartRefetchProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 

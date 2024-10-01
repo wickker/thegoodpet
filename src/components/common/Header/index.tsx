@@ -3,9 +3,10 @@
 import { Suspense, useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BsPersonCircle, BsList, BsXLg } from 'react-icons/bs'
+import { BsList, BsXLg } from 'react-icons/bs'
 import { handleClickUserAccount } from './actions'
-import RefetchCart from './refetchCart'
+import CartRefetch from './CartRefetch'
+import UserButton from './UserButton'
 import { HeaderMobileMenu, ButtonCart } from '@/components/common'
 import { CartContext } from '@/contexts/CartProvider'
 import { Route } from '@/utils/constants/routes'
@@ -35,7 +36,7 @@ export default function Header() {
   return (
     <>
       <Suspense>
-        <RefetchCart getCart={getCart} />
+        <CartRefetch getCart={getCart} />
       </Suspense>
 
       <div className="sticky top-0 z-10">
@@ -75,12 +76,10 @@ export default function Header() {
             </Link>
 
             <div className="flex items-center justify-end gap-10">
-              <button
-                className="hidden text-[25px] md:block"
-                onClick={() => handleClickUserAccount()}
-              >
-                <BsPersonCircle />
-              </button>
+              <form action={handleClickUserAccount}>
+                <UserButton />
+              </form>
+
               <ButtonCart
                 onClick={openCart}
                 itemsCount={getCart?.data?.totalQuantity}

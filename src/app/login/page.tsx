@@ -7,7 +7,6 @@ import {
   ButtonGoogleSSO,
   ButtonSubmitFormAction,
   FormErrorMessage,
-  PrivacyPolicy,
 } from '@/components/common'
 import { SignUpLink } from '@/components/Login'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
@@ -89,8 +88,6 @@ export default function LoginPage() {
               Reset
             </a>
           </p>
-
-          <PrivacyPolicy />
         </div>
       </div>
     </div>

@@ -64,7 +64,7 @@ export default async function AccountPage() {
 
         {hasOrders ? (
           <>
-            {customer.orders.edges.map((order) => (
+            {customer.orders.edges.reverse().map((order) => (
               <OrderHistoryTile
                 order={order.node}
                 key={order.node.id}
