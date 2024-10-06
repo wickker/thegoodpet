@@ -1,9 +1,23 @@
 import { useFormStatus } from 'react-dom'
-import { BsPersonCircle } from 'react-icons/bs'
+import { BsPersonCircle, BsPersonCheckFill } from 'react-icons/bs'
 import { Loader } from '@/components/common'
 
-export default function UserButton() {
+type UserButtonProps = {
+  userEmail: string
+}
+
+export default function UserButton({ userEmail }: UserButtonProps) {
   const { pending } = useFormStatus()
+
+  const renderButton = () => {
+    if (pending) {
+      return <Loader size="sm" />
+    }
+    if (userEmail) {
+      return <BsPersonCheckFill />
+    }
+    return <BsPersonCircle />
+  }
 
   return (
     <button
@@ -11,7 +25,7 @@ export default function UserButton() {
       type="submit"
       disabled={pending}
     >
-      {pending ? <Loader size="sm" /> : <BsPersonCircle />}
+      {renderButton()}
     </button>
   )
 }

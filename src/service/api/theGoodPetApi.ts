@@ -29,6 +29,11 @@ const getCustomMeal = async (id: string): Promise<GetCustomMealResponse> => {
   return handleResponse(res)
 }
 
+const getLoggedInUser = async (): Promise<string> => {
+  const res = await fetch('/api/auth')
+  return handleResponse(res)
+}
+
 // PUT
 const addItemToCart = async (
   request: Partial<MutationCartLinesAddArgs>,
@@ -66,5 +71,6 @@ export default {
   deleteItemFromCart,
   getCart,
   getCustomMeal,
+  getLoggedInUser,
   updateCartItemQuantity,
 }
