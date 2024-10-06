@@ -4,6 +4,7 @@ import { CartLinesAddPayload } from '@shopify/hydrogen-react/storefront-api-type
 import { cookies } from 'next/headers'
 import { z } from 'zod'
 import { ServerActionError } from '@/@types/common'
+import { createPetsFromCart } from '@/app/account-setup/utils'
 import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
@@ -90,7 +91,7 @@ export async function addToCart(
       StorefrontDataKey.CART_CREATE,
     )
 
-  if (createCartError) {
+  if (createCartError || !createCartData?.cart?.id) {
     logger.error(
       `Unable to create cart [createCartRequestBody: ${createCartRequestBody}]: ${createCartError}.`,
     )
@@ -102,24 +103,35 @@ export async function addToCart(
     }
   }
 
-  if (createCartData?.cart?.id) {
-    setCookie(cookieStore, SHOPIFY_CART_ID_COOKIE, createCartData.cart.id)
+  const cartId = createCartData.cart.id
+  setCookie(cookieStore, SHOPIFY_CART_ID_COOKIE, cartId)
 
-    if (emailCookie) {
-      const { error } = await Customers.updateCartId(
-        emailCookie.value,
-        createCartData.cart.id,
+  // If there is a customer already logged in
+  if (emailCookie) {
+    const { data, error } = await Customers.updateCartId(
+      emailCookie.value,
+      cartId,
+    )
+    if (error || !data || data.length === 0) {
+      logger.error(
+        `Unable to update customer cartId [email: ${emailCookie.value}][cartId: ${cartId}]: ${error}.`,
       )
-      if (error) {
-        logger.error(
-          `Unable to update customer cartId [email: ${emailCookie.value}][cartId: ${createCartData.cart.id}]: ${error}.`,
-        )
-        return {
-          error: {
-            title: 'Failed to update customer cartId',
-            message: 'Please try again',
-          },
-        }
+      return {
+        error: {
+          title: 'Failed to update customer cartId',
+          message: 'Please try again',
+        },
+      }
+    }
+
+    const customerId = data[0].id
+    const err = await createPetsFromCart(customerId, cartId)
+    if (err) {
+      return {
+        error: {
+          title: 'Failed to create pets from cart products',
+          message: 'Please try again',
+        },
       }
     }
   }
