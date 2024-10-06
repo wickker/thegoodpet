@@ -18,4 +18,5 @@ export const QUERY_KEYS = {
     'customer-orders',
     { first },
   ],
+  GET_LOGGED_IN_USER: [THE_GOOD_PET, 'logged-in-user']
 }

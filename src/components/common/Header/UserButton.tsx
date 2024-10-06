@@ -1,5 +1,5 @@
 import { useFormStatus } from 'react-dom'
-import { BsPersonCircle } from 'react-icons/bs'
+import { BsPersonCircle, BsPersonCheckFill } from 'react-icons/bs'
 import { Loader } from '@/components/common'
 
 export default function UserButton() {
@@ -12,6 +12,7 @@ export default function UserButton() {
       disabled={pending}
     >
       {pending ? <Loader size="sm" /> : <BsPersonCircle />}
+      {/* {pending ? <Loader size="sm" /> : <BsPersonCheckFill />} */}
     </button>
   )
 }

@@ -46,9 +46,11 @@ export default function PrivacyPolicy({ className }: PrivacyPolicyProps) {
               </Dialog.Close>
             </div>
 
+            {/* Required by Radix for accessibility */}
             <VisuallyHidden.Root>
               <Dialog.Title>Privacy Policy</Dialog.Title>
             </VisuallyHidden.Root>
+
             <iframe
               src="privacy-policy.html"
               className="flex h-full w-full"
