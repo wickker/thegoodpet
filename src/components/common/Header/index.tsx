@@ -35,8 +35,6 @@ export default function Header() {
   const { useGetLoggedInUserQuery } = useAuth()
   const { data: userEmail } = useGetLoggedInUserQuery()
 
-  const handleCloseMenu = () => setIsMenuOpen(false)
-
   return (
     <>
       <Suspense>
@@ -90,7 +88,7 @@ export default function Header() {
         <HeaderMobileMenu
           isMenuOpen={isMenuOpen}
           links={links}
-          onClickLink={handleCloseMenu}
+          userEmail={userEmail || ''}
         />
       </div>
     </>
