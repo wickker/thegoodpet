@@ -65,7 +65,7 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <h1 className="font-fredoka text-4xl text-secondary">
+        <h1 className="font-fredoka text-6xl text-secondary">
           ${product.productVariant.price}
         </h1>
 

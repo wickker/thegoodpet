@@ -24,7 +24,11 @@ const createProductVariant = (
       input: {
         price,
         productId: SHOPIFY_CUSTOM_MEAL_PRODUCT_ID,
-        options: [DateTime.now().toISO(), petName, variantOption],
+        options: [
+          DateTime.now().toFormat('dd LLL yyyy - TT'),
+          petName,
+          variantOption,
+        ],
         inventoryQuantities: {
           availableQuantity: 10,
           locationId: 'gid://shopify/Location/73449472057',
