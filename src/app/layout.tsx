@@ -1,5 +1,5 @@
 import { Cart } from '@/components/Cart'
-import { Header, Notification } from '@/components/common'
+import { Notification } from '@/components/common'
 import { CartProvider, NotificationsProvider, AuthProvider } from '@/contexts'
 import ReactQueryProvider from '@/hooks/ReactQueryProvider'
 import './styles.css'
@@ -26,9 +26,8 @@ export default function RootLayout({
             >
               <Notification />
               <CartProvider>
-                <Cart />
                 <AuthProvider>
-                  <Header />
+                  <Cart />
                   {children}
                 </AuthProvider>
               </CartProvider>

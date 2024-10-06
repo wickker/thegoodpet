@@ -15,7 +15,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   const { useGetLoggedInUserQuery } = useAuth()
   const getUser = useGetLoggedInUserQuery()
 
-  console.log(getUser.data)
+  //   console.log(getUser.data)
 
   return (
     <AuthContext.Provider value={{ userEmail: getUser?.data || '' }}>
