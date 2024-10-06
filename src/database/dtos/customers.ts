@@ -163,6 +163,23 @@ const updateShopifyAccessTokenExpiry = async (
   }
 }
 
+const updateCartId = async (
+  email: string,
+  cartId: string,
+): Promise<DbResponse> => {
+  try {
+    const data = await sql`
+    UPDATE customers
+    SET shopify_cart_id = ${cartId},
+    updated_at = NOW()
+    WHERE email = ${email};
+    `
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: (err as NeonDbError).message }
+  }
+}
+
 // For sign up
 const updateShopifyAccessTokenAndCustomerId = async (
   accessToken: string,
@@ -233,6 +250,7 @@ const Customers = {
   findByEmail,
   findByEmailOrPhone,
   findByGoogleSub,
+  updateCartId,
   updatePasswordHash,
   updateGoogleSubShopifyAccessTokenAndCartId,
   updateShopifyAccessTokenAndCartId,

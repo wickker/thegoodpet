@@ -4,6 +4,7 @@ import { CartLinesAddPayload } from '@shopify/hydrogen-react/storefront-api-type
 import { cookies } from 'next/headers'
 import { z } from 'zod'
 import { ServerActionError } from '@/@types/common'
+import Customers from '@/database/dtos/customers'
 import storefrontApi from '@/service/api/storefrontApi'
 import {
   SHOPIFY_CART_ID_COOKIE,
@@ -61,21 +62,13 @@ export async function addToCart(
         StorefrontDataKey.CART_LINES_ADD,
       )
 
-    if (addItemToCartError) {
-      logger.error(
-        `Unable to add items to cart [addItemToCartRequestBody: ${JSON.stringify(addItemToCartRequestBody)}]: ${addItemToCartError}.`,
-      )
-      return {
-        error: {
-          title: 'Failed to add item to cart',
-          message: 'Please try again',
-        },
-      }
+    if (!addItemToCartError) {
+      return { success: true }
     }
 
-    return {
-      success: true,
-    }
+    logger.warn(
+      `Unable to add items to cart [addItemToCartRequestBody: ${JSON.stringify(addItemToCartRequestBody)}]: ${addItemToCartError}.`,
+    )
   }
 
   // Create new cart with item
@@ -111,6 +104,24 @@ export async function addToCart(
 
   if (createCartData?.cart?.id) {
     setCookie(cookieStore, SHOPIFY_CART_ID_COOKIE, createCartData.cart.id)
+
+    if (emailCookie) {
+      const { error } = await Customers.updateCartId(
+        emailCookie.value,
+        createCartData.cart.id,
+      )
+      if (error) {
+        logger.error(
+          `Unable to update customer cartId [email: ${emailCookie.value}][cartId: ${createCartData.cart.id}]: ${error}.`,
+        )
+        return {
+          error: {
+            title: 'Failed to update customer cartId',
+            message: 'Please try again',
+          },
+        }
+      }
+    }
   }
 
   return {
