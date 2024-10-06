@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { AccountSetupForm } from '@/components/AccountSetup'
-import { ButtonGoogleSSO, PrivacyPolicy } from '@/components/common'
+import { ButtonGoogleSSO } from '@/components/common'
 
 export default function AccountSetupPage() {
   return (
@@ -8,8 +8,6 @@ export default function AccountSetupPage() {
       <h1 className="mb-5 font-fredoka text-4xl font-medium text-secondary">
         Account Setup
       </h1>
-
-      <PrivacyPolicy />
 
       <div className="mt-4 w-full max-w-[360px]">
         <Suspense>
