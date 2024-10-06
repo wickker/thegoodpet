@@ -46,7 +46,7 @@ export async function addToCart(
   const cookieStore = cookies()
   const cartIdCookie = cookieStore.get(SHOPIFY_CART_ID_COOKIE)
 
-  // Add item to existing cart
+  // add item to existing cart
   if (cartIdCookie) {
     const addItemToCartRequestBody = {
       cartId: cartIdCookie.value,
@@ -72,7 +72,7 @@ export async function addToCart(
     )
   }
 
-  // Create new cart with item
+  // create new cart with item
   const emailCookie = cookieStore.get(SHOPIFY_CUSTOMER_EMAIL_COOKIE)
   const createCartRequestBody = {
     buyerIdentity: {
@@ -106,7 +106,7 @@ export async function addToCart(
   const cartId = createCartData.cart.id
   setCookie(cookieStore, SHOPIFY_CART_ID_COOKIE, cartId)
 
-  // If there is a customer already logged in
+  // if there is a customer already logged in
   if (emailCookie) {
     const { data, error } = await Customers.updateCartId(
       emailCookie.value,

@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
   }
   if (subCustomers.length === 0) {
     redirect(
-      `${Route.LOGIN}?${generateErrParams('Invalid login credentials.')}`,
+      `${Route.LOGIN}?${generateErrParams('Invalid login credentials. Have you already signed up with Google?')}`,
     )
   }
   const customer = subCustomers[0]
