@@ -85,12 +85,18 @@ export default function BuildYourBoxQuestion() {
       : 0
     const newQuantity = Math.max(0, currentQuantity - 1)
 
+    const updatedMealTypeToQuantity = {
+      ...surveyData.mealTypeToQuantity,
+      [i]: newQuantity,
+    }
+
+    if (newQuantity === 0) {
+      delete updatedMealTypeToQuantity[i]
+    }
+
     setSurveyData({
       ...surveyData,
-      mealTypeToQuantity: {
-        ...surveyData.mealTypeToQuantity,
-        [i]: newQuantity,
-      },
+      mealTypeToQuantity: updatedMealTypeToQuantity,
     })
     setErrorDisplay('')
   }

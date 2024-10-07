@@ -13,6 +13,9 @@ export default function WeightQuestion() {
   const [errorDisplay, setErrorDisplay] = useState<string>('')
 
   const handleSetWeight = (e: ChangeEvent<HTMLInputElement>) => {
+    // handle leading zeros
+    e.target.value = e.target.value.replace(/^0+/, '')
+
     setSurveyData({
       ...surveyData,
       weight: (parseFloat(e.target.value) || 0) * 1000,
@@ -29,6 +32,7 @@ export default function WeightQuestion() {
       setErrorDisplay(e.issues[0]?.message)
     }
   }
+
   return (
     <>
       <p className="my-5 text-center font-inter">
