@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
+import { useSearchParams } from 'next/navigation'
 import { BsXLg } from 'react-icons/bs'
 import { mc } from '@/utils/functions/common'
 
@@ -12,6 +13,9 @@ type PrivacyPolicyProps = {
 
 export default function PrivacyPolicy({ className }: PrivacyPolicyProps) {
   const [_document, _setDocument] = useState<Document | null>(null)
+  const searchParams = useSearchParams()
+  const privacyPolicy = searchParams.get('privacyPolicy') || ''
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     if (window.document) {
@@ -19,8 +23,14 @@ export default function PrivacyPolicy({ className }: PrivacyPolicyProps) {
     }
   }, [])
 
+  useEffect(() => {
+    if (privacyPolicy) {
+      setIsVisible(true)
+    }
+  }, [privacyPolicy])
+
   return (
-    <Dialog.Root>
+    <Dialog.Root open={isVisible} onOpenChange={setIsVisible}>
       <Dialog.Trigger asChild>
         <button
           className={mc(

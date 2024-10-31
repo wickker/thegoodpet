@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import {
   Header,
   PrivacyPolicy,
@@ -18,7 +19,9 @@ export default function Page() {
         <HowItWorksSection />
 
         <div className="w-full bg-secondary py-4">
-          <PrivacyPolicy className="text-white" />
+          <Suspense>
+            <PrivacyPolicy className="text-white" />
+          </Suspense>
         </div>
       </div>
     </>
