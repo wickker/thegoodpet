@@ -1,8 +1,4 @@
-import {
-  Header,
-  PrivacyPolicy,
-  TileOverlayContainer,
-} from '@/components/common'
+import { Header, TileOverlayContainer } from '@/components/common'
 import { HeroBanner, HowItWorksSection } from '@/components/Home'
 
 export default function Page() {
@@ -17,8 +13,14 @@ export default function Page() {
 
         <HowItWorksSection />
 
-        <div className="w-full bg-secondary py-4">
-          <PrivacyPolicy className="text-white" />
+        <div className="grid w-full place-items-center bg-secondary py-4">
+          <a
+            className="text-sm text-white underline"
+            href="/privacy-policy.html"
+            target="_blank"
+          >
+            Privacy policy
+          </a>
         </div>
       </div>
     </>
