@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BsXLg } from 'react-icons/bs'
-import { ButtonSubmitFormAction } from '@/components/common'
+import { ButtonSubmitFormAction, DeliveryDatePicker } from '@/components/common'
 import { SubscriptionOption } from '@/components/CustomMeals'
 import { SHOPIFY_CUSTOM_MEAL_SELLING_PLANS } from '@/utils/constants/common'
 import { mc } from '@/utils/functions/common'
@@ -39,6 +39,28 @@ export default function AddToCartModal({
               {...sellingPlanDetails}
             />
           ))}
+        </div>
+
+        <div className="mt-6 grid gap-3">
+          <p className="text-lg">Select a delivery date</p>
+          <DeliveryDatePicker />
+          <div className="space-y-3 text-xs text-neutral-500">
+            <p>
+              For subscriptions, this will be when the first delivery occurs and
+              subsequent deliveries will occur at the interval selected.
+            </p>
+
+            <p>
+              Have any questions?{' '}
+              <a
+                href="mailto:Hello@thebonpet.com"
+                className="text-primary underline"
+              >
+                Request for support
+              </a>
+              .
+            </p>
+          </div>
         </div>
 
         <ButtonSubmitFormAction className="mt-3 w-full">

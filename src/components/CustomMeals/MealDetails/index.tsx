@@ -4,7 +4,7 @@ import { useFormState } from 'react-dom'
 import { GetProductVariantResponse } from '@/@types/product'
 import { SurveyData } from '@/@types/survey'
 import { addToCart } from '@/app/custom-meals/[id]/actions'
-import { ButtonSubmitFormAction } from '@/components/common'
+import { ButtonSubmitFormAction, DeliveryDatePicker } from '@/components/common'
 import { AddToCartModal, SubscriptionOption } from '@/components/CustomMeals'
 import { CartContext } from '@/contexts/CartProvider'
 import { NotificationsContext } from '@/contexts/NotificationsProvider'
@@ -110,7 +110,7 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
           />
 
           <div className="hidden md:block">
-            <label>Purchase Options</label>
+            <label>Purchase options</label>
             <div className="mt-3 grid grid-cols-2 gap-3">
               <SubscriptionOption title="One-time purchase" />
               {SHOPIFY_CUSTOM_MEAL_SELLING_PLANS.map((sellingPlanDetails) => (
@@ -119,6 +119,33 @@ export default function MealDetails({ survey, product }: MealDetailsProps) {
                   {...sellingPlanDetails}
                 />
               ))}
+            </div>
+          </div>
+
+          <div className="mt-6 hidden md:block">
+            <label>Select a delivery date</label>
+            <div className="mt-3 grid">
+              <DeliveryDatePicker />
+
+              <div className="mt-3 space-y-3 text-xs text-neutral-500">
+                <p>
+                  {petName}'s meal will be delivered on the date you have
+                  selected. For subscriptions, this will be when the first
+                  delivery occurs and subsequent deliveries will occur at the
+                  interval selected.
+                </p>
+
+                <p>
+                  Have any questions?{' '}
+                  <a
+                    href="mailto:Hello@thebonpet.com"
+                    className="text-primary underline"
+                  >
+                    Request for support
+                  </a>
+                  .
+                </p>
+              </div>
             </div>
           </div>
 
